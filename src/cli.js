@@ -140,8 +140,8 @@ function cmdInstall(opts) {
   const runtime = opts.runtime || 'opencode';
   const model = opts.model || 'tokenbox/deepseek-v4-pro';
   const link = opts.link || 'path';
-  if (!['path', 'global', 'npx'].includes(link)) {
-    console.error(`Error: --link must be one of path|global|npx (got "${link}")`);
+  if (!['path', 'global', 'npx', 'github'].includes(link)) {
+    console.error(`Error: --link must be one of path|global|npx|github (got "${link}")`);
     process.exit(1);
   }
 

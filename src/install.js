@@ -65,6 +65,7 @@ function pathEntry(fableRepo, { posix = false } = {}) {
 function shimInvocation(link, fableRepo, { posix = false } = {}) {
   if (link === 'global') return 'fable';
   if (link === 'npx') return 'npx -y fable-5-anything';
+  if (link === 'github') return 'npx -y github:surebeli/fable-5-anything';
   return `node "${pathEntry(fableRepo, { posix })}"`; // default: 'path'
 }
 
@@ -90,6 +91,7 @@ function createShims(shimDir, project, fableRepo, link) {
 function lockEntry(link, fableRepo) {
   if (link === 'global') return 'fable';
   if (link === 'npx') return 'npx -y fable-5-anything';
+  if (link === 'github') return 'npx -y github:surebeli/fable-5-anything';
   return pathEntry(fableRepo, { posix: true });
 }
 

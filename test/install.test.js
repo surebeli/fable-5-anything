@@ -244,6 +244,18 @@ describe('install', () => {
     assert.strictEqual(lock.link, 'npx');
   });
 
+  it('link=github generates github-npx shims (no npm publish needed) and records link', () => {
+    const dir = join(TMP, 'lock-github');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'tokenbox/deepseek-v4-pro', link: 'github' });
+    const cmd = readFileSync(join(dir, '.fable', 'bin', 'fable.cmd'), 'utf-8');
+    assert.ok(cmd.includes('npx -y github:surebeli/fable-5-anything'), 'cmd shim should use the github spec');
+    assert.ok(!cmd.includes('bin\\fable.js'), 'github shim should not hardcode bin/fable.js');
+    const lock = JSON.parse(readFileSync(join(dir, '.fable', 'fable.lock.json'), 'utf-8'));
+    assert.strictEqual(lock.link, 'github');
+    assert.ok(lock.entry.includes('github:surebeli/fable-5-anything'));
+  });
+
   it('link=global generates global shims', () => {
     const dir = join(TMP, 'lock-global');
     mkdirSync(dir, { recursive: true });

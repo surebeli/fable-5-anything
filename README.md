@@ -9,19 +9,21 @@ or product assumptions.
 Zero-clone install (no repo path to remember):
 
 ```bash
-# one-off, via npx (GitHub source until published to npm)
-npx -y github:surebeli/fable-5-anything install --project . --link npx --yes
+# one-off, via npx straight from GitHub source (no npm publish required)
+npx -y github:surebeli/fable-5-anything install --project . --link github --yes
 
-# or bootstrap scripts
+# or bootstrap scripts (default --link github)
 scripts/install.ps1 -Project .      # Windows
 sh scripts/install.sh .             # POSIX
 ```
 
 The `--link` mode controls how the generated `.fable/bin` shims call fable:
-`path` (default, points at this clone), `global` (calls a globally installed
-`fable`), or `npx` (re-resolves `fable-5-anything` each call — best for the
-zero-clone flow). Each install records `fableVersion` and the link mode in
-`.fable/fable.lock.json`.
+`path` (default — points at a local clone), `github` (re-runs from GitHub source
+via `npx -y github:surebeli/fable-5-anything`; no clone to keep around and no npm
+publish needed — best for the zero-clone flow), `global` (a globally installed
+`fable`), or `npx` (the npm registry name, requires a future `npm publish`). Each
+install records `fableVersion` and the link mode in `.fable/fable.lock.json`. See
+[docs/deploy-from-source.md](docs/deploy-from-source.md).
 
 See [docs/embed-in-your-project.md](docs/embed-in-your-project.md).
 

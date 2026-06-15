@@ -39,11 +39,14 @@ This creates inside `<your-project>/`:
 
 ### Install link modes
 
-`fable install` accepts `--link <path|global|npx>`:
+`fable install` accepts `--link <path|github|global|npx>`:
 
 - `path` (default) — shims call this clone's `bin/fable.js` by absolute path.
-- `global` — shims call a globally installed `fable` (`npm i -g fable-5-anything`).
-- `npx` — shims call `npx -y fable-5-anything` (no clone to keep around).
+- `github` — shims call `npx -y github:surebeli/fable-5-anything` (runs from
+  GitHub source; no clone to keep around and no npm publish required).
+- `global` — shims call a globally installed `fable`.
+- `npx` — shims call `npx -y fable-5-anything` (npm registry name; requires a
+  future `npm publish`).
 
 Each install writes `.fable/fable.lock.json` recording the `fableVersion` and the
 chosen link mode, so a project's fable wiring is traceable and reproducible.
