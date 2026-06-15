@@ -1,0 +1,26 @@
+src/doctor.js
+  s_865fae9e798144::t_a136f862ca210e 64
+  s_865fae9e798144::t_c0bf56da4ceaea 136-140
+test/mcp.test.js
+  s_865fae9e798144::t_91c2df7ab6371b 35-40
+src/mcp.js
+  s_865fae9e798144::t_399618042610a3 2
+  s_865fae9e798144::t_e7cb836b48bd2a 30-35,43
+  s_865fae9e798144::t_199b1ecc2f8019 15,17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "43540ed287c79e0aadc80f77f8631abfa49bef7e",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
