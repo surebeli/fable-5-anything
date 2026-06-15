@@ -115,6 +115,18 @@ node bin/fable.js runtime opencode
 See [docs/runtime-overlay-model.md](docs/runtime-overlay-model.md) for the full
 model and the authority stack.
 
+### Codex
+
+fable governs Codex via a charter (AGENTS.md + CLAUDE.md) plus read-only MCP
+tools (`fable_runtime`, `fable_build_prompt`, `fable_doctor`). It overlays —
+never replaces — Codex's system prompt.
+
+```bash
+node bin/fable.js codex setup --project . --apply
+```
+
+See [docs/codex-integration.md](docs/codex-integration.md) for the full guide.
+
 ## Repository Status
 
 This repository is the implementation home for the non-Claude adaptation work

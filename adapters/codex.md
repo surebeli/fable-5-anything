@@ -39,6 +39,24 @@ Read relevant local workflow instructions before acting:
 Do not use Claude skill paths or Claude tool names unless they are actually
 available in the current Codex runtime.
 
+## Charter + MCP (M6)
+
+fable governs Codex through two surfaces (see `docs/codex-integration.md`).
+
+- **Charter (AGENTS.md + CLAUDE.md):** `fable charter sync` and `fable install`
+  seed the portable constitution into `AGENTS.md` and `CLAUDE.md` using the
+  idempotent `<!-- FABLE-START -->` / `<!-- FABLE-END -->` markers. Codex loads
+  `AGENTS.md` every session; `CLAUDE.md` is seeded for cross-tool parity. User
+  content outside the markers is preserved.
+- **MCP tools:** `fable codex setup --apply` (or the printed
+  `codex mcp add fable -- node <entry> mcp-server`) registers fable's stdio MCP
+  server. It exposes only read-only governance tools: `fable_runtime`,
+  `fable_build_prompt`, and `fable_doctor`. No mutating or exec tools are
+  exposed.
+
+Codex has no skill primitive, and fable overlays (never replaces) Codex's system
+prompt.
+
 ## Verification Before Completion
 
 Do not claim that a change is complete until the acceptance checks have run.

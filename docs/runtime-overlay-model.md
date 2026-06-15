@@ -59,13 +59,24 @@ runtime adapter under `adapters/` adds only the mechanics for that host. The
 machine-readable map is `adapters/runtime-capabilities.json`; inspect it from the
 CLI with `fable runtime <name>` or `fable runtime --list`.
 
+## Charter file set
+
+The fable charter is the runtime-neutral constitution written into a project's
+instruction files. The base set is `AGENTS.md` + `CLAUDE.md`, plus any
+host-specific extras declared in a runtime's `charterFiles`. `fable charter sync`
+and `fable install` write the constitution into these files using the idempotent
+`<!-- FABLE-START -->` / `<!-- FABLE-END -->` markers, preserving user content
+outside the markers. For codex, the charter (AGENTS.md + CLAUDE.md) plus the
+read-only MCP tools (`fable_runtime`, `fable_build_prompt`, `fable_doctor`) form
+the overlay path; see `docs/codex-integration.md`.
+
 ## Per-runtime support
 
 | Runtime | Status | Injection mode | Host system policy | Adapter |
 |---|---|---|---|---|
 | claude | reference-only | system-prompt-file | system-replace-when-user-owned | (none) |
 | opencode | implemented | prompt-prelude | overlay | adapters/opencode.md |
-| codex | planned | agents-md-or-plugin | overlay | adapters/codex.md |
+| codex | planned | agents-md-or-plugin | overlay | adapters/codex.md (charterFiles: AGENTS.md; charter + MCP path) |
 | kimi | planned | skill-or-prompt-prelude | overlay | adapters/kimi.md |
 | grok | planned | prompt-prelude | overlay | adapters/grok.md |
 | copilot | planned | custom-instructions-or-plugin | overlay | adapters/copilot.md |
