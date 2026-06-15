@@ -17,13 +17,20 @@ chooses model and runtime per task.
 
 ## Command Contract
 
-Verify the installed Grok CLI before use. A common command shape is:
+Grok ships a full agentic CLI (verified against grok 0.2.51): interactive TUI,
+headless `grok -p "<prompt>" --always-approve [--output-format json]`, custom
+agents (`--agent`), permission rules (`--allow`/`--deny`), and MCP support
+(`grok mcp add/list/remove`). It reads `AGENTS.md` as project instructions.
 
-```powershell
-grok -p "<prompt>" --output-format json --no-auto-update -m <model>
-```
+fable integrates via overlay, not replacement:
 
-Use the exact model id and flags required by the current installation.
+- Charter: `AGENTS.md` (+ `CLAUDE.md`) carry fable governance every session.
+- MCP: register the host-agnostic fable MCP server with
+  `grok mcp add fable -- node "<repo>/bin/fable.js" mcp-server` to expose
+  read-only `fable_runtime`/`fable_build_prompt`/`fable_doctor` in-session.
+
+Run `fable grok setup --project <dir> [--apply]` to seed the charter and register
+the MCP server. Host Grok system and tool rules remain authoritative.
 
 ## Output Shape
 

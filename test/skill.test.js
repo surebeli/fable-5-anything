@@ -56,3 +56,14 @@ describe('fable copilot setup command', () => {
     assert.ok(r.stdout.includes('mcp-server'));
   });
 });
+
+describe('fable grok setup command', () => {
+  it('writes charter (AGENTS.md + CLAUDE.md) and prints grok mcp add (dry)', () => {
+    const dir = join(TMP, 'grok'); mkdirSync(dir, { recursive: true });
+    const r = spawnSync('node', [BIN, 'grok', 'setup', '--project', dir], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(existsSync(join(dir, 'AGENTS.md')) && existsSync(join(dir, 'CLAUDE.md')));
+    assert.ok(r.stdout.includes('grok mcp add fable'), 'prints grok mcp add');
+    assert.ok(r.stdout.includes('mcp-server'));
+  });
+});

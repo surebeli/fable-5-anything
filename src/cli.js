@@ -97,6 +97,10 @@ Usage:
     print the copilot mcp add command (reusing the fable MCP server). With --apply,
     run copilot mcp add to register the server.
 
+  fable grok setup --project <dir> [--apply]
+    Seed the charter (AGENTS.md + CLAUDE.md) and print the grok mcp add command
+    (reusing the fable MCP server). With --apply, run grok mcp add to register it.
+
   fable mcp-server  —  Start the fable MCP server (stdio) for codex mcp add / other MCP hosts.
 
   fable --version
@@ -361,6 +365,25 @@ function cmdCopilot(opts, positional) {
   }
 }
 
+function cmdGrok(opts, positional) {
+  if (positional[0] !== 'setup') { console.error('Usage: fable grok setup --project <dir> [--apply]'); process.exit(1); }
+  const project = resolve(opts.project || '.');
+  const caps = loadCapabilities();
+  const set = new Set(['AGENTS.md', 'CLAUDE.md']);
+  for (const f of (caps.grok ? caps.grok.charterFiles : [])) set.add(f);
+  for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+  const entry = resolve(PKG_ROOT, 'bin', 'fable.js');
+  const addCmd = `grok mcp add fable -- node "${entry}" mcp-server`;
+  if (opts.apply) {
+    const r = spawnSync('grok', ['mcp', 'add', 'fable', '--', 'node', entry, 'mcp-server'], { encoding: 'utf-8', stdio: 'inherit' });
+    console.log(r.status === 0 ? 'Registered fable MCP server with Grok.' : `grok mcp add failed; run manually:\n  ${addCmd}`);
+  } else {
+    console.log('\nTo register the fable MCP server with Grok, run:');
+    console.log('  ' + addCmd);
+    console.log('(or re-run with --apply to do it now)');
+  }
+}
+
 export function main(argv) {
   const { command, opts, positional } = parseArgs(argv);
 
@@ -407,6 +430,9 @@ export function main(argv) {
       break;
     case 'copilot':
       cmdCopilot(opts, positional);
+      break;
+    case 'grok':
+      cmdGrok(opts, positional);
       break;
     case 'mcp-server':
       startMcpServer();
