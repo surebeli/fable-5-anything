@@ -36,13 +36,13 @@
     "notes": "Verified against kimi-code 0.14.2: the fable skill (.fable/skills/fable/SKILL.md, loaded via --skills-dir or extra_skill_dirs) carries portable core + kimi adapter governance and is auto-merged each session. Host Kimi system prompt remains authoritative; fable overlays governance."
   },
   "grok": {
-    "status": "planned",
-    "injectionMode": "prompt-prelude",
+    "status": "implemented",
+    "injectionMode": "mcp-and-charter",
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/grok.md",
-    "commandSupport": [],
+    "commandSupport": ["grok-setup", "mcp-server", "charter"],
     "charterFiles": ["AGENTS.md"],
-    "notes": "Advisory/review-oriented adapter. Design only; overlay via prompt prelude; no executor in this milestone."
+    "notes": "Verified against grok 0.2.51: the host-agnostic fable MCP server (grok mcp add fable) exposes read-only fable_runtime/fable_build_prompt/fable_doctor in-session, plus charter via AGENTS.md + CLAUDE.md. Host Grok system and tool policy remain authoritative; fable overlays governance."
   },
   "copilot": {
     "status": "implemented",

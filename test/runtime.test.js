@@ -96,6 +96,13 @@ describe('runtime capabilities metadata', () => {
     assert.ok(r.commandSupport.includes('mcp-server'));
   });
 
+  it('grok is implemented via the MCP + charter path (verified against real Grok)', () => {
+    const r = getRuntime('grok');
+    assert.strictEqual(r.status, 'implemented');
+    assert.strictEqual(r.injectionMode, 'mcp-and-charter');
+    assert.ok(r.commandSupport.includes('mcp-server'));
+  });
+
   it('adapterForRuntime maps known runtimes to their adapter files (or null)', () => {
     assert.strictEqual(adapterForRuntime('opencode'), 'adapters/opencode.md');
     assert.strictEqual(adapterForRuntime('kimi'), 'adapters/kimi.md');

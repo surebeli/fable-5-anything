@@ -80,7 +80,7 @@ host-agnostic — Codex and Copilot register and share the very same server
 | opencode | implemented | prompt-prelude | overlay | adapters/opencode.md |
 | codex | implemented | agents-md-and-mcp | overlay | adapters/codex.md (charterFiles: AGENTS.md; charter + MCP, verified vs codex 0.131.0) |
 | kimi | implemented | skill | overlay | adapters/kimi.md (charterFiles: AGENTS.md; fable skill via --skills-dir + charter, verified vs kimi 0.14.2) |
-| grok | planned | prompt-prelude | overlay | adapters/grok.md |
+| grok | implemented | mcp-and-charter | overlay | adapters/grok.md (charterFiles: AGENTS.md; reuses the host-agnostic fable MCP server + charter, verified vs grok 0.2.51) |
 | copilot | implemented | mcp-and-charter | overlay | adapters/copilot.md (charterFiles: .github/copilot-instructions.md, AGENTS.md; reuses the host-agnostic fable MCP server, verified vs copilot 1.0.54) |
 | agy (generic opaque host) | opaque | custom-instructions-or-wrapper | overlay | adapters/generic.md |
 
@@ -90,9 +90,11 @@ host-agnostic — Codex and Copilot register and share the very same server
   **codex** (charter + `fable mcp-server` via `codex mcp add`, verified vs
   codex-cli 0.131.0), **kimi** (fable skill via `--skills-dir`, verified vs
   kimi-code 0.14.2), and **copilot** (host-agnostic fable MCP server via
-  `copilot mcp add` + charter, verified vs Copilot CLI 1.0.54).
-- **Planned / design-only:** grok. Its adapter and capability metadata exist and
-  are introspectable, but fable ships no executor for it in this milestone.
+  `copilot mcp add` + charter, verified vs Copilot CLI 1.0.54), and **grok**
+  (host-agnostic fable MCP server via `grok mcp add` + charter, verified vs
+  grok 0.2.51).
+- **Planned / design-only:** none — all adapted runtimes are verified against
+  their real CLIs.
 - **Opaque:** agy and similar hosts default to overlay-only; never assume system
   replacement until a specific host is proven user-owned and safe.
 

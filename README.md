@@ -104,7 +104,7 @@ rules.
 - codex is implemented via charter (AGENTS.md) + an MCP server (`codex mcp add`); see [docs/codex-integration.md](docs/codex-integration.md).
 - kimi has a `fable kimi setup` that writes a real fable skill (`--skills-dir`) + charter; see [docs/kimi-integration.md](docs/kimi-integration.md).
 - copilot has a `fable copilot setup` that seeds the charter + reuses the host-agnostic fable MCP server (`copilot mcp add`); see [docs/copilot-integration.md](docs/copilot-integration.md).
-- grok is adapter/design status (introspectable, no executor yet).
+- grok has a `fable grok setup` that seeds the charter + reuses the host-agnostic fable MCP server (`grok mcp add`); verified vs grok 0.2.51.
 - agy and other opaque hosts default to overlay-only.
 
 Inspect any runtime:
