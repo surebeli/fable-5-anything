@@ -51,6 +51,16 @@ describe('runtime capabilities metadata', () => {
     }
   });
 
+  it('every runtime entry has a charterFiles array including AGENTS.md', () => {
+    const caps = loadCapabilities();
+    for (const [name, entry] of Object.entries(caps)) {
+      assert.ok(Array.isArray(entry.charterFiles), `${name} charterFiles must be an array`);
+      assert.ok(entry.charterFiles.includes('AGENTS.md'), `${name} charterFiles should include AGENTS.md`);
+    }
+    assert.ok(getRuntime('claude').charterFiles.includes('CLAUDE.md'));
+    assert.ok(getRuntime('copilot').charterFiles.includes('.github/copilot-instructions.md'));
+  });
+
   it('opencode is implemented, prompt-prelude, overlay, with the opencode adapter', () => {
     const r = getRuntime('opencode');
     assert.strictEqual(r.status, 'implemented');

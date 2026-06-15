@@ -5,6 +5,7 @@
     "hostSystemPolicy": "system-replace-when-user-owned",
     "adapter": null,
     "commandSupport": [],
+    "charterFiles": ["CLAUDE.md", "AGENTS.md"],
     "notes": "Claude Code can replace the system prompt via --system-prompt-file when the user owns the session. Reference only; fable ships no Claude executor and does not migrate Claude identity/tool assumptions."
   },
   "opencode": {
@@ -13,6 +14,7 @@
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/opencode.md",
     "commandSupport": ["build-prompt", "smoke", "run", "doctor"],
+    "charterFiles": ["AGENTS.md"],
     "notes": "Assembled prompt is passed to opencode run. The host opencode system prompt remains authoritative; fable overlays governance."
   },
   "codex": {
@@ -21,6 +23,7 @@
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/codex.md",
     "commandSupport": [],
+    "charterFiles": ["AGENTS.md"],
     "notes": "Design only in this milestone. Overlay via AGENTS.md / plugin / profile; host Codex system and tool policy remain authoritative."
   },
   "kimi": {
@@ -29,6 +32,7 @@
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/kimi.md",
     "commandSupport": [],
+    "charterFiles": ["AGENTS.md"],
     "notes": "Design only in this milestone. Overlay via --skills-dir or prompt prelude; host system prompt remains authoritative."
   },
   "grok": {
@@ -37,6 +41,7 @@
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/grok.md",
     "commandSupport": [],
+    "charterFiles": ["AGENTS.md"],
     "notes": "Advisory/review-oriented adapter. Design only; overlay via prompt prelude; no executor in this milestone."
   },
   "copilot": {
@@ -45,6 +50,7 @@
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/copilot.md",
     "commandSupport": [],
+    "charterFiles": [".github/copilot-instructions.md", "AGENTS.md"],
     "notes": "Design only in this milestone. Overlay via AGENTS/custom instructions / --agent / --plugin-dir; host system prompt remains authoritative."
   },
   "agy": {
@@ -53,6 +59,7 @@
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/generic.md",
     "commandSupport": [],
+    "charterFiles": ["AGENTS.md"],
     "notes": "Generic opaque-host fallback (agy/Antigravity-like). Overlay only; never assume system replacement until proven user-owned and safe."
   }
 }

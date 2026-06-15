@@ -8,7 +8,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = resolve(join(__dirname, '..'));
 const CAPABILITIES_PATH = join(PKG_ROOT, 'adapters', 'runtime-capabilities.json');
 
-export const REQUIRED_KEYS = ['status', 'injectionMode', 'hostSystemPolicy', 'adapter', 'commandSupport', 'notes'];
+export const REQUIRED_KEYS = ['status', 'injectionMode', 'hostSystemPolicy', 'adapter', 'commandSupport', 'notes', 'charterFiles'];
 
 // Module-level cache: the capabilities file ships with the package and does not
 // change at runtime, so we read + parse + validate it once and reuse the result.
