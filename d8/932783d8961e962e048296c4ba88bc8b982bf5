@@ -1,0 +1,26 @@
+test/charter.test.js
+  s_865fae9e798144::t_4a3c65f60f08b3 1-34
+test/install.test.js
+  s_865fae9e798144::t_1702e35369af83 98-105
+src/charter.js
+  s_865fae9e798144::t_d1f977742f9c1e 1-24
+src/install.js
+  s_865fae9e798144::t_a91b9d47ad7098 5
+  s_865fae9e798144::t_839f25dcb8c380 137-138
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "d8932783d8961e962e048296c4ba88bc8b982bf5",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
