@@ -6,6 +6,7 @@ import { assemble, smokePrompt } from './prompt.js';
 import { buildCommand, runOpenCode } from './opencode.js';
 import { install } from './install.js';
 import { doctorChecks } from './doctor.js';
+import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
 
 function parseArgs(argv) {
   if (argv.length === 0) return { command: 'help' };
@@ -67,6 +68,10 @@ Usage:
 
   fable run <handoff> [--config <path>] [--project <dir>] [--dry-run]
     Execute an opencode run with the assembled prompt. Defaults to real run.
+
+  fable runtime [<name>] [--list]
+    Show how fable injects into a runtime (status, injection mode, whether it
+    overlays or replaces the host system prompt). No args lists all runtimes.
 
   fable --help
     Show this help.
@@ -213,6 +218,40 @@ function cmdRun(opts, positional) {
   }
 }
 
+function cmdRuntime(opts, positional) {
+  const caps = loadCapabilities();
+
+  if (opts.list || positional[0] === '--list' || (!positional[0] && !opts.list)) {
+    if (!positional[0] && !opts.list) {
+      // bare `fable runtime` behaves as --list
+    }
+    console.log('Known runtimes:\n');
+    for (const name of listRuntimes()) {
+      const r = caps[name];
+      console.log(`  ${name.padEnd(10)} ${r.status.padEnd(14)} ${r.hostSystemPolicy} / ${r.injectionMode}`);
+    }
+    console.log('\nRun: fable runtime <name>   for details.');
+    return;
+  }
+
+  const name = positional[0];
+  const r = getRuntime(name);
+  if (!r) {
+    console.error(`Unknown runtime: ${name}. Known: ${listRuntimes().join(', ')}. Run: fable runtime --list`);
+    process.exit(1);
+  }
+
+  const replaces = r.hostSystemPolicy === 'system-replace-when-user-owned';
+  console.log(`runtime:            ${name}`);
+  console.log(`status:             ${r.status}`);
+  console.log(`injection mode:     ${r.injectionMode}`);
+  console.log(`host system policy: ${r.hostSystemPolicy}`);
+  console.log(`adapter:            ${r.adapter === null ? '(none — reference only)' : r.adapter}`);
+  console.log(`implemented cmds:   ${r.commandSupport.length ? r.commandSupport.join(', ') : '(none)'}`);
+  console.log(`host system prompt: ${replaces ? 'fable may REPLACE it when the user owns the session' : 'authoritative — fable OVERLAYS governance, does not replace it'}`);
+  console.log(`notes:              ${r.notes}`);
+}
+
 export function main(argv) {
   const { command, opts, positional } = parseArgs(argv);
 
@@ -239,6 +278,9 @@ export function main(argv) {
       break;
     case 'run':
       cmdRun(opts, positional);
+      break;
+    case 'runtime':
+      cmdRuntime(opts, positional);
       break;
     default:
       console.error(`Unknown command: ${command}`);

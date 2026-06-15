@@ -87,3 +87,42 @@ describe('runtime capabilities metadata', () => {
     }
   });
 });
+
+import { spawnSync } from 'node:child_process';
+
+const BIN = resolve(ROOT, 'bin', 'fable.js');
+function fable(args) {
+  return spawnSync('node', [BIN, ...args], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+}
+
+describe('fable runtime command', () => {
+  it('runtime --list exits 0 and lists the full vendor set', () => {
+    const r = fable(['runtime', '--list']);
+    assert.strictEqual(r.status, 0, r.stderr);
+    for (const name of ['claude', 'opencode', 'codex', 'kimi', 'grok', 'copilot', 'agy']) {
+      assert.ok(r.stdout.includes(name), `--list should mention ${name}`);
+    }
+  });
+
+  it('runtime opencode reports implemented + overlay + prompt-prelude + authoritative host', () => {
+    const r = fable(['runtime', 'opencode']);
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(r.stdout.includes('implemented'));
+    assert.ok(r.stdout.includes('prompt-prelude'));
+    assert.ok(r.stdout.includes('overlay'));
+    assert.ok(/authoritative/i.test(r.stdout), 'should state host system prompt is authoritative');
+  });
+
+  it('runtime claude states it is reference-only and can replace system prompt', () => {
+    const r = fable(['runtime', 'claude']);
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(r.stdout.includes('reference-only'));
+    assert.ok(/system-replace-when-user-owned/.test(r.stdout));
+  });
+
+  it('runtime with unknown name exits 1 with actionable message', () => {
+    const r = fable(['runtime', 'bogus']);
+    assert.strictEqual(r.status, 1);
+    assert.ok(/Unknown runtime/i.test(r.stderr));
+  });
+});
