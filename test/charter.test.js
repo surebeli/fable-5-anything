@@ -32,3 +32,24 @@ describe('charter', () => {
     assert.strictEqual((t.match(/<!-- FABLE-START -->/g) || []).length, 1);
   });
 });
+
+import { spawnSync } from 'node:child_process';
+const ROOT = resolve(__dirname, '..');
+const BIN = resolve(ROOT, 'bin', 'fable.js');
+
+describe('fable charter sync command', () => {
+  it('seeds AGENTS.md + CLAUDE.md and exits 0', () => {
+    const dir = join(TMP, 'cmd'); mkdirSync(dir, { recursive: true });
+    const r = spawnSync('node', [BIN, 'charter', 'sync', '--project', dir], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(existsSync(join(dir, 'AGENTS.md')));
+    assert.ok(existsSync(join(dir, 'CLAUDE.md')));
+  });
+
+  it('--all includes copilot .github/copilot-instructions.md', () => {
+    const dir = join(TMP, 'cmd-all'); mkdirSync(dir, { recursive: true });
+    const r = spawnSync('node', [BIN, 'charter', 'sync', '--project', dir, '--all'], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(existsSync(join(dir, '.github', 'copilot-instructions.md')));
+  });
+});

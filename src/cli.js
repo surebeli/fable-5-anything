@@ -6,6 +6,7 @@ import { assemble, smokePrompt } from './prompt.js';
 import { buildCommand, runOpenCode } from './opencode.js';
 import { install } from './install.js';
 import { doctorChecks } from './doctor.js';
+import { syncCharter } from './charter.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
 import { VERSION } from './version.js';
 
@@ -74,6 +75,10 @@ Usage:
   fable runtime [<name>] [--list]
     Show how fable injects into a runtime (status, injection mode, whether it
     overlays or replaces the host system prompt). No args lists all runtimes.
+
+  fable charter sync --project <dir> [--runtime <name>] [--all]
+    Seed/refresh portable charter files (AGENTS.md + CLAUDE.md by default, plus
+    the runtime's extra charter files) with the idempotent fable block.
 
   fable --version
     Print the fable version.
@@ -262,6 +267,26 @@ function cmdRuntime(opts, positional) {
   console.log(`notes:              ${r.notes}`);
 }
 
+function cmdCharter(opts, positional) {
+  const sub = positional[0];
+  if (sub !== 'sync') {
+    console.error('Usage: fable charter sync --project <dir> [--runtime <name>] [--all]');
+    process.exit(1);
+  }
+  const project = resolve(opts.project || '.');
+  const caps = loadCapabilities();
+  const set = new Set(['AGENTS.md', 'CLAUDE.md']);
+  if (opts.all) {
+    for (const r of Object.values(caps)) for (const f of r.charterFiles) set.add(f);
+  } else {
+    const rtName = opts.runtime || (() => { try { return readConfigFile(project).runtime; } catch { return 'opencode'; } })();
+    const rt = caps[rtName];
+    if (rt) for (const f of rt.charterFiles) set.add(f);
+  }
+  const written = syncCharter({ project, files: [...set] });
+  for (const w of written) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+}
+
 export function main(argv) {
   const { command, opts, positional } = parseArgs(argv);
 
@@ -296,6 +321,9 @@ export function main(argv) {
       break;
     case 'runtime':
       cmdRuntime(opts, positional);
+      break;
+    case 'charter':
+      cmdCharter(opts, positional);
       break;
     default:
       console.error(`Unknown command: ${command}`);
