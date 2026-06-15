@@ -1,6 +1,6 @@
 import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert';
-import { mkdirSync, rmSync, existsSync, readFileSync } from 'node:fs';
+import { mkdirSync, rmSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildKimiSkill, writeKimiSkill } from '../src/skill.js';
@@ -73,5 +73,28 @@ describe('fable grok setup command', () => {
     assert.strictEqual(r.status, 0, r.stderr);
     assert.ok(r.stdout.includes('codex mcp add fable -- npx -y github:surebeli/fable-5-anything mcp-server'), `got: ${r.stdout}`);
     assert.ok(!r.stdout.includes('bin/fable.js') && !r.stdout.includes('bin\\fable.js'), 'github via should not reference a local path');
+  });
+});
+
+describe('fable opencode setup command', () => {
+  it('writes charter, copies the portable core into .fable/, and wires opencode.json instructions', () => {
+    const dir = join(TMP, 'oc'); mkdirSync(dir, { recursive: true });
+    const r = spawnSync('node', [BIN, 'opencode', 'setup', '--project', dir], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(existsSync(join(dir, 'AGENTS.md')) && existsSync(join(dir, 'CLAUDE.md')));
+    const core = readFileSync(join(dir, '.fable', 'portable-agent-core.md'), 'utf-8');
+    assert.ok(core.includes('Priority Order'), 'portable core copied into .fable/');
+    const oc = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf-8'));
+    assert.ok(oc.instructions.includes('AGENTS.md') && oc.instructions.includes('.fable/portable-agent-core.md'), 'opencode.json wired with instructions');
+  });
+
+  it('preserves existing opencode.json keys and is idempotent', () => {
+    const dir = join(TMP, 'oc-merge'); mkdirSync(dir, { recursive: true });
+    writeFileSync(join(dir, 'opencode.json'), JSON.stringify({ '$schema': 'https://opencode.ai/config.json', mcp: { x: { type: 'remote', url: 'http://h' } } }));
+    spawnSync('node', [BIN, 'opencode', 'setup', '--project', dir], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    spawnSync('node', [BIN, 'opencode', 'setup', '--project', dir], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    const oc = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf-8'));
+    assert.ok(oc.mcp && oc.mcp.x, 'existing mcp key preserved');
+    assert.strictEqual(oc.instructions.filter(i => i === '.fable/portable-agent-core.md').length, 1, 'no duplicate instruction on re-run');
   });
 });

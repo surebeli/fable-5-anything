@@ -102,7 +102,7 @@ Codex, Copilot, and opaque hosts, fable **overlays** project governance on top o
 the host's authoritative system prompt — it never tells the model to ignore host
 rules.
 
-- opencode is implemented end-to-end (build-prompt, smoke, run, doctor).
+- opencode is implemented end-to-end (build-prompt, smoke, run, doctor); `fable opencode setup` also makes the full portable core govern every session via `opencode.json` `instructions`. See [docs/opencode-integration.md](docs/opencode-integration.md).
 - codex is implemented via charter (AGENTS.md) + an MCP server (`codex mcp add`); see [docs/codex-integration.md](docs/codex-integration.md).
 - kimi has a `fable kimi setup` that writes a real fable skill (`--skills-dir`) + charter; see [docs/kimi-integration.md](docs/kimi-integration.md).
 - copilot has a `fable copilot setup` that seeds the charter + reuses the host-agnostic fable MCP server (`copilot mcp add`); see [docs/copilot-integration.md](docs/copilot-integration.md).

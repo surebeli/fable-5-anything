@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync, readFileSync, existsSync, chmodSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync, chmodSync, copyFileSync } from 'node:fs';
 import { join, resolve, sep } from 'node:path';
 import { defaultConfig, PKG_ROOT } from './config.js';
 import { VERSION } from './version.js';
@@ -143,4 +143,34 @@ export function install({ projectDir, runtime, model, link = 'path' }) {
 
   console.log(summary.join('\n'));
   return { project, config };
+}
+
+// Make the FULL fable portable core govern every opencode session: copy the
+// portable core into the project's .fable/ and wire it (plus AGENTS.md) into
+// opencode.json `instructions`, which opencode auto-loads each run. Preserves
+// any existing opencode.json keys (e.g. mcp); idempotent (dedupes instructions).
+export function wireOpencodeGovernance({ projectDir }) {
+  const project = resolve(projectDir);
+  const fableDir = join(project, '.fable');
+  if (!existsSync(fableDir)) mkdirSync(fableDir, { recursive: true });
+
+  const coreDest = join(fableDir, 'portable-agent-core.md');
+  copyFileSync(join(PKG_ROOT, 'prompts', 'portable-agent-core.md'), coreDest);
+
+  const ocPath = join(project, 'opencode.json');
+  let oc = { '$schema': 'https://opencode.ai/config.json' };
+  if (existsSync(ocPath)) {
+    try {
+      oc = JSON.parse(readFileSync(ocPath, 'utf-8'));
+    } catch (e) {
+      throw new Error(`opencode.json is not valid JSON (refusing to overwrite): ${e.message}`);
+    }
+  }
+  const want = ['AGENTS.md', '.fable/portable-agent-core.md'];
+  const instructions = Array.isArray(oc.instructions) ? [...oc.instructions] : [];
+  for (const w of want) if (!instructions.includes(w)) instructions.push(w);
+  oc.instructions = instructions;
+  writeFileSync(ocPath, JSON.stringify(oc, null, 2) + '\n');
+
+  return { core: coreDest, opencodeJson: ocPath, instructions };
 }

@@ -5,7 +5,7 @@ import { defaultConfig, readConfigFile, writeConfig, PKG_ROOT } from './config.j
 import { readHandoff, validate } from './handoff.js';
 import { assemble, smokePrompt } from './prompt.js';
 import { buildCommand, runOpenCode } from './opencode.js';
-import { install } from './install.js';
+import { install, wireOpencodeGovernance } from './install.js';
 import { doctorChecks } from './doctor.js';
 import { syncCharter } from './charter.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
@@ -101,6 +101,11 @@ Usage:
   fable grok setup --project <dir> [--apply] [--via path|github]
     Seed the charter (AGENTS.md + CLAUDE.md) and print the grok mcp add command
     (reusing the fable MCP server). With --apply, run grok mcp add to register it.
+
+  fable opencode setup --project <dir>
+    Make the full fable portable core govern every opencode session: seed the
+    charter, copy the portable core into .fable/, and wire opencode.json
+    "instructions" (preserves existing keys; idempotent).
 
   fable mcp-server  —  Start the fable MCP server (stdio) for codex mcp add / other MCP hosts.
 
@@ -390,6 +395,19 @@ function cmdGrok(opts, positional) {
   registerMcp('grok', opts);
 }
 
+function cmdOpencode(opts, positional) {
+  if (positional[0] !== 'setup') { console.error('Usage: fable opencode setup --project <dir>'); process.exit(1); }
+  const project = resolve(opts.project || '.');
+  const caps = loadCapabilities();
+  const set = new Set(['AGENTS.md', 'CLAUDE.md']);
+  for (const f of (caps.opencode ? caps.opencode.charterFiles : [])) set.add(f);
+  for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+  const r = wireOpencodeGovernance({ projectDir: project });
+  console.log('  (core)    .fable/portable-agent-core.md');
+  console.log('  (config)  opencode.json instructions: ' + r.instructions.join(', '));
+  console.log('\nEvery opencode session in this project now loads AGENTS.md + the full fable portable core.');
+}
+
 export function main(argv) {
   const { command, opts, positional } = parseArgs(argv);
 
@@ -439,6 +457,9 @@ export function main(argv) {
       break;
     case 'grok':
       cmdGrok(opts, positional);
+      break;
+    case 'opencode':
+      cmdOpencode(opts, positional);
       break;
     case 'mcp-server':
       startMcpServer();

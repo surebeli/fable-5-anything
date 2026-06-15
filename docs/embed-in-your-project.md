@@ -163,12 +163,13 @@ Every handoff file must contain these four sections:
 
 See `.fable/handoffs/example.md` for a working template.
 
-## Host integrations (Codex / Copilot / Grok / Kimi)
+## Host integrations (opencode / Codex / Copilot / Grok / Kimi)
 
 Each supported host has a one-command setup that overlays fable governance:
 
-1. **Codex / Copilot / Grok** — `fable <host> setup --project . [--apply] [--via path|github]` seeds the charter and registers the host-agnostic fable MCP server (`<host> mcp add fable`), exposing `fable_runtime` / `fable_build_prompt` / `fable_doctor` in-session. See [codex-integration.md](codex-integration.md) and [copilot-integration.md](copilot-integration.md).
-2. **Kimi** — `fable kimi setup --project .` writes a real fable skill (loaded via `--skills-dir` or `extra_skill_dirs`). See [kimi-integration.md](kimi-integration.md).
+1. **opencode** — `fable opencode setup --project .` wires the full portable core into `opencode.json` `instructions` so every opencode session is governed (plus `fable run` for one-shot dispatch). See [opencode-integration.md](opencode-integration.md).
+2. **Codex / Copilot / Grok** — `fable <host> setup --project . [--apply] [--via path|github]` seeds the charter and registers the host-agnostic fable MCP server (`<host> mcp add fable`), exposing `fable_runtime` / `fable_build_prompt` / `fable_doctor` in-session. See [codex-integration.md](codex-integration.md) and [copilot-integration.md](copilot-integration.md).
+3. **Kimi** — `fable kimi setup --project .` writes a real fable skill (loaded via `--skills-dir` or `extra_skill_dirs`). See [kimi-integration.md](kimi-integration.md).
 
 Still future: an npm registry publish (so `npx fable-5-anything` / a global `fable` work without GitHub source). Today, deploy from source — clone (`--link path`) or zero-clone (`--link github`); see [deploy-from-source.md](deploy-from-source.md).
 
