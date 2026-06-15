@@ -1,0 +1,28 @@
+docs/handoffs/FABLE-M8-GROK-result.md
+  s_865fae9e798144::t_57c26ea9914f07 1-35
+README.md
+  s_865fae9e798144::t_f389df5a1c603d 107
+test/runtime.test.js
+  s_865fae9e798144::t_dba44062df464a 99-105
+docs/runtime-overlay-model.md
+  s_865fae9e798144::t_c7f2f82cddc7d2 83
+  s_865fae9e798144::t_7f95492a16183f 93-97
+adapters/runtime-capabilities.json
+  s_865fae9e798144::t_d1805353e6025c 39-40,43,45
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "7cb8bbc3745514df1faaa3b9c8394f1a47ec6900",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
