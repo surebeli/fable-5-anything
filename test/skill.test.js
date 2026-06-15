@@ -28,3 +28,19 @@ describe('kimi skill', () => {
     assert.ok(readFileSync(p, 'utf-8').includes('name: fable'));
   });
 });
+
+import { spawnSync } from 'node:child_process';
+const ROOT = resolve(__dirname, '..');
+const BIN = resolve(ROOT, 'bin', 'fable.js');
+
+describe('fable kimi setup command', () => {
+  it('writes the skill + charter and prints --skills-dir / extra_skill_dirs registration', () => {
+    const dir = join(TMP, 'kimi'); mkdirSync(dir, { recursive: true });
+    const r = spawnSync('node', [BIN, 'kimi', 'setup', '--project', dir], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(existsSync(join(dir, '.fable', 'skills', 'fable', 'SKILL.md')));
+    assert.ok(existsSync(join(dir, 'AGENTS.md')) && existsSync(join(dir, 'CLAUDE.md')));
+    assert.ok(r.stdout.includes('--skills-dir'), 'prints --skills-dir usage');
+    assert.ok(r.stdout.includes('extra_skill_dirs'), 'prints extra_skill_dirs registration');
+  });
+});

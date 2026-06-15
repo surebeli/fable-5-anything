@@ -9,6 +9,7 @@ import { install } from './install.js';
 import { doctorChecks } from './doctor.js';
 import { syncCharter } from './charter.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
+import { writeKimiSkill } from './skill.js';
 import { startMcpServer } from './mcp.js';
 import { VERSION } from './version.js';
 
@@ -85,6 +86,11 @@ Usage:
   fable codex setup --project <dir> [--apply]
     Seed the charter (AGENTS.md + CLAUDE.md + codex charter files) and print the
     codex mcp add command. With --apply, run codex mcp add to register the server.
+
+  fable kimi setup --project <dir>
+    Seed the charter (AGENTS.md + CLAUDE.md + kimi charter files), write the fable
+    skill to .fable/skills/fable/SKILL.md, and print --skills-dir / extra_skill_dirs
+    registration for Kimi.
 
   fable mcp-server  —  Start the fable MCP server (stdio) for codex mcp add / other MCP hosts.
 
@@ -315,6 +321,22 @@ function cmdCodex(opts, positional) {
   }
 }
 
+function cmdKimi(opts, positional) {
+  if (positional[0] !== 'setup') { console.error('Usage: fable kimi setup --project <dir>'); process.exit(1); }
+  const project = resolve(opts.project || '.');
+  const caps = loadCapabilities();
+  const set = new Set(['AGENTS.md', 'CLAUDE.md']);
+  for (const f of (caps.kimi ? caps.kimi.charterFiles : [])) set.add(f);
+  for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+  writeKimiSkill({ project });
+  console.log('  (skill)   .fable/skills/fable/SKILL.md');
+  const skillsDir = resolve(project, '.fable', 'skills');
+  console.log('\nUse the fable skill in Kimi:');
+  console.log(`  kimi --skills-dir "${skillsDir}" -p "<your task>"`);
+  console.log('Or register permanently in ~/.kimi-code/config.toml:');
+  console.log(`  extra_skill_dirs = ["${skillsDir}"]`);
+}
+
 export function main(argv) {
   const { command, opts, positional } = parseArgs(argv);
 
@@ -355,6 +377,9 @@ export function main(argv) {
       break;
     case 'codex':
       cmdCodex(opts, positional);
+      break;
+    case 'kimi':
+      cmdKimi(opts, positional);
       break;
     case 'mcp-server':
       startMcpServer();
