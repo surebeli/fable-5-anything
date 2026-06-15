@@ -320,6 +320,29 @@ function cmdCharter(opts, positional) {
   for (const w of written) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
 }
 
+function mcpLaunchParts(via) {
+  if (via === 'github') return ['npx', '-y', 'github:surebeli/fable-5-anything', 'mcp-server'];
+  return ['node', resolve(PKG_ROOT, 'bin', 'fable.js'), 'mcp-server']; // default: 'path'
+}
+
+function registerMcp(hostCli, opts) {
+  const via = opts.via || 'path';
+  if (!['path', 'github'].includes(via)) {
+    console.error(`Error: --via must be one of path|github (got "${via}")`);
+    process.exit(1);
+  }
+  const parts = mcpLaunchParts(via);
+  const addCmd = `${hostCli} mcp add fable -- ${parts.map(p => (p.includes(' ') ? `"${p}"` : p)).join(' ')}`;
+  if (opts.apply) {
+    const r = spawnSync(hostCli, ['mcp', 'add', 'fable', '--', ...parts], { encoding: 'utf-8', stdio: 'inherit' });
+    console.log(r.status === 0 ? `Registered fable MCP server with ${hostCli}.` : `${hostCli} mcp add failed; run manually:\n  ${addCmd}`);
+  } else {
+    console.log(`\nTo register the fable MCP server with ${hostCli}, run:`);
+    console.log('  ' + addCmd);
+    console.log('(or re-run with --apply; use --via github for zero-clone/no-publish deploys)');
+  }
+}
+
 function cmdCodex(opts, positional) {
   if (positional[0] !== 'setup') { console.error('Usage: fable codex setup --project <dir> [--apply]'); process.exit(1); }
   const project = resolve(opts.project || '.');
@@ -327,17 +350,7 @@ function cmdCodex(opts, positional) {
   const set = new Set(['AGENTS.md', 'CLAUDE.md']);
   for (const f of (caps.codex ? caps.codex.charterFiles : [])) set.add(f);
   for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
-  const entry = resolve(PKG_ROOT, 'bin', 'fable.js');
-  const addCmd = `codex mcp add fable -- node "${entry}" mcp-server`;
-  if (opts.apply) {
-    const r = spawnSync('codex', ['mcp', 'add', 'fable', '--', 'node', entry, 'mcp-server'], { encoding: 'utf-8', stdio: 'inherit' });
-    console.log(r.status === 0 ? 'Registered fable MCP server with Codex.' : 'codex mcp add failed; run manually:');
-    if (r.status !== 0) console.log(addCmd);
-  } else {
-    console.log('\nTo register the fable MCP server with Codex, run:');
-    console.log('  ' + addCmd);
-    console.log('(or re-run with --apply to do it now)');
-  }
+  registerMcp('codex', opts);
 }
 
 function cmdKimi(opts, positional) {
@@ -363,16 +376,7 @@ function cmdCopilot(opts, positional) {
   const set = new Set(['AGENTS.md', 'CLAUDE.md']);
   for (const f of (caps.copilot ? caps.copilot.charterFiles : [])) set.add(f);
   for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
-  const entry = resolve(PKG_ROOT, 'bin', 'fable.js');
-  const addCmd = `copilot mcp add fable -- node "${entry}" mcp-server`;
-  if (opts.apply) {
-    const r = spawnSync('copilot', ['mcp', 'add', 'fable', '--', 'node', entry, 'mcp-server'], { encoding: 'utf-8', stdio: 'inherit' });
-    console.log(r.status === 0 ? 'Registered fable MCP server with Copilot.' : `copilot mcp add failed; run manually:\n  ${addCmd}`);
-  } else {
-    console.log('\nTo register the fable MCP server with Copilot, run:');
-    console.log('  ' + addCmd);
-    console.log('(or re-run with --apply to do it now)');
-  }
+  registerMcp('copilot', opts);
 }
 
 function cmdGrok(opts, positional) {
@@ -382,16 +386,7 @@ function cmdGrok(opts, positional) {
   const set = new Set(['AGENTS.md', 'CLAUDE.md']);
   for (const f of (caps.grok ? caps.grok.charterFiles : [])) set.add(f);
   for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
-  const entry = resolve(PKG_ROOT, 'bin', 'fable.js');
-  const addCmd = `grok mcp add fable -- node "${entry}" mcp-server`;
-  if (opts.apply) {
-    const r = spawnSync('grok', ['mcp', 'add', 'fable', '--', 'node', entry, 'mcp-server'], { encoding: 'utf-8', stdio: 'inherit' });
-    console.log(r.status === 0 ? 'Registered fable MCP server with Grok.' : `grok mcp add failed; run manually:\n  ${addCmd}`);
-  } else {
-    console.log('\nTo register the fable MCP server with Grok, run:');
-    console.log('  ' + addCmd);
-    console.log('(or re-run with --apply to do it now)');
-  }
+  registerMcp('grok', opts);
 }
 
 export function main(argv) {

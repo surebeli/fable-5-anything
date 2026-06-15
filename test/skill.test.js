@@ -66,4 +66,12 @@ describe('fable grok setup command', () => {
     assert.ok(r.stdout.includes('grok mcp add fable'), 'prints grok mcp add');
     assert.ok(r.stdout.includes('mcp-server'));
   });
+
+  it('codex setup --via github prints a durable npx-github mcp registration', () => {
+    const dir = join(TMP, 'codex-github'); mkdirSync(dir, { recursive: true });
+    const r = spawnSync('node', [BIN, 'codex', 'setup', '--project', dir, '--via', 'github'], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(r.stdout.includes('codex mcp add fable -- npx -y github:surebeli/fable-5-anything mcp-server'), `got: ${r.stdout}`);
+    assert.ok(!r.stdout.includes('bin/fable.js') && !r.stdout.includes('bin\\fable.js'), 'github via should not reference a local path');
+  });
 });
