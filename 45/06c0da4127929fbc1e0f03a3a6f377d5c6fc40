@@ -1,0 +1,23 @@
+src/cli.js
+  s_865fae9e798144::t_d7a4f8b6546dd6 207-214,218
+  s_865fae9e798144::t_afbacbeab0e380 245
+test/cli.test.js
+  s_865fae9e798144::t_3f1b74b28af43e 56-73
+  s_865fae9e798144::t_93d2cec8d0f09f 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "4506c0da4127929fbc1e0f03a3a6f377d5c6fc40",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
