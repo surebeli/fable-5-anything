@@ -4,6 +4,7 @@ import { spawnSync } from 'node:child_process';
 import { resolveAdapterPath, resolveCorePath } from './config.js';
 import { buildCommand } from './opencode.js';
 import { smokePrompt } from './prompt.js';
+import { loadCapabilities } from './runtime.js';
 
 function checkOpenCodeInPath() {
   try {
@@ -105,19 +106,42 @@ export function doctorChecks({ projectDir, config }) {
     checks.push({ check: 'handoff', status: 'fail', detail: `${handoffPath} not found` });
   }
 
+  const runtime = config.runtime;
+  let caps = {};
   try {
-    const prompt = smokePrompt();
-    const { cmd } = buildCommand({ prompt, model: config.model });
-    checks.push({
-      check: 'opencode dry-run',
-      status: 'ok',
-      detail: `${cmd} run "<prompt>" --model ${config.model} --dangerously-skip-permissions --print-logs --format json --pure`
-    });
+    caps = loadCapabilities();
   } catch (e) {
-    checks.push({ check: 'opencode dry-run', status: 'fail', detail: e.message });
+    checks.push({ check: 'capabilities', status: 'fail', detail: `runtime-capabilities.json error: ${e.message}` });
+  }
+  const rt = caps[runtime];
+
+  if (!rt) {
+    checks.push({
+      check: 'runtime',
+      status: 'fail',
+      detail: `Unknown runtime "${runtime}". Known: ${Object.keys(caps).join(', ')}. Run: fable runtime --list`
+    });
+  } else if (runtime === 'opencode') {
+    try {
+      const prompt = smokePrompt();
+      const { cmd } = buildCommand({ prompt, model: config.model });
+      checks.push({
+        check: 'opencode dry-run',
+        status: 'ok',
+        detail: `${cmd} run "<prompt>" --model ${config.model} --dangerously-skip-permissions --print-logs --format json --pure`
+      });
+    } catch (e) {
+      checks.push({ check: 'opencode dry-run', status: 'fail', detail: e.message });
+    }
+    checks.push(checkOpenCodeInPath());
+  } else {
+    checks.push({
+      check: 'runtime',
+      status: 'warn',
+      detail: `runtime "${runtime}" is ${rt.status} (${rt.hostSystemPolicy}/${rt.injectionMode}); fable overlays governance, host system prompt is authoritative. No executor in this milestone.`
+    });
   }
 
-  checks.push(checkOpenCodeInPath());
   checks.push(checkFableAgentsSection(project));
   checks.push(checkGitignoreRuns(project));
   checks.push(checkLocalShim(project));

@@ -127,10 +127,10 @@ function cmdDoctor(opts) {
   let allOk = true;
 
   for (const c of checks) {
-    const icon = c.status === 'ok' ? '  PASS' : '  FAIL';
+    const icon = c.status === 'ok' ? '  PASS' : c.status === 'warn' ? '  WARN' : '  FAIL';
     const label = (c.check + ':').padEnd(24);
     console.log(`${icon}  ${label} ${c.detail}`);
-    if (c.status !== 'ok') allOk = false;
+    if (c.status === 'fail') allOk = false;
   }
 
   if (allOk) {

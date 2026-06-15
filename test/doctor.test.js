@@ -141,4 +141,38 @@ describe('doctor', () => {
     const shimCheck = checks.find(c => c.check === 'local shim');
     assert.strictEqual(shimCheck.status, 'fail');
   });
+
+  it('non-opencode runtime: includes a runtime warn check, excludes opencode-specific checks', () => {
+    const dir = join(TMP, 'kimi-project');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'kimi', model: 'kimi-latest' });
+    const config = defaultConfig('kimi', 'kimi-latest');
+    const checks = doctorChecks({ projectDir: dir, config });
+    const names = checks.map(c => c.check);
+    assert.ok(names.includes('runtime'), 'should include a runtime check');
+    assert.ok(!names.includes('opencode dry-run'), 'should NOT include opencode dry-run');
+    assert.ok(!names.includes('opencode path'), 'should NOT include opencode path');
+    const rt = checks.find(c => c.check === 'runtime');
+    assert.strictEqual(rt.status, 'warn');
+    assert.ok(/overlay/.test(rt.detail));
+  });
+
+  it('unknown runtime: runtime check fails with actionable detail', () => {
+    const dir = join(TMP, 'bogus-project');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'm' });
+    const config = { runtime: 'bogus', model: 'm', adapter: 'adapters/opencode.md', fableVersion: '0.1.0' };
+    const checks = doctorChecks({ projectDir: dir, config });
+    const rt = checks.find(c => c.check === 'runtime');
+    assert.ok(rt, 'should include a runtime check');
+    assert.strictEqual(rt.status, 'fail');
+    assert.ok(/fable runtime --list/.test(rt.detail));
+  });
+
+  it('opencode runtime still returns exactly 9 checks (unchanged)', () => {
+    const config = defaultConfig('opencode', 'tokenbox/deepseek-v4-pro');
+    const checks = doctorChecks({ projectDir: TMP, config });
+    assert.strictEqual(checks.length, 9);
+    assert.ok(!checks.map(c => c.check).includes('runtime'));
+  });
 });
