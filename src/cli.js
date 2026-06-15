@@ -8,6 +8,7 @@ import { install } from './install.js';
 import { doctorChecks } from './doctor.js';
 import { syncCharter } from './charter.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
+import { startMcpServer } from './mcp.js';
 import { VERSION } from './version.js';
 
 function parseArgs(argv) {
@@ -79,6 +80,8 @@ Usage:
   fable charter sync --project <dir> [--runtime <name>] [--all]
     Seed/refresh portable charter files (AGENTS.md + CLAUDE.md by default, plus
     the runtime's extra charter files) with the idempotent fable block.
+
+  fable mcp-server  —  Start the fable MCP server (stdio) for codex mcp add / other MCP hosts.
 
   fable --version
     Print the fable version.
@@ -324,6 +327,9 @@ export function main(argv) {
       break;
     case 'charter':
       cmdCharter(opts, positional);
+      break;
+    case 'mcp-server':
+      startMcpServer();
       break;
     default:
       console.error(`Unknown command: ${command}`);
