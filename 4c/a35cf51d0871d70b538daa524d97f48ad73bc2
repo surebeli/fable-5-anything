@@ -1,0 +1,24 @@
+src/cli.js
+  s_865fae9e798144::t_90b3a147c9b436 100-103
+  s_865fae9e798144::t_70c3605d854c41 434-436
+adapters/grok.md
+  s_865fae9e798144::t_4d1038eebcfb4f 20-23,25-30,32-33
+test/skill.test.js
+  s_865fae9e798144::t_a3412df85e494b 59-69
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "4ca35cf51d0871d70b538daa524d97f48ad73bc2",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
