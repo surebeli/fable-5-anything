@@ -1,0 +1,22 @@
+test/install.test.js
+  s_865fae9e798144::t_1f6e4b5d51bd6d 267-275
+src/install.js
+  s_865fae9e798144::t_a6a6f626df089c 1
+  s_865fae9e798144::t_da710ecd9c95df 85-88
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "6ae9e71289db2043113203fc86b5ef9a7d4c9f78",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
