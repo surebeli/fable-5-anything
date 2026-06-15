@@ -1,11 +1,41 @@
 {
   "name": "fable-5-anything",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Portable prompt governance CLI for non-Claude agent runtimes",
   "type": "module",
   "bin": {
     "fable": "./bin/fable.js"
   },
+  "files": [
+    "bin/",
+    "src/",
+    "adapters/",
+    "prompts/",
+    "dispatch/",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/surebeli/fable-5-anything.git"
+  },
+  "bugs": {
+    "url": "https://github.com/surebeli/fable-5-anything/issues"
+  },
+  "homepage": "https://github.com/surebeli/fable-5-anything#readme",
+  "keywords": [
+    "prompt",
+    "governance",
+    "agent",
+    "opencode",
+    "codex",
+    "kimi",
+    "copilot",
+    "cli",
+    "overlay"
+  ],
   "scripts": {
     "test": "node --test --test-concurrency=1 test/*.test.js"
   },
