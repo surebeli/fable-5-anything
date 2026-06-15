@@ -1,0 +1,19 @@
+docs/superpowers/plans/2026-06-15-fable-m6-codex-integration.md
+  s_865fae9e798144::t_81e4dd3441b189 1-544
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "56085a729787013ec0bf2e9609f5a9afacaefc5f",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
