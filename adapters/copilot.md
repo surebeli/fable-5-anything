@@ -1,8 +1,9 @@
 # Copilot Adapter
 
 Use this adapter for GitHub Copilot CLI sessions and Copilot custom-agent
-dispatches. Status: design/overlay. There is no fable executor for Copilot in
-this milestone.
+dispatches. Status: implemented (MCP + charter, verified against Copilot CLI
+1.0.54). fable layers governance as an overlay; the host Copilot system and tool
+rules stay authoritative.
 
 ## Injection Model
 

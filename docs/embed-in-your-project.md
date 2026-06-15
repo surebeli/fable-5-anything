@@ -86,8 +86,9 @@ Or from within your project using the shim:
 .fable\bin\fable.cmd doctor
 ```
 
-This checks 9 items: config, adapter, core, handoff, opencode command shape,
-opencode in PATH, AGENTS.md fable section, .gitignore runs entry, and local shim.
+For an opencode project, doctor runs 9 checks: config, adapter, core, handoff,
+opencode command shape, opencode in PATH, AGENTS.md fable section, .gitignore
+runs entry, and local shim; other runtimes show a runtime overlay status instead.
 No real model calls.
 
 All checks should pass with exit code 0.
@@ -101,10 +102,12 @@ node bin/fable.js runtime --list
 node bin/fable.js runtime opencode
 ```
 
-For opencode this reports `implemented` + `overlay` + `prompt-prelude`; codex is
-also implemented (charter + MCP). For Kimi/Copilot it reports `planned` (adapter/design status); fable overlays
-governance and never replaces the host system prompt. `doctor` mirrors this:
-non-opencode runtimes show a runtime overlay warning instead of opencode checks.
+For opencode this reports `implemented` + `overlay` + `prompt-prelude`. The other
+adapted runtimes are implemented too: codex, copilot, and grok via charter + MCP,
+and kimi via a fable skill (`--skills-dir`); opencode runs via the executor. In
+every case fable overlays governance and never replaces the host system prompt.
+`doctor` mirrors this: non-opencode runtimes show a runtime overlay warning
+instead of opencode checks.
 
 ## 4. Build a prompt
 

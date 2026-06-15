@@ -1,6 +1,9 @@
 # Kimi Adapter
 
-Use this adapter for Kimi CLI or hopper Kimi dispatches.
+Use this adapter for Kimi CLI or hopper Kimi dispatches. Status: implemented
+(fable skill via `--skills-dir` + charter, verified against kimi-code 0.14.2).
+fable layers governance as an overlay; the host Kimi system and tool rules stay
+authoritative.
 
 ## CLI Contract
 
