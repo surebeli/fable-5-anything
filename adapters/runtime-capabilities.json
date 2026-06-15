@@ -27,13 +27,13 @@
     "notes": "Verified against codex-cli 0.131.0: charter (AGENTS.md) loads fable governance every session, and the fable MCP server (codex mcp add fable) exposes read-only fable_runtime/fable_build_prompt/fable_doctor tools in-session. Host Codex system and tool policy remain authoritative; fable overlays governance."
   },
   "kimi": {
-    "status": "planned",
-    "injectionMode": "skill-or-prompt-prelude",
+    "status": "implemented",
+    "injectionMode": "skill",
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/kimi.md",
-    "commandSupport": [],
+    "commandSupport": ["kimi-setup", "charter"],
     "charterFiles": ["AGENTS.md"],
-    "notes": "Design only in this milestone. Overlay via --skills-dir or prompt prelude; host system prompt remains authoritative."
+    "notes": "Verified against kimi-code 0.14.2: the fable skill (.fable/skills/fable/SKILL.md, loaded via --skills-dir or extra_skill_dirs) carries portable core + kimi adapter governance and is auto-merged each session. Host Kimi system prompt remains authoritative; fable overlays governance."
   },
   "grok": {
     "status": "planned",
@@ -45,13 +45,13 @@
     "notes": "Advisory/review-oriented adapter. Design only; overlay via prompt prelude; no executor in this milestone."
   },
   "copilot": {
-    "status": "planned",
-    "injectionMode": "custom-instructions-or-plugin",
+    "status": "implemented",
+    "injectionMode": "mcp-and-charter",
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/copilot.md",
-    "commandSupport": [],
+    "commandSupport": ["copilot-setup", "mcp-server", "charter"],
     "charterFiles": [".github/copilot-instructions.md", "AGENTS.md"],
-    "notes": "Design only in this milestone. Overlay via AGENTS/custom instructions / --agent / --plugin-dir; host system prompt remains authoritative."
+    "notes": "Verified against GitHub Copilot CLI 1.0.54: the host-agnostic fable MCP server (copilot mcp add fable) exposes read-only fable_runtime/fable_build_prompt/fable_doctor in-session, plus charter via .github/copilot-instructions.md + AGENTS.md. Host Copilot system and tool policy remain authoritative; fable overlays governance."
   },
   "agy": {
     "status": "opaque",

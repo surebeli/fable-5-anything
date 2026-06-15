@@ -82,6 +82,20 @@ describe('runtime capabilities metadata', () => {
     assert.ok(r.commandSupport.includes('mcp-server'));
   });
 
+  it('kimi is implemented via the skill path (verified against real Kimi)', () => {
+    const r = getRuntime('kimi');
+    assert.strictEqual(r.status, 'implemented');
+    assert.strictEqual(r.injectionMode, 'skill');
+    assert.ok(r.commandSupport.includes('kimi-setup'));
+  });
+
+  it('copilot is implemented via the MCP + charter path (verified against real Copilot)', () => {
+    const r = getRuntime('copilot');
+    assert.strictEqual(r.status, 'implemented');
+    assert.strictEqual(r.injectionMode, 'mcp-and-charter');
+    assert.ok(r.commandSupport.includes('mcp-server'));
+  });
+
   it('adapterForRuntime maps known runtimes to their adapter files (or null)', () => {
     assert.strictEqual(adapterForRuntime('opencode'), 'adapters/opencode.md');
     assert.strictEqual(adapterForRuntime('kimi'), 'adapters/kimi.md');

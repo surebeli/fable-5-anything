@@ -79,21 +79,20 @@ host-agnostic — Codex and Copilot register and share the very same server
 | claude | reference-only | system-prompt-file | system-replace-when-user-owned | (none) |
 | opencode | implemented | prompt-prelude | overlay | adapters/opencode.md |
 | codex | implemented | agents-md-and-mcp | overlay | adapters/codex.md (charterFiles: AGENTS.md; charter + MCP, verified vs codex 0.131.0) |
-| kimi | planned | skill (--skills-dir) | overlay | adapters/kimi.md (charterFiles: AGENTS.md; skill + charter; status flips in Phase 2) |
+| kimi | implemented | skill | overlay | adapters/kimi.md (charterFiles: AGENTS.md; fable skill via --skills-dir + charter, verified vs kimi 0.14.2) |
 | grok | planned | prompt-prelude | overlay | adapters/grok.md |
-| copilot | planned | mcp (copilot mcp add) + charter | overlay | adapters/copilot.md (charterFiles: .github/copilot-instructions.md, AGENTS.md; reuses the host-agnostic fable MCP server; status flips in Phase 2) |
+| copilot | implemented | mcp-and-charter | overlay | adapters/copilot.md (charterFiles: .github/copilot-instructions.md, AGENTS.md; reuses the host-agnostic fable MCP server, verified vs copilot 1.0.54) |
 | agy (generic opaque host) | opaque | custom-instructions-or-wrapper | overlay | adapters/generic.md |
 
 ## Executable today vs planned
 
-- **Executable today:** opencode (`fable build-prompt`, `fable smoke`, `fable run`,
-  opencode-specific `fable doctor`) and **codex** (charter via AGENTS.md + the
-  `fable mcp-server` registered with `codex mcp add`, verified end-to-end against
-  codex-cli 0.131.0).
-- **Planned / design-only:** kimi, grok, copilot. Their adapters and capability
-  metadata exist and are introspectable, but fable ships no executor for them in
-  this milestone, and `doctor` reports them as overlay/planned rather than running
-  host-specific checks.
+- **Executable today:** opencode (`fable build-prompt`/`smoke`/`run`/`doctor`),
+  **codex** (charter + `fable mcp-server` via `codex mcp add`, verified vs
+  codex-cli 0.131.0), **kimi** (fable skill via `--skills-dir`, verified vs
+  kimi-code 0.14.2), and **copilot** (host-agnostic fable MCP server via
+  `copilot mcp add` + charter, verified vs Copilot CLI 1.0.54).
+- **Planned / design-only:** grok. Its adapter and capability metadata exist and
+  are introspectable, but fable ships no executor for it in this milestone.
 - **Opaque:** agy and similar hosts default to overlay-only; never assume system
   replacement until a specific host is proven user-owned and safe.
 
