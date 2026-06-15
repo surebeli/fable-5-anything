@@ -1,0 +1,36 @@
+scripts/install.sh
+  s_865fae9e798144::t_f091cb7be5633c 8
+docs/embed-in-your-project.md
+  s_865fae9e798144::t_45bf24ec889841 42,45-49
+docs/deploy-from-source.md
+  s_865fae9e798144::t_a03b17941db57b 1-76
+README.md
+  s_865fae9e798144::t_55c27e94990797 12-13,15,21-26
+test/install.test.js
+  s_865fae9e798144::t_9049a1c82c5849 247-258
+scripts/install.ps1
+  s_865fae9e798144::t_a04badc3a30d0d 3-4,9
+src/cli.js
+  s_865fae9e798144::t_6b15cd7c442152 143-144
+src/install.js
+  s_865fae9e798144::t_d598cf9b41571e 68
+  s_865fae9e798144::t_a4a8b96cfb33a0 94
+docs/handoffs/FABLE-SOURCE-DEPLOY-result.md
+  s_865fae9e798144::t_e73f892743b994 1-29
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "e4b3c298d1063d82104d3eb129aa6ff5d482cf32",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
