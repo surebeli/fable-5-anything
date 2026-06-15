@@ -1,6 +1,7 @@
 import { resolve, isAbsolute } from 'node:path';
 import { writeFileSync } from 'node:fs';
-import { defaultConfig, readConfigFile, writeConfig } from './config.js';
+import { spawnSync } from 'node:child_process';
+import { defaultConfig, readConfigFile, writeConfig, PKG_ROOT } from './config.js';
 import { readHandoff, validate } from './handoff.js';
 import { assemble, smokePrompt } from './prompt.js';
 import { buildCommand, runOpenCode } from './opencode.js';
@@ -80,6 +81,10 @@ Usage:
   fable charter sync --project <dir> [--runtime <name>] [--all]
     Seed/refresh portable charter files (AGENTS.md + CLAUDE.md by default, plus
     the runtime's extra charter files) with the idempotent fable block.
+
+  fable codex setup --project <dir> [--apply]
+    Seed the charter (AGENTS.md + CLAUDE.md + codex charter files) and print the
+    codex mcp add command. With --apply, run codex mcp add to register the server.
 
   fable mcp-server  —  Start the fable MCP server (stdio) for codex mcp add / other MCP hosts.
 
@@ -290,6 +295,26 @@ function cmdCharter(opts, positional) {
   for (const w of written) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
 }
 
+function cmdCodex(opts, positional) {
+  if (positional[0] !== 'setup') { console.error('Usage: fable codex setup --project <dir> [--apply]'); process.exit(1); }
+  const project = resolve(opts.project || '.');
+  const caps = loadCapabilities();
+  const set = new Set(['AGENTS.md', 'CLAUDE.md']);
+  for (const f of (caps.codex ? caps.codex.charterFiles : [])) set.add(f);
+  for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+  const entry = resolve(PKG_ROOT, 'bin', 'fable.js');
+  const addCmd = `codex mcp add fable -- node "${entry}" mcp-server`;
+  if (opts.apply) {
+    const r = spawnSync('codex', ['mcp', 'add', 'fable', '--', 'node', entry, 'mcp-server'], { encoding: 'utf-8', stdio: 'inherit' });
+    console.log(r.status === 0 ? 'Registered fable MCP server with Codex.' : 'codex mcp add failed; run manually:');
+    if (r.status !== 0) console.log(addCmd);
+  } else {
+    console.log('\nTo register the fable MCP server with Codex, run:');
+    console.log('  ' + addCmd);
+    console.log('(or re-run with --apply to do it now)');
+  }
+}
+
 export function main(argv) {
   const { command, opts, positional } = parseArgs(argv);
 
@@ -327,6 +352,9 @@ export function main(argv) {
       break;
     case 'charter':
       cmdCharter(opts, positional);
+      break;
+    case 'codex':
+      cmdCodex(opts, positional);
       break;
     case 'mcp-server':
       startMcpServer();

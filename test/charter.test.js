@@ -53,3 +53,14 @@ describe('fable charter sync command', () => {
     assert.ok(existsSync(join(dir, '.github', 'copilot-instructions.md')));
   });
 });
+
+describe('fable codex setup command', () => {
+  it('seeds charter and prints the codex mcp add command (no --apply = dry)', () => {
+    const dir = join(TMP, 'codex-setup'); mkdirSync(dir, { recursive: true });
+    const r = spawnSync('node', [BIN, 'codex', 'setup', '--project', dir], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(existsSync(join(dir, 'AGENTS.md')) && existsSync(join(dir, 'CLAUDE.md')));
+    assert.ok(r.stdout.includes('codex mcp add fable'), 'should print the codex mcp add command');
+    assert.ok(r.stdout.includes('mcp-server'));
+  });
+});
