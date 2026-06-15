@@ -6,7 +6,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
-const TMP = resolve(__dirname, '..', '.tmp-test-cli');
+const TMP = resolve(__dirname, '..', `.tmp-test-cli-${process.pid}`);
 const BIN = resolve(__dirname, '..', 'bin', 'fable.js');
 
 function fable(args) {

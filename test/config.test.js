@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { defaultConfig, readConfigFile, writeConfig, PKG_ROOT } from '../src/config.js';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
-const TMP = resolve(__dirname, '..', '.tmp-test-config');
+const TMP = resolve(__dirname, '..', `.tmp-test-config-${process.pid}`);
 
 describe('config', () => {
   before(() => {

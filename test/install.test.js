@@ -7,7 +7,7 @@ import { execSync } from 'node:child_process';
 import { install } from '../src/install.js';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
-const TMP = resolve(__dirname, '..', '.tmp-test-install');
+const TMP = resolve(__dirname, '..', `.tmp-test-install-${process.pid}`);
 
 describe('install', () => {
   before(() => {

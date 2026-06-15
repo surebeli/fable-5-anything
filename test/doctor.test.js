@@ -8,7 +8,7 @@ import { doctorChecks } from '../src/doctor.js';
 import { defaultConfig } from '../src/config.js';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
-const TMP = resolve(__dirname, '..', '.tmp-test-doctor');
+const TMP = resolve(__dirname, '..', `.tmp-test-doctor-${process.pid}`);
 
 describe('doctor', () => {
   before(() => {
