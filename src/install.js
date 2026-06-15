@@ -1,4 +1,4 @@
-import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, existsSync, chmodSync } from 'node:fs';
 import { join, resolve, sep } from 'node:path';
 import { defaultConfig, PKG_ROOT } from './config.js';
 import { VERSION } from './version.js';
@@ -82,8 +82,10 @@ function createShims(shimDir, project, fableRepo, link) {
   const ps1Content = `${nativeInv} @args "--project" "${project}"\r\n`;
   writeFileSync(join(shimDir, 'fable.ps1'), ps1Content);
 
-  const shContent = `#!/usr/bin/env sh\r\n${posixInv} "$@" --project "${project}"\r\n`;
-  writeFileSync(join(shimDir, 'fable'), shContent);
+  const shContent = `#!/usr/bin/env sh\n${posixInv} "$@" --project "${project}"\n`;
+  const posixShim = join(shimDir, 'fable');
+  writeFileSync(posixShim, shContent);
+  try { chmodSync(posixShim, 0o755); } catch { /* chmod is a no-op on Windows */ }
 }
 
 // Entry recorded in the portable, version-controlled fable.lock.json — always

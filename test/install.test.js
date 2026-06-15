@@ -264,4 +264,13 @@ describe('install', () => {
     assert.ok(ps1.includes('fable @args'), 'ps1 global shim should call fable directly');
     assert.ok(!ps1.includes('node '), 'global shim should not invoke node directly');
   });
+
+  it('POSIX fable shim uses LF (no CRLF) so it runs on real POSIX', () => {
+    const dir = join(TMP, 'posix-shim');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'tokenbox/deepseek-v4-pro' });
+    const sh = readFileSync(join(dir, '.fable', 'bin', 'fable'), 'utf-8');
+    assert.ok(sh.startsWith('#!/usr/bin/env sh\n'), 'shebang line must end with LF');
+    assert.ok(!sh.includes('\r'), 'POSIX shim must not contain CR');
+  });
 });
