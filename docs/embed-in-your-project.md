@@ -78,6 +78,20 @@ No real model calls.
 
 All checks should pass with exit code 0.
 
+## 3b. Inspect the runtime
+
+See how fable will inject into your configured runtime:
+
+```bash
+node bin/fable.js runtime --list
+node bin/fable.js runtime opencode
+```
+
+For opencode this reports `implemented` + `overlay` + `prompt-prelude`. For
+Kimi/Codex/Copilot it reports `planned` (adapter/design status); fable overlays
+governance and never replaces the host system prompt. `doctor` mirrors this:
+non-opencode runtimes show a runtime overlay warning instead of opencode checks.
+
 ## 4. Build a prompt
 
 Assemble a dispatch prompt from the portable core, opencode adapter, and your handoff:

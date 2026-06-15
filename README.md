@@ -54,6 +54,7 @@ npm test
 | `fable build-prompt --handoff <path>` | Assemble dispatch prompt |
 | `fable smoke [--execute]` | PONG smoke check (dry-run by default) |
 | `fable run <handoff> [--dry-run]` | Execute opencode run |
+| `fable runtime [<name>]` | Show how fable injects into a runtime (status, injection mode, overlay vs system replacement). No args lists all. |
 
 All commands support `--project <dir>` for project-scoped use and `--config <path>` for explicit config.
 
@@ -72,6 +73,29 @@ Use a shared behavior core plus thin runtime adapters.
 
 The core owns principles. Adapters own mechanics. If an adapter conflicts with
 the core, the core wins.
+
+## Runtimes
+
+fable does not replace most vendor system prompts. Claude Code is special: a user
+can replace the system prompt with `--system-prompt-file`. For opencode, Kimi,
+Codex, Copilot, and opaque hosts, fable **overlays** project governance on top of
+the host's authoritative system prompt — it never tells the model to ignore host
+rules.
+
+- opencode is implemented end-to-end (build-prompt, smoke, run, doctor).
+- codex, kimi, grok, copilot are adapter/design status (introspectable, no
+  executor yet).
+- agy and other opaque hosts default to overlay-only.
+
+Inspect any runtime:
+
+```bash
+node bin/fable.js runtime --list
+node bin/fable.js runtime opencode
+```
+
+See [docs/runtime-overlay-model.md](docs/runtime-overlay-model.md) for the full
+model and the authority stack.
 
 ## Repository Status
 
