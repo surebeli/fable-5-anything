@@ -1,0 +1,35 @@
+test/skill.test.js
+  s_865fae9e798144::t_0904deed76803c 3
+  s_865fae9e798144::t_eae97bb1c22153 78-100
+README.md
+  s_865fae9e798144::t_9c63cdc77499b4 105
+src/cli.js
+  s_865fae9e798144::t_b3fadb2236c65a 461-463
+  s_865fae9e798144::t_9fbdde633995c7 105-109
+  s_865fae9e798144::t_c697f92a1b2bd6 8
+src/install.js
+  s_865fae9e798144::t_060dfb706975bc 1
+  s_865fae9e798144::t_2e1d112ec1b31c 147-176
+docs/opencode-integration.md
+  s_865fae9e798144::t_4bd3868004c5eb 1-42
+docs/embed-in-your-project.md
+  s_865fae9e798144::t_76e61a9c12fe13 166,170-172
+adapters/runtime-capabilities.json
+  s_865fae9e798144::t_c59522854b832f 16,18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "13a8cadb60f3ff637fa2242a2923018eb663b0c6",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
