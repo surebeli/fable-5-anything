@@ -7,6 +7,7 @@ import { buildCommand, runOpenCode } from './opencode.js';
 import { install } from './install.js';
 import { doctorChecks } from './doctor.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
+import { VERSION } from './version.js';
 
 function parseArgs(argv) {
   if (argv.length === 0) return { command: 'help' };
@@ -73,6 +74,9 @@ Usage:
   fable runtime [<name>] [--list]
     Show how fable injects into a runtime (status, injection mode, whether it
     overlays or replaces the host system prompt). No args lists all runtimes.
+
+  fable --version
+    Print the fable version.
 
   fable --help
     Show this help.
@@ -258,6 +262,11 @@ export function main(argv) {
 
   if (opts.help || command === 'help' || command === '--help') {
     showHelp();
+    return;
+  }
+
+  if (opts.version || command === 'version' || command === '--version') {
+    console.log(VERSION);
     return;
   }
 

@@ -30,3 +30,23 @@ describe('version', () => {
     assert.strictEqual(pkg.bin.fable, './bin/fable.js', 'bin entry preserved');
   });
 });
+
+import { spawnSync } from 'node:child_process';
+const BIN = resolve(ROOT, 'bin', 'fable.js');
+function fable(args) {
+  return spawnSync('node', [BIN, ...args], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+}
+
+describe('fable --version command', () => {
+  it('--version prints the version and exits 0', () => {
+    const r = fable(['--version']);
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(r.stdout.includes(VERSION), `stdout should include ${VERSION}, got: ${r.stdout}`);
+  });
+
+  it('version subcommand prints the version and exits 0', () => {
+    const r = fable(['version']);
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(r.stdout.includes(VERSION));
+  });
+});
