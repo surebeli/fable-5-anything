@@ -92,6 +92,11 @@ Usage:
     skill to .fable/skills/fable/SKILL.md, and print --skills-dir / extra_skill_dirs
     registration for Kimi.
 
+  fable copilot setup --project <dir> [--apply]
+    Seed the charter (AGENTS.md + CLAUDE.md + .github/copilot-instructions.md) and
+    print the copilot mcp add command (reusing the fable MCP server). With --apply,
+    run copilot mcp add to register the server.
+
   fable mcp-server  —  Start the fable MCP server (stdio) for codex mcp add / other MCP hosts.
 
   fable --version
@@ -337,6 +342,25 @@ function cmdKimi(opts, positional) {
   console.log(`  extra_skill_dirs = ["${skillsDir}"]`);
 }
 
+function cmdCopilot(opts, positional) {
+  if (positional[0] !== 'setup') { console.error('Usage: fable copilot setup --project <dir> [--apply]'); process.exit(1); }
+  const project = resolve(opts.project || '.');
+  const caps = loadCapabilities();
+  const set = new Set(['AGENTS.md', 'CLAUDE.md']);
+  for (const f of (caps.copilot ? caps.copilot.charterFiles : [])) set.add(f);
+  for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+  const entry = resolve(PKG_ROOT, 'bin', 'fable.js');
+  const addCmd = `copilot mcp add fable -- node "${entry}" mcp-server`;
+  if (opts.apply) {
+    const r = spawnSync('copilot', ['mcp', 'add', 'fable', '--', 'node', entry, 'mcp-server'], { encoding: 'utf-8', stdio: 'inherit' });
+    console.log(r.status === 0 ? 'Registered fable MCP server with Copilot.' : `copilot mcp add failed; run manually:\n  ${addCmd}`);
+  } else {
+    console.log('\nTo register the fable MCP server with Copilot, run:');
+    console.log('  ' + addCmd);
+    console.log('(or re-run with --apply to do it now)');
+  }
+}
+
 export function main(argv) {
   const { command, opts, positional } = parseArgs(argv);
 
@@ -380,6 +404,9 @@ export function main(argv) {
       break;
     case 'kimi':
       cmdKimi(opts, positional);
+      break;
+    case 'copilot':
+      cmdCopilot(opts, positional);
       break;
     case 'mcp-server':
       startMcpServer();

@@ -44,3 +44,15 @@ describe('fable kimi setup command', () => {
     assert.ok(r.stdout.includes('extra_skill_dirs'), 'prints extra_skill_dirs registration');
   });
 });
+
+describe('fable copilot setup command', () => {
+  it('writes charter incl .github/copilot-instructions.md and prints copilot mcp add (dry)', () => {
+    const dir = join(TMP, 'copilot'); mkdirSync(dir, { recursive: true });
+    const r = spawnSync('node', [BIN, 'copilot', 'setup', '--project', dir], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(existsSync(join(dir, '.github', 'copilot-instructions.md')));
+    assert.ok(existsSync(join(dir, 'AGENTS.md')) && existsSync(join(dir, 'CLAUDE.md')));
+    assert.ok(r.stdout.includes('copilot mcp add fable'), 'prints copilot mcp add');
+    assert.ok(r.stdout.includes('mcp-server'));
+  });
+});
