@@ -76,7 +76,7 @@ the overlay path; see `docs/codex-integration.md`.
 |---|---|---|---|---|
 | claude | reference-only | system-prompt-file | system-replace-when-user-owned | (none) |
 | opencode | implemented | prompt-prelude | overlay | adapters/opencode.md |
-| codex | planned | agents-md-or-plugin | overlay | adapters/codex.md (charterFiles: AGENTS.md; charter + MCP path) |
+| codex | implemented | agents-md-and-mcp | overlay | adapters/codex.md (charterFiles: AGENTS.md; charter + MCP, verified vs codex 0.131.0) |
 | kimi | planned | skill-or-prompt-prelude | overlay | adapters/kimi.md |
 | grok | planned | prompt-prelude | overlay | adapters/grok.md |
 | copilot | planned | custom-instructions-or-plugin | overlay | adapters/copilot.md |
@@ -84,13 +84,14 @@ the overlay path; see `docs/codex-integration.md`.
 
 ## Executable today vs planned
 
-- **Executable today:** opencode only. `fable build-prompt`, `fable smoke`,
-  `fable run`, and the opencode-specific `fable doctor` checks operate against a
-  configured opencode runtime.
-- **Planned / design-only:** codex, kimi, grok, copilot. Their adapters and
-  capability metadata exist and are introspectable, but fable ships no executor
-  for them in this milestone, and `doctor` reports them as overlay/planned rather
-  than running host-specific checks.
+- **Executable today:** opencode (`fable build-prompt`, `fable smoke`, `fable run`,
+  opencode-specific `fable doctor`) and **codex** (charter via AGENTS.md + the
+  `fable mcp-server` registered with `codex mcp add`, verified end-to-end against
+  codex-cli 0.131.0).
+- **Planned / design-only:** kimi, grok, copilot. Their adapters and capability
+  metadata exist and are introspectable, but fable ships no executor for them in
+  this milestone, and `doctor` reports them as overlay/planned rather than running
+  host-specific checks.
 - **Opaque:** agy and similar hosts default to overlay-only; never assume system
   replacement until a specific host is proven user-owned and safe.
 

@@ -18,13 +18,13 @@
     "notes": "Assembled prompt is passed to opencode run. The host opencode system prompt remains authoritative; fable overlays governance."
   },
   "codex": {
-    "status": "planned",
-    "injectionMode": "agents-md-or-plugin",
+    "status": "implemented",
+    "injectionMode": "agents-md-and-mcp",
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/codex.md",
-    "commandSupport": [],
+    "commandSupport": ["charter", "mcp-server", "codex-setup"],
     "charterFiles": ["AGENTS.md"],
-    "notes": "Design only in this milestone. Overlay via AGENTS.md / plugin / profile; host Codex system and tool policy remain authoritative."
+    "notes": "Verified against codex-cli 0.131.0: charter (AGENTS.md) loads fable governance every session, and the fable MCP server (codex mcp add fable) exposes read-only fable_runtime/fable_build_prompt/fable_doctor tools in-session. Host Codex system and tool policy remain authoritative; fable overlays governance."
   },
   "kimi": {
     "status": "planned",

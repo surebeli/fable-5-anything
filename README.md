@@ -101,8 +101,8 @@ the host's authoritative system prompt — it never tells the model to ignore ho
 rules.
 
 - opencode is implemented end-to-end (build-prompt, smoke, run, doctor).
-- codex, kimi, grok, copilot are adapter/design status (introspectable, no
-  executor yet).
+- codex is implemented via charter (AGENTS.md) + an MCP server (`codex mcp add`); see [docs/codex-integration.md](docs/codex-integration.md).
+- kimi, grok, copilot are adapter/design status (introspectable, no executor yet).
 - agy and other opaque hosts default to overlay-only.
 
 Inspect any runtime:

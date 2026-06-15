@@ -75,6 +75,13 @@ describe('runtime capabilities metadata', () => {
     assert.strictEqual(r.hostSystemPolicy, 'system-replace-when-user-owned');
   });
 
+  it('codex is implemented via the charter + MCP path (verified against real Codex)', () => {
+    const r = getRuntime('codex');
+    assert.strictEqual(r.status, 'implemented');
+    assert.strictEqual(r.injectionMode, 'agents-md-and-mcp');
+    assert.ok(r.commandSupport.includes('mcp-server'));
+  });
+
   it('adapterForRuntime maps known runtimes to their adapter files (or null)', () => {
     assert.strictEqual(adapterForRuntime('opencode'), 'adapters/opencode.md');
     assert.strictEqual(adapterForRuntime('kimi'), 'adapters/kimi.md');

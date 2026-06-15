@@ -98,8 +98,8 @@ node bin/fable.js runtime --list
 node bin/fable.js runtime opencode
 ```
 
-For opencode this reports `implemented` + `overlay` + `prompt-prelude`. For
-Kimi/Codex/Copilot it reports `planned` (adapter/design status); fable overlays
+For opencode this reports `implemented` + `overlay` + `prompt-prelude`; codex is
+also implemented (charter + MCP). For Kimi/Copilot it reports `planned` (adapter/design status); fable overlays
 governance and never replaces the host system prompt. `doctor` mirrors this:
 non-opencode runtimes show a runtime overlay warning instead of opencode checks.
 
