@@ -4,6 +4,7 @@ import { mkdirSync, rmSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defaultConfig, readConfigFile, writeConfig, PKG_ROOT } from '../src/config.js';
+import { VERSION } from '../src/version.js';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
 const TMP = resolve(__dirname, '..', `.tmp-test-config-${process.pid}`);
@@ -22,7 +23,7 @@ describe('config', () => {
     assert.strictEqual(cfg.runtime, 'opencode');
     assert.strictEqual(cfg.model, 'tokenbox/deepseek-v4-pro');
     assert.strictEqual(cfg.adapter, 'adapters/opencode.md');
-    assert.strictEqual(cfg.fableVersion, '0.1.0');
+    assert.strictEqual(cfg.fableVersion, VERSION);
   });
 
   it('defaultConfig accepts overrides', () => {

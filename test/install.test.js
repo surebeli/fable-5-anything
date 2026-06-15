@@ -5,6 +5,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execSync } from 'node:child_process';
 import { install } from '../src/install.js';
+import { VERSION } from '../src/version.js';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
 const TMP = resolve(__dirname, '..', `.tmp-test-install-${process.pid}`);
@@ -26,7 +27,7 @@ describe('install', () => {
     const config = JSON.parse(readFileSync(configPath, 'utf-8'));
     assert.strictEqual(config.runtime, 'opencode');
     assert.strictEqual(config.model, 'tokenbox/deepseek-v4-pro');
-    assert.strictEqual(config.fableVersion, '0.1.0');
+    assert.strictEqual(config.fableVersion, VERSION);
   });
 
   it('creates .fable/handoffs/example.md with all four required sections', () => {

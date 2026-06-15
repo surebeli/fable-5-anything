@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getRuntime } from './runtime.js';
+import { VERSION } from './version.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const PKG_ROOT = resolve(join(__dirname, '..'));
@@ -16,7 +17,7 @@ export function defaultConfig(runtime = 'opencode', model = 'tokenbox/deepseek-v
     adapter: (rt && rt.adapter) || DEFAULT_ADAPTER,
     injectionMode: rt ? rt.injectionMode : 'prompt-prelude',
     hostSystemPolicy: rt ? rt.hostSystemPolicy : 'overlay',
-    fableVersion: '0.1.0'
+    fableVersion: VERSION
   };
 }
 
