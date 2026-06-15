@@ -1,0 +1,23 @@
+src/runtime.js
+  s_865fae9e798144::t_c221de01b9a550 1-38
+test/runtime.test.js
+  s_865fae9e798144::t_2c78293aa60c88 29-91
+adapters/runtime-capabilities.json
+  s_865fae9e798144::t_53725814a32cf0 1-58
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "deb6b1e3249147be0f3b0dc9a2fe1610acd04e87",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
