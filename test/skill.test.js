@@ -1,0 +1,30 @@
+import { describe, it, before, after } from 'node:test';
+import assert from 'node:assert';
+import { mkdirSync, rmSync, existsSync, readFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { buildKimiSkill, writeKimiSkill } from '../src/skill.js';
+
+const __dirname = resolve(fileURLToPath(import.meta.url), '..');
+const TMP = resolve(__dirname, '..', `.tmp-test-skill-${process.pid}`);
+
+before(() => { if (existsSync(TMP)) rmSync(TMP, { recursive: true, force: true }); mkdirSync(TMP, { recursive: true }); });
+after(() => { if (existsSync(TMP)) rmSync(TMP, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }); });
+
+describe('kimi skill', () => {
+  it('buildKimiSkill returns SKILL.md with frontmatter name: fable and governance body', () => {
+    const s = buildKimiSkill();
+    assert.ok(s.startsWith('---'), 'starts with YAML frontmatter');
+    assert.ok(/\nname:\s*fable\b/.test(s), 'has name: fable');
+    assert.ok(/\ndescription:\s*\S/.test(s), 'has a description');
+    assert.ok(s.includes('Priority Order'), 'includes portable core Priority Order');
+    assert.ok(/kimi/i.test(s), 'includes kimi adapter content');
+  });
+
+  it('writeKimiSkill writes <project>/.fable/skills/fable/SKILL.md and returns its path', () => {
+    const p = writeKimiSkill({ project: TMP });
+    assert.ok(existsSync(p));
+    assert.ok(p.replace(/\\/g, '/').endsWith('.fable/skills/fable/SKILL.md'));
+    assert.ok(readFileSync(p, 'utf-8').includes('name: fable'));
+  });
+});
