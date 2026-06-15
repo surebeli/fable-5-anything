@@ -56,9 +56,10 @@ Usage:
     .gitignore, and AGENTS.md section. Safe re-run preserves user files.
 
   fable doctor --project <dir>
-    Check config, adapter, core, handoff, opencode dry-run command shape,
-    opencode PATH, AGENTS.md fable section, .gitignore runs entry, and
-    local shim existence. No real model calls.
+    Check config, adapter, core, and handoff. For an opencode project also
+    checks the opencode dry-run command shape and opencode PATH; for other
+    runtimes reports the overlay/planned status instead. Always checks the
+    AGENTS.md fable section, .gitignore runs entry, and local shim. No model calls.
 
   fable build-prompt --handoff <path> [--config <path>] [--project <dir>] [--out <path>]
     Assemble a dispatch prompt from core + adapter + handoff.
