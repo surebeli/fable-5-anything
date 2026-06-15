@@ -79,7 +79,7 @@ Usage:
     Show how fable injects into a runtime (status, injection mode, whether it
     overlays or replaces the host system prompt). No args lists all runtimes.
 
-  fable charter sync --project <dir> [--runtime <name>] [--all]
+  fable charter sync --project <dir> [--runtime <name>] [--all] [--force]
     Seed/refresh portable charter files (AGENTS.md + CLAUDE.md by default, plus
     the runtime's extra charter files) with the idempotent fable block.
 
@@ -316,7 +316,7 @@ function cmdCharter(opts, positional) {
     const rt = caps[rtName];
     if (rt) for (const f of rt.charterFiles) set.add(f);
   }
-  const written = syncCharter({ project, files: [...set] });
+  const written = syncCharter({ project, files: [...set], force: opts.force === true || opts.force === 'true' });
   for (const w of written) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
 }
 

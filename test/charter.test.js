@@ -34,6 +34,25 @@ describe('charter', () => {
     assert.ok(t.startsWith('# My Rules'));
     assert.strictEqual((t.match(/<!-- FABLE-START -->/g) || []).length, 1);
   });
+
+  it('copilot-instructions.md gets a sensible header (not "# AGENTS.md")', () => {
+    const dir = join(TMP, 'hdr'); mkdirSync(dir, { recursive: true });
+    syncCharter({ project: dir, files: ['.github/copilot-instructions.md'] });
+    const t = readFileSync(join(dir, '.github', 'copilot-instructions.md'), 'utf-8');
+    assert.ok(!t.startsWith('# AGENTS.md'), 'should not mislabel as AGENTS.md');
+    assert.ok(/Copilot/i.test(t.split('\n')[0]), 'header should reference Copilot');
+  });
+
+  it('syncCharter force refreshes a stale fable block', () => {
+    const dir = join(TMP, 'refresh'); mkdirSync(dir, { recursive: true });
+    const stale = '# AGENTS.md\n\n<!-- FABLE-START -->\nOLD STALE GOVERNANCE\n<!-- FABLE-END -->\n';
+    writeFileSync(join(dir, 'AGENTS.md'), stale);
+    syncCharter({ project: dir, files: ['AGENTS.md'], force: true });
+    const t = readFileSync(join(dir, 'AGENTS.md'), 'utf-8');
+    assert.ok(!t.includes('OLD STALE GOVERNANCE'), 'stale block should be replaced');
+    assert.ok(t.includes('## Fable Integration'), 'current block should be present');
+    assert.strictEqual((t.match(/<!-- FABLE-START -->/g) || []).length, 1);
+  });
 });
 
 import { spawnSync } from 'node:child_process';
