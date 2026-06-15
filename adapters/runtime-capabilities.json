@@ -1,0 +1,58 @@
+{
+  "claude": {
+    "status": "reference-only",
+    "injectionMode": "system-prompt-file",
+    "hostSystemPolicy": "system-replace-when-user-owned",
+    "adapter": null,
+    "commandSupport": [],
+    "notes": "Claude Code can replace the system prompt via --system-prompt-file when the user owns the session. Reference only; fable ships no Claude executor and does not migrate Claude identity/tool assumptions."
+  },
+  "opencode": {
+    "status": "implemented",
+    "injectionMode": "prompt-prelude",
+    "hostSystemPolicy": "overlay",
+    "adapter": "adapters/opencode.md",
+    "commandSupport": ["build-prompt", "smoke", "run", "doctor"],
+    "notes": "Assembled prompt is passed to opencode run. The host opencode system prompt remains authoritative; fable overlays governance."
+  },
+  "codex": {
+    "status": "planned",
+    "injectionMode": "agents-md-or-plugin",
+    "hostSystemPolicy": "overlay",
+    "adapter": "adapters/codex.md",
+    "commandSupport": [],
+    "notes": "Design only in this milestone. Overlay via AGENTS.md / plugin / profile; host Codex system and tool policy remain authoritative."
+  },
+  "kimi": {
+    "status": "planned",
+    "injectionMode": "skill-or-prompt-prelude",
+    "hostSystemPolicy": "overlay",
+    "adapter": "adapters/kimi.md",
+    "commandSupport": [],
+    "notes": "Design only in this milestone. Overlay via --skills-dir or prompt prelude; host system prompt remains authoritative."
+  },
+  "grok": {
+    "status": "planned",
+    "injectionMode": "prompt-prelude",
+    "hostSystemPolicy": "overlay",
+    "adapter": "adapters/grok.md",
+    "commandSupport": [],
+    "notes": "Advisory/review-oriented adapter. Design only; overlay via prompt prelude; no executor in this milestone."
+  },
+  "copilot": {
+    "status": "planned",
+    "injectionMode": "custom-instructions-or-plugin",
+    "hostSystemPolicy": "overlay",
+    "adapter": "adapters/copilot.md",
+    "commandSupport": [],
+    "notes": "Design only in this milestone. Overlay via AGENTS/custom instructions / --agent / --plugin-dir; host system prompt remains authoritative."
+  },
+  "agy": {
+    "status": "opaque",
+    "injectionMode": "custom-instructions-or-wrapper",
+    "hostSystemPolicy": "overlay",
+    "adapter": "adapters/generic.md",
+    "commandSupport": [],
+    "notes": "Generic opaque-host fallback (agy/Antigravity-like). Overlay only; never assume system replacement until proven user-owned and safe."
+  }
+}
