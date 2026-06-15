@@ -191,4 +191,35 @@ describe('install', () => {
     const result = execSync('.fable\\bin\\fable.cmd run .fable/handoffs/example.md --dry-run', { cwd: projectDir, encoding: 'utf-8', timeout: 15000 });
     assert.ok(result.includes('DRY-RUN'), `run dry-run output should contain DRY-RUN, got: ${result}`);
   });
+
+  it('writes .fable/fable.lock.json with version and default link=path', () => {
+    const dir = join(TMP, 'lock-default');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'tokenbox/deepseek-v4-pro' });
+    const lock = JSON.parse(readFileSync(join(dir, '.fable', 'fable.lock.json'), 'utf-8'));
+    assert.strictEqual(lock.fableVersion, VERSION);
+    assert.strictEqual(lock.link, 'path');
+    assert.ok(lock.entry.includes('bin'), 'path-mode entry references the bin entry');
+  });
+
+  it('link=npx generates npx shims and records link in lockfile', () => {
+    const dir = join(TMP, 'lock-npx');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'tokenbox/deepseek-v4-pro', link: 'npx' });
+    const cmd = readFileSync(join(dir, '.fable', 'bin', 'fable.cmd'), 'utf-8');
+    assert.ok(cmd.includes('npx -y fable-5-anything'), 'cmd shim should use npx');
+    assert.ok(!cmd.includes('bin\\fable.js'), 'npx shim should not hardcode bin/fable.js');
+    assert.ok(cmd.includes('--project'));
+    const lock = JSON.parse(readFileSync(join(dir, '.fable', 'fable.lock.json'), 'utf-8'));
+    assert.strictEqual(lock.link, 'npx');
+  });
+
+  it('link=global generates global shims', () => {
+    const dir = join(TMP, 'lock-global');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'tokenbox/deepseek-v4-pro', link: 'global' });
+    const ps1 = readFileSync(join(dir, '.fable', 'bin', 'fable.ps1'), 'utf-8');
+    assert.ok(ps1.includes('fable @args'), 'ps1 global shim should call fable directly');
+    assert.ok(!ps1.includes('node '), 'global shim should not invoke node directly');
+  });
 });

@@ -111,8 +111,13 @@ function cmdInstall(opts) {
   }
   const runtime = opts.runtime || 'opencode';
   const model = opts.model || 'tokenbox/deepseek-v4-pro';
+  const link = opts.link || 'path';
+  if (!['path', 'global', 'npx'].includes(link)) {
+    console.error(`Error: --link must be one of path|global|npx (got "${link}")`);
+    process.exit(1);
+  }
 
-  const result = install({ projectDir: opts.project, runtime, model });
+  const result = install({ projectDir: opts.project, runtime, model, link });
   console.log(`\nInstalled fable into ${result.project}`);
   console.log(JSON.stringify(result.config, null, 2));
 }

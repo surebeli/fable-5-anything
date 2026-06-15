@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { defaultConfig, PKG_ROOT } from './config.js';
+import { VERSION } from './version.js';
 
 const EXAMPLE_HANDOFF = `# Example Handoff
 
@@ -53,20 +54,32 @@ function safeWriteTemplate(filePath, templateContent, label) {
   return `  (created) ${label}`;
 }
 
-function createShims(shimDir, project, fableRepo) {
-  const fableJS = join(fableRepo, 'bin', 'fable.js');
+function shimInvocation(link, fableRepo) {
+  if (link === 'global') return 'fable';
+  if (link === 'npx') return 'npx -y fable-5-anything';
+  return `node "${join(fableRepo, 'bin', 'fable.js')}"`; // default: 'path'
+}
 
-  const cmdContent = `@echo off\r\nnode "${fableJS}" %* --project "${project}"\r\n`;
+function createShims(shimDir, project, fableRepo, link) {
+  const inv = shimInvocation(link, fableRepo);
+
+  const cmdContent = `@echo off\r\n${inv} %* --project "${project}"\r\n`;
   writeFileSync(join(shimDir, 'fable.cmd'), cmdContent);
 
-  const ps1Content = `node "${fableJS}" @args "--project" "${project}"\r\n`;
+  const ps1Content = `${inv} @args "--project" "${project}"\r\n`;
   writeFileSync(join(shimDir, 'fable.ps1'), ps1Content);
 
-  const shContent = `#!/usr/bin/env sh\r\nnode "${fableJS}" "$@" --project "${project}"\r\n`;
+  const shContent = `#!/usr/bin/env sh\r\n${inv} "$@" --project "${project}"\r\n`;
   writeFileSync(join(shimDir, 'fable'), shContent);
 }
 
-export function install({ projectDir, runtime, model }) {
+function lockEntry(link, fableRepo) {
+  if (link === 'global') return 'fable';
+  if (link === 'npx') return 'npx -y fable-5-anything';
+  return join(fableRepo, 'bin', 'fable.js');
+}
+
+export function install({ projectDir, runtime, model, link = 'path' }) {
   const project = resolve(projectDir);
   const fableDir = join(project, '.fable');
   const handoffsDir = join(fableDir, 'handoffs');
@@ -84,8 +97,17 @@ export function install({ projectDir, runtime, model }) {
   summary.push(safeWriteTemplate(join(handoffsDir, 'example.md'), EXAMPLE_HANDOFF, '.fable/handoffs/example.md'));
   summary.push(safeWriteTemplate(join(fableDir, 'README.md'), FABLE_README, '.fable/README.md'));
 
-  createShims(shimDir, project, PKG_ROOT);
+  createShims(shimDir, project, PKG_ROOT, link);
   summary.push(`  (created) .fable/bin/fable.cmd, fable.ps1, fable`);
+
+  const lock = {
+    fableVersion: VERSION,
+    link,
+    entry: lockEntry(link, PKG_ROOT),
+    installedFrom: PKG_ROOT
+  };
+  writeFileSync(join(fableDir, 'fable.lock.json'), JSON.stringify(lock, null, 2) + '\n');
+  summary.push(`  (created) .fable/fable.lock.json`);
 
   const gitignorePath = join(project, '.gitignore');
   const gitignoreEntry = '.fable/runs/\n';
