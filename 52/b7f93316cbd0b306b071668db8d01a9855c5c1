@@ -1,0 +1,21 @@
+test/skill.test.js
+  s_865fae9e798144::t_beb57f25a1aa98 1-30
+src/skill.js
+  s_865fae9e798144::t_86d4df9fbc4d5f 1-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "52b7f93316cbd0b306b071668db8d01a9855c5c1",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
