@@ -1,0 +1,24 @@
+adapters/copilot.md
+  s_865fae9e798144::t_1c59bbe0b067bf 4-6
+docs/embed-in-your-project.md
+  s_865fae9e798144::t_9cd1fbb49d0caf 89-91
+  s_865fae9e798144::t_1eb7177ca991bc 105-110
+adapters/kimi.md
+  s_865fae9e798144::t_db8d290b62f5c9 3-6
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "669da291cc3f9b649ec174508382cef6b0b7af1e",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
