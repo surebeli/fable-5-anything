@@ -1,0 +1,23 @@
+docs/roadmap/M7-kimi-copilot-opencode-adapters.md
+  s_865fae9e798144::t_2887a08120b9cb 1-90
+docs/superpowers/plans/2026-06-15-fable-m5-packaging.md
+  s_865fae9e798144::t_e35237f5134e1b 1-707
+docs/roadmap/M6-codex-integration.md
+  s_865fae9e798144::t_1e1b19be0c8a76 1-104
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "809c9641b97732248918e90bc1a206452076c4d9",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
