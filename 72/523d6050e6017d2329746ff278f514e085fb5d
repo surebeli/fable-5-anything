@@ -1,0 +1,28 @@
+adapters/runtime-capabilities.json
+  s_865fae9e798144::t_f27b7bc28ebe54 48-49,52,54
+  s_865fae9e798144::t_b4e758409b7889 30-31,34,36
+test/runtime.test.js
+  s_865fae9e798144::t_e5e305e8612b95 85-98
+docs/runtime-overlay-model.md
+  s_865fae9e798144::t_386b0cacf37e1f 84
+  s_865fae9e798144::t_1937924453a632 82
+  s_865fae9e798144::t_2463bcf256f16f 89-95
+docs/handoffs/FABLE-M7-KIMI-COPILOT-result.md
+  s_865fae9e798144::t_c1b362004b6905 1-39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "72523d6050e6017d2329746ff278f514e085fb5d",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
