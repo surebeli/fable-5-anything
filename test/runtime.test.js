@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { spawnSync } from 'node:child_process';
 import { loadCapabilities, getRuntime, listRuntimes, adapterForRuntime, REQUIRED_KEYS } from '../src/runtime.js';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
@@ -87,8 +88,6 @@ describe('runtime capabilities metadata', () => {
     }
   });
 });
-
-import { spawnSync } from 'node:child_process';
 
 const BIN = resolve(ROOT, 'bin', 'fable.js');
 function fable(args) {
