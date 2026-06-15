@@ -18,4 +18,15 @@ describe('version', () => {
     const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf-8'));
     assert.strictEqual(VERSION, pkg.version);
   });
+
+  it('package.json has distribution metadata for npx/publish', () => {
+    const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf-8'));
+    assert.strictEqual(pkg.version, '0.2.0');
+    assert.ok(Array.isArray(pkg.files) && pkg.files.includes('src/'), 'files must whitelist src/');
+    assert.ok(pkg.files.includes('adapters/') && pkg.files.includes('prompts/'), 'files must include adapters/ and prompts/');
+    assert.ok(pkg.engines && pkg.engines.node, 'engines.node required');
+    assert.ok(pkg.repository && /github\.com\/surebeli\/fable-5-anything/.test(pkg.repository.url || ''), 'repository.url required');
+    assert.ok(Array.isArray(pkg.keywords) && pkg.keywords.length > 0, 'keywords required');
+    assert.strictEqual(pkg.bin.fable, './bin/fable.js', 'bin entry preserved');
+  });
 });
