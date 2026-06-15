@@ -204,9 +204,18 @@ function cmdBuildPrompt(opts) {
   }
 }
 
+function requireOpencode(config, what) {
+  if (config.runtime !== 'opencode') {
+    console.error(`Error: '${what}' only supports the opencode runtime (this project is '${config.runtime}'). ` +
+      `Use 'fable build-prompt' to assemble the governance prompt, or 'fable ${config.runtime} setup' for that host's overlay integration.`);
+    process.exit(1);
+  }
+}
+
 function cmdSmoke(opts) {
   const configBase = getConfigBase(opts);
   const config = readConfigFile(configBase);
+  requireOpencode(config, 'smoke');
   const prompt = smokePrompt();
   const execute = opts.execute === true || opts.execute === 'true';
 
@@ -233,6 +242,7 @@ function cmdRun(opts, positional) {
 
   const configBase = getConfigBase(opts);
   const config = readConfigFile(configBase);
+  requireOpencode(config, 'run');
 
   const content = readHandoff(handoffPath);
   const vr = validate(content);

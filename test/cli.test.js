@@ -1,7 +1,7 @@
 import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert';
 import { mkdirSync, rmSync, existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
@@ -52,5 +52,23 @@ describe('cli --project relative handoff path resolution', () => {
     assert.strictEqual(r.status, 0, `run with absolute path failed: ${r.stderr}`);
     assert.ok(r.stdout.includes('DRY-RUN'));
     assert.ok(!r.stderr.includes('ENOENT'));
+  });
+
+  it('run rejects a non-opencode runtime with actionable guidance', () => {
+    const dir = join(TMP, 'kimi-proj');
+    mkdirSync(dir, { recursive: true });
+    fable(['install', '--project', dir, '--runtime', 'kimi', '--model', 'kimi-latest', '--yes']);
+    const r = fable(['run', '.fable/handoffs/example.md', '--project', dir, '--dry-run']);
+    assert.strictEqual(r.status, 1, 'should exit 1 for non-opencode');
+    assert.ok(/only supports the opencode runtime|kimi/i.test(r.stderr), `expected guidance, got: ${r.stderr}`);
+  });
+
+  it('smoke rejects a non-opencode runtime', () => {
+    const dir = join(TMP, 'kimi-proj2');
+    mkdirSync(dir, { recursive: true });
+    fable(['install', '--project', dir, '--runtime', 'kimi', '--model', 'kimi-latest', '--yes']);
+    const r = fable(['smoke', '--project', dir, '--dry-run']);
+    assert.strictEqual(r.status, 1);
+    assert.ok(/opencode/i.test(r.stderr));
   });
 });
