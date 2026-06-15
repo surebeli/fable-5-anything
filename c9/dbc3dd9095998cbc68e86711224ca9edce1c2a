@@ -1,0 +1,19 @@
+docs/superpowers/plans/2026-06-15-fable-m9-review-fixes.md
+  s_865fae9e798144::t_57e6b73348e20f 1-381
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "c9dbc3dd9095998cbc68e86711224ca9edce1c2a",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
