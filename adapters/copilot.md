@@ -45,5 +45,24 @@ Reply exactly PONG and nothing else.
 Pass criteria: the Copilot runtime returns exactly `PONG` and makes no unrelated
 edits.
 
+## Copilot (M7)
+
+fable integrates with GitHub Copilot CLI (verified against 1.0.54) via a charter
+plus an MCP toolset that **reuses the same fable MCP server as Codex** (the
+server is host-agnostic; M7 writes no new server).
+
+- `fable copilot setup --project .` seeds the charter
+  (`.github/copilot-instructions.md` + AGENTS.md + CLAUDE.md) and prints, or with
+  `--apply` runs, `copilot mcp add fable -- node <entry> mcp-server`, which
+  writes Copilot's local stdio MCP config (`~/.copilot/mcp-config.json`).
+- The server exposes the read-only tools `fable_runtime`, `fable_build_prompt`,
+  and `fable_doctor` — the exact same tools Codex sees.
+- Verify in-session with `copilot -p "<prompt>" --allow-all-tools`. The host
+  Copilot system and tool rules remain authoritative; the charter and MCP tools
+  overlay governance and never override host rules.
+
+See [docs/copilot-integration.md](../docs/copilot-integration.md) for the full
+guide.
+
 These adapter rules obey all constitutional rules in
 prompts/portable-agent-core.md. If there is a conflict, the portable core wins.

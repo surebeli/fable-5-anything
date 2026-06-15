@@ -102,7 +102,9 @@ rules.
 
 - opencode is implemented end-to-end (build-prompt, smoke, run, doctor).
 - codex is implemented via charter (AGENTS.md) + an MCP server (`codex mcp add`); see [docs/codex-integration.md](docs/codex-integration.md).
-- kimi, grok, copilot are adapter/design status (introspectable, no executor yet).
+- kimi has a `fable kimi setup` that writes a real fable skill (`--skills-dir`) + charter; see [docs/kimi-integration.md](docs/kimi-integration.md).
+- copilot has a `fable copilot setup` that seeds the charter + reuses the host-agnostic fable MCP server (`copilot mcp add`); see [docs/copilot-integration.md](docs/copilot-integration.md).
+- grok is adapter/design status (introspectable, no executor yet).
 - agy and other opaque hosts default to overlay-only.
 
 Inspect any runtime:
@@ -126,6 +128,31 @@ node bin/fable.js codex setup --project . --apply
 ```
 
 See [docs/codex-integration.md](docs/codex-integration.md) for the full guide.
+
+### Kimi
+
+fable governs Kimi via a real fable **skill** (`.fable/skills/fable/SKILL.md`)
+plus a charter (AGENTS.md + CLAUDE.md). It overlays — never replaces — Kimi's
+system prompt.
+
+```bash
+node bin/fable.js kimi setup --project .
+kimi --skills-dir ".fable/skills" -p "<your task>"
+```
+
+See [docs/kimi-integration.md](docs/kimi-integration.md) for the full guide.
+
+### Copilot
+
+fable governs Copilot via a charter (`.github/copilot-instructions.md` +
+AGENTS.md + CLAUDE.md) plus the **same host-agnostic fable MCP server** that
+Codex uses. It overlays — never replaces — Copilot's system prompt.
+
+```bash
+node bin/fable.js copilot setup --project . --apply
+```
+
+See [docs/copilot-integration.md](docs/copilot-integration.md) for the full guide.
 
 ## Repository Status
 

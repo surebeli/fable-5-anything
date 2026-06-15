@@ -46,6 +46,26 @@ Reply exactly PONG and nothing else.
 Pass criteria: the Kimi runtime returns exactly `PONG`, exits cleanly, and does
 not require interactive input.
 
+## Kimi (M7)
+
+fable integrates with Kimi Code (verified against 0.14.2) via a real **skill**
+plus the charter. Kimi loads skills from a skills directory where each skill is
+`<skills-dir>/<name>/SKILL.md` with YAML frontmatter (`name` / `description`)
+and a body.
+
+- `fable kimi setup --project .` writes `.fable/skills/fable/SKILL.md`
+  (frontmatter `name: fable` + the portable core + this adapter) and seeds the
+  charter (AGENTS.md + CLAUDE.md), then prints the registration usage.
+- Use it via `kimi --skills-dir ".fable/skills" -p "<task>"`, or register it
+  permanently with `extra_skill_dirs = ["<abs>/.fable/skills"]` in
+  `~/.kimi-code/config.toml`.
+- Kimi auto-merges available skills (`merge_all_available_skills = true`), so the
+  fable skill becomes always-on governance. The host system prompt and tool
+  rules remain authoritative; the fable skill overlays governance and never
+  overrides host rules.
+
+See [docs/kimi-integration.md](../docs/kimi-integration.md) for the full guide.
+
 These adapter rules obey all constitutional rules in
 prompts/portable-agent-core.md. If there is a conflict, the portable core wins.
 

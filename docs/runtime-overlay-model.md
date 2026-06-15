@@ -68,7 +68,9 @@ and `fable install` write the constitution into these files using the idempotent
 `<!-- FABLE-START -->` / `<!-- FABLE-END -->` markers, preserving user content
 outside the markers. For codex, the charter (AGENTS.md + CLAUDE.md) plus the
 read-only MCP tools (`fable_runtime`, `fable_build_prompt`, `fable_doctor`) form
-the overlay path; see `docs/codex-integration.md`.
+the overlay path; see `docs/codex-integration.md`. The fable MCP server is
+host-agnostic — Codex and Copilot register and share the very same server
+(`fable mcp-server`) unchanged; see `docs/copilot-integration.md`.
 
 ## Per-runtime support
 
@@ -77,9 +79,9 @@ the overlay path; see `docs/codex-integration.md`.
 | claude | reference-only | system-prompt-file | system-replace-when-user-owned | (none) |
 | opencode | implemented | prompt-prelude | overlay | adapters/opencode.md |
 | codex | implemented | agents-md-and-mcp | overlay | adapters/codex.md (charterFiles: AGENTS.md; charter + MCP, verified vs codex 0.131.0) |
-| kimi | planned | skill-or-prompt-prelude | overlay | adapters/kimi.md |
+| kimi | planned | skill (--skills-dir) | overlay | adapters/kimi.md (charterFiles: AGENTS.md; skill + charter; status flips in Phase 2) |
 | grok | planned | prompt-prelude | overlay | adapters/grok.md |
-| copilot | planned | custom-instructions-or-plugin | overlay | adapters/copilot.md |
+| copilot | planned | mcp (copilot mcp add) + charter | overlay | adapters/copilot.md (charterFiles: .github/copilot-instructions.md, AGENTS.md; reuses the host-agnostic fable MCP server; status flips in Phase 2) |
 | agy (generic opaque host) | opaque | custom-instructions-or-wrapper | overlay | adapters/generic.md |
 
 ## Executable today vs planned
