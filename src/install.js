@@ -1,5 +1,5 @@
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
-import { join, resolve } from 'node:path';
+import { join, resolve, sep } from 'node:path';
 import { defaultConfig, PKG_ROOT } from './config.js';
 import { VERSION } from './version.js';
 
@@ -54,29 +54,44 @@ function safeWriteTemplate(filePath, templateContent, label) {
   return `  (created) ${label}`;
 }
 
-function shimInvocation(link, fableRepo) {
+// Single source of truth for how the shims/lockfile resolve fable.
+// `posix: true` forces forward slashes for the POSIX `fable` shell script and
+// the portable, version-controlled fable.lock.json. The native (Windows) shims
+// keep platform separators so the generated .cmd/.ps1 stay byte-identical.
+function pathEntry(fableRepo, { posix = false } = {}) {
+  const native = join(fableRepo, 'bin', 'fable.js');
+  return posix ? native.split(sep).join('/') : native;
+}
+
+function shimInvocation(link, fableRepo, { posix = false } = {}) {
   if (link === 'global') return 'fable';
   if (link === 'npx') return 'npx -y fable-5-anything';
-  return `node "${join(fableRepo, 'bin', 'fable.js')}"`; // default: 'path'
+  return `node "${pathEntry(fableRepo, { posix })}"`; // default: 'path'
 }
 
 function createShims(shimDir, project, fableRepo, link) {
-  const inv = shimInvocation(link, fableRepo);
+  // Windows shims keep native separators (byte-identical to prior behavior).
+  const nativeInv = shimInvocation(link, fableRepo);
+  // The POSIX `fable` shell script must use forward slashes so it is portable
+  // to real Unix systems (commit: 可移植 shim).
+  const posixInv = shimInvocation(link, fableRepo, { posix: true });
 
-  const cmdContent = `@echo off\r\n${inv} %* --project "${project}"\r\n`;
+  const cmdContent = `@echo off\r\n${nativeInv} %* --project "${project}"\r\n`;
   writeFileSync(join(shimDir, 'fable.cmd'), cmdContent);
 
-  const ps1Content = `${inv} @args "--project" "${project}"\r\n`;
+  const ps1Content = `${nativeInv} @args "--project" "${project}"\r\n`;
   writeFileSync(join(shimDir, 'fable.ps1'), ps1Content);
 
-  const shContent = `#!/usr/bin/env sh\r\n${inv} "$@" --project "${project}"\r\n`;
+  const shContent = `#!/usr/bin/env sh\r\n${posixInv} "$@" --project "${project}"\r\n`;
   writeFileSync(join(shimDir, 'fable'), shContent);
 }
 
+// Entry recorded in the portable, version-controlled fable.lock.json — always
+// uses forward slashes so the path mode lockfile is platform-neutral.
 function lockEntry(link, fableRepo) {
   if (link === 'global') return 'fable';
   if (link === 'npx') return 'npx -y fable-5-anything';
-  return join(fableRepo, 'bin', 'fable.js');
+  return pathEntry(fableRepo, { posix: true });
 }
 
 export function install({ projectDir, runtime, model, link = 'path' }) {

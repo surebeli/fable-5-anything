@@ -202,6 +202,28 @@ describe('install', () => {
     assert.ok(lock.entry.includes('bin'), 'path-mode entry references the bin entry');
   });
 
+  it('path-mode fable.lock.json entry is POSIX-normalized (portable, no backslashes)', () => {
+    const dir = join(TMP, 'lock-posix-entry');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'tokenbox/deepseek-v4-pro' });
+    const lock = JSON.parse(readFileSync(join(dir, '.fable', 'fable.lock.json'), 'utf-8'));
+    assert.ok(!lock.entry.includes('\\'), 'lockfile entry must not contain backslashes');
+    assert.ok(lock.entry.includes('bin/fable.js'), 'lockfile entry uses forward-slash bin/fable.js');
+  });
+
+  it('path-mode POSIX fable shim uses forward slashes (portable to real Unix)', () => {
+    const dir = join(TMP, 'shim-posix-path');
+    mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'tokenbox/deepseek-v4-pro' });
+    const sh = readFileSync(join(dir, '.fable', 'bin', 'fable'), 'utf-8');
+    assert.ok(sh.includes('#!/usr/bin/env sh'), 'POSIX shim has sh shebang');
+    assert.ok(sh.includes('node "'), 'path-mode shim invokes node with the entry');
+    assert.ok(sh.includes('bin/fable.js'), 'POSIX shim references forward-slash bin/fable.js');
+    // The node-invocation path (before the runtime "$@" args) must be backslash-free.
+    const invocation = sh.split('"$@"')[0];
+    assert.ok(!invocation.includes('\\'), 'POSIX shim node path must not contain backslashes');
+  });
+
   it('link=npx generates npx shims and records link in lockfile', () => {
     const dir = join(TMP, 'lock-npx');
     mkdirSync(dir, { recursive: true });
