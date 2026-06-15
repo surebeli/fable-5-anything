@@ -1,0 +1,31 @@
+docs/kimi-integration.md
+  s_865fae9e798144::t_52090687dbbb6d 1-68
+adapters/kimi.md
+  s_865fae9e798144::t_8135f02c13044a 49-68
+adapters/copilot.md
+  s_865fae9e798144::t_dfca2c4d0508c2 48-66
+docs/runtime-overlay-model.md
+  s_865fae9e798144::t_3e7640dfae8735 82,84
+  s_865fae9e798144::t_b04eb263d913bb 71-73
+README.md
+  s_865fae9e798144::t_78b14f3848ebfb 132-156
+  s_865fae9e798144::t_d9aa2acb9c6dca 105-107
+docs/copilot-integration.md
+  s_865fae9e798144::t_35fc7e2364043f 1-82
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "419c49d8f14d63a74d9925822d77f6878df87cbc",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
