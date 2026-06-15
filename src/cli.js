@@ -83,21 +83,22 @@ Usage:
     Seed/refresh portable charter files (AGENTS.md + CLAUDE.md by default, plus
     the runtime's extra charter files) with the idempotent fable block.
 
-  fable codex setup --project <dir> [--apply]
+  fable codex setup --project <dir> [--apply] [--via path|github]
     Seed the charter (AGENTS.md + CLAUDE.md + codex charter files) and print the
     codex mcp add command. With --apply, run codex mcp add to register the server.
+    Use --via github for zero-clone/no-publish deploys (registers npx -y github:...).
 
   fable kimi setup --project <dir>
     Seed the charter (AGENTS.md + CLAUDE.md + kimi charter files), write the fable
     skill to .fable/skills/fable/SKILL.md, and print --skills-dir / extra_skill_dirs
     registration for Kimi.
 
-  fable copilot setup --project <dir> [--apply]
+  fable copilot setup --project <dir> [--apply] [--via path|github]
     Seed the charter (AGENTS.md + CLAUDE.md + .github/copilot-instructions.md) and
     print the copilot mcp add command (reusing the fable MCP server). With --apply,
     run copilot mcp add to register the server.
 
-  fable grok setup --project <dir> [--apply]
+  fable grok setup --project <dir> [--apply] [--via path|github]
     Seed the charter (AGENTS.md + CLAUDE.md) and print the grok mcp add command
     (reusing the fable MCP server). With --apply, run grok mcp add to register it.
 

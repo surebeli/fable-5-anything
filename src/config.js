@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
-import { join, dirname, resolve } from 'node:path';
+import { join, dirname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getRuntime } from './runtime.js';
 import { VERSION } from './version.js';
@@ -41,7 +41,15 @@ export function writeConfig(cwd, config) {
 }
 
 export function resolveAdapterPath(config) {
-  return resolve(PKG_ROOT, config.adapter);
+  // Adapters must be packaged adapters under <pkg>/adapters/. Reject absolute or
+  // traversing adapter paths so an untrusted project config cannot make prompt
+  // assembly (incl. the MCP fable_build_prompt tool) read arbitrary files.
+  const adaptersRoot = resolve(PKG_ROOT, 'adapters');
+  const p = resolve(PKG_ROOT, config.adapter || '');
+  if (p !== adaptersRoot && !p.startsWith(adaptersRoot + sep)) {
+    throw new Error(`adapter must be a packaged adapter under adapters/ (got "${config.adapter}")`);
+  }
+  return p;
 }
 
 export function resolveCorePath() {

@@ -163,15 +163,14 @@ Every handoff file must contain these four sections:
 
 See `.fable/handoffs/example.md` for a working template.
 
-## When to consider plugin/skill
+## Host integrations (Codex / Copilot / Grok / Kimi)
 
-Once your project is stable with the CLI workflow:
+Each supported host has a one-command setup that overlays fable governance:
 
-1. **Codex plugin wrapper** — Wraps `fable` CLI as a Codex plugin for automatic prompt injection. Add this when you want hands-off dispatch from within Codex sessions.
-2. **Codex skill** — A skill file that Codex loads before each prompt, embedding the portable core rules. This replaces the explicit `build-prompt` step.
-3. **npm publish** — When your team needs the `fable` command available globally without cloning the repo.
+1. **Codex / Copilot / Grok** — `fable <host> setup --project . [--apply] [--via path|github]` seeds the charter and registers the host-agnostic fable MCP server (`<host> mcp add fable`), exposing `fable_runtime` / `fable_build_prompt` / `fable_doctor` in-session. See [codex-integration.md](codex-integration.md) and [copilot-integration.md](copilot-integration.md).
+2. **Kimi** — `fable kimi setup --project .` writes a real fable skill (loaded via `--skills-dir` or `extra_skill_dirs`). See [kimi-integration.md](kimi-integration.md).
 
-These are not yet implemented. Track progress in the fable repo.
+Still future: an npm registry publish (so `npx fable-5-anything` / a global `fable` work without GitHub source). Today, deploy from source — clone (`--link path`) or zero-clone (`--link github`); see [deploy-from-source.md](deploy-from-source.md).
 
 ## More resources
 
