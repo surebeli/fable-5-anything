@@ -2,6 +2,7 @@ import { mkdirSync, writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join, resolve, sep } from 'node:path';
 import { defaultConfig, PKG_ROOT } from './config.js';
 import { VERSION } from './version.js';
+import { syncCharter } from './charter.js';
 
 const EXAMPLE_HANDOFF = `# Example Handoff
 
@@ -36,8 +37,6 @@ This directory is managed by fable-5-anything.
 
 Do not commit \`runs/\` to version control.
 `;
-
-const AGENTS_SECTION = '\n\n<!-- FABLE-START -->\n## Fable Integration\n\nThis project uses [fable-5-anything](https://github.com/surebeli/fable-5-anything) for\nportable prompt governance. Handoff tasks are dispatched via:\n\n```bash\nfable run .fable/handoffs/example.md --project .\n```\n\nSee `.fable/README.md` for details.\n<!-- FABLE-END -->\n';
 
 function safeWriteTemplate(filePath, templateContent, label) {
   if (existsSync(filePath)) {
@@ -135,15 +134,8 @@ export function install({ projectDir, runtime, model, link = 'path' }) {
     writeFileSync(gitignorePath, gitignoreEntry);
   }
 
-  const agentsPath = join(project, 'AGENTS.md');
-  if (existsSync(agentsPath)) {
-    const existing = readFileSync(agentsPath, 'utf-8');
-    if (!existing.includes('<!-- FABLE-START -->')) {
-      writeFileSync(agentsPath, existing + AGENTS_SECTION);
-    }
-  } else {
-    writeFileSync(agentsPath, '# AGENTS.md\n' + AGENTS_SECTION);
-  }
+  syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'] });
+  summary.push('  (charter) AGENTS.md, CLAUDE.md');
 
   console.log(summary.join('\n'));
   return { project, config };

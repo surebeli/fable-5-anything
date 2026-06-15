@@ -95,6 +95,14 @@ describe('install', () => {
     assert.ok(updated.includes('## Fable Integration'));
   });
 
+  it('seeds CLAUDE.md with the fable charter block', () => {
+    const dir = join(TMP, 'charter-claude'); mkdirSync(dir, { recursive: true });
+    install({ projectDir: dir, runtime: 'opencode', model: 'tokenbox/deepseek-v4-pro' });
+    const t = readFileSync(join(dir, 'CLAUDE.md'), 'utf-8');
+    assert.ok(t.includes('<!-- FABLE-START -->'));
+    assert.ok(t.includes('Fable Integration'));
+  });
+
   it('creates .fable/runs/ directory', () => {
     const runsDir = join(TMP, '.fable', 'runs');
     assert.ok(existsSync(runsDir));
