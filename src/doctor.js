@@ -61,7 +61,7 @@ function checkLocalShim(project) {
   return { check: 'local shim', status: 'fail', detail: `missing: ${missing.join(', ')}` };
 }
 
-export function doctorChecks({ projectDir, config }) {
+export function doctorChecks({ projectDir, config, spawn = true }) {
   const checks = [];
   const project = resolve(projectDir);
 
@@ -133,7 +133,11 @@ export function doctorChecks({ projectDir, config }) {
     } catch (e) {
       checks.push({ check: 'opencode dry-run', status: 'fail', detail: e.message });
     }
-    checks.push(checkOpenCodeInPath());
+    if (spawn) {
+      checks.push(checkOpenCodeInPath());
+    } else {
+      checks.push({ check: 'opencode path', status: 'warn', detail: 'skipped (no-spawn mode)' });
+    }
   } else {
     checks.push({
       check: 'runtime',

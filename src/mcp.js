@@ -1,5 +1,5 @@
 import { createInterface } from 'node:readline';
-import { resolve } from 'node:path';
+import { resolve, sep } from 'node:path';
 import { VERSION } from './version.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
 import { readConfigFile } from './config.js';
@@ -12,9 +12,9 @@ const PROTOCOL_VERSION = '2025-06-18';
 const TOOLS = [
   { name: 'fable_runtime', description: 'List fable runtimes, or describe one (status, injection mode, overlay vs replace).',
     inputSchema: { type: 'object', properties: { name: { type: 'string', description: 'runtime name; omit to list all' } } } },
-  { name: 'fable_build_prompt', description: 'Assemble a fable governance prompt from a project config and a handoff file.',
+  { name: 'fable_build_prompt', description: 'Assemble a fable governance prompt from a project config and a handoff file within the given project root (non-mutating; reads only files under the project).',
     inputSchema: { type: 'object', properties: { project: { type: 'string' }, handoff: { type: 'string' } }, required: ['project', 'handoff'] } },
-  { name: 'fable_doctor', description: 'Run fable doctor checks for a project and return their statuses.',
+  { name: 'fable_doctor', description: 'Report fable doctor checks for a project (non-mutating, non-spawning).',
     inputSchema: { type: 'object', properties: { project: { type: 'string' } }, required: ['project'] } }
 ];
 
@@ -27,8 +27,12 @@ function toolRuntime(args) {
   return JSON.stringify(Object.keys(caps).map(n => ({ name: n, status: caps[n].status, injectionMode: caps[n].injectionMode, hostSystemPolicy: caps[n].hostSystemPolicy })), null, 2);
 }
 function toolBuildPrompt(args) {
-  const config = readConfigFile(resolve(args.project));
-  const handoffPath = resolve(args.project, args.handoff);
+  const project = resolve(args.project);
+  const handoffPath = resolve(project, args.handoff);
+  if (handoffPath !== project && !handoffPath.startsWith(project + sep)) {
+    return `Error: handoff path escapes the project root: ${args.handoff}`;
+  }
+  const config = readConfigFile(project);
   const vr = validate(readHandoff(handoffPath));
   if (!vr.valid) return `Handoff missing required sections: ${vr.missing.join(', ')}`;
   return assemble({ handoffPath, config });
@@ -36,7 +40,7 @@ function toolBuildPrompt(args) {
 function toolDoctor(args) {
   const projectDir = resolve(args.project);
   const config = readConfigFile(projectDir);
-  return doctorChecks({ projectDir, config }).map(c => `${c.status.toUpperCase()} ${c.check}: ${c.detail}`).join('\n');
+  return doctorChecks({ projectDir, config, spawn: false }).map(c => `${c.status.toUpperCase()} ${c.check}: ${c.detail}`).join('\n');
 }
 function callTool(name, args) {
   if (name === 'fable_runtime') return toolRuntime(args);

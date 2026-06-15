@@ -32,4 +32,10 @@ describe('mcp-server', () => {
     const res = out.find(m => m.id === 3).result;
     assert.ok(res.content[0].text.includes('opencode'));
   });
+
+  it('tools/call fable_build_prompt rejects a handoff path escaping the project root', () => {
+    const out = rpc([{ jsonrpc: '2.0', id: 7, method: 'tools/call', params: { name: 'fable_build_prompt', arguments: { project: ROOT, handoff: '../../../../Windows/System32/drivers/etc/hosts' } } }]);
+    const res = out.find(m => m.id === 7).result;
+    assert.ok(/escapes the project root/i.test(res.content[0].text), `expected scope rejection, got: ${res.content[0].text}`);
+  });
 });
