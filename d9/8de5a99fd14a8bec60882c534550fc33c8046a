@@ -1,0 +1,19 @@
+docs/handoffs/FABLE-M9-REVIEW-FIXES-result.md
+  s_865fae9e798144::t_ffd93e77447438 1-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "d98de5a99fd14a8bec60882c534550fc33c8046a",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
