@@ -8,10 +8,13 @@ import { syncCharter, FABLE_BLOCK } from '../src/charter.js';
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
 const TMP = resolve(__dirname, '..', `.tmp-test-charter-${process.pid}`);
 
-describe('charter', () => {
-  before(() => { if (existsSync(TMP)) rmSync(TMP, { recursive: true, force: true }); mkdirSync(TMP, { recursive: true }); });
-  after(() => { if (existsSync(TMP)) rmSync(TMP, { recursive: true, force: true }); });
+// File-level lifecycle so TMP is cleaned up after ALL describes in this file.
+// A per-describe after() ran too early and left TMP behind once the later
+// command describes recreated it; hoisting cleanup here fixes the leftover.
+before(() => { if (existsSync(TMP)) rmSync(TMP, { recursive: true, force: true }); mkdirSync(TMP, { recursive: true }); });
+after(() => { if (existsSync(TMP)) rmSync(TMP, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }); });
 
+describe('charter', () => {
   it('seeds AGENTS.md and CLAUDE.md with the fable block', () => {
     const dir = join(TMP, 'a'); mkdirSync(dir, { recursive: true });
     syncCharter({ project: dir, files: ['AGENTS.md', 'CLAUDE.md'] });
