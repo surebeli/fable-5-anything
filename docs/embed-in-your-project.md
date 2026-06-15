@@ -37,6 +37,17 @@ This creates inside `<your-project>/`:
 | `.gitignore` | Entry to ignore `.fable/runs/` |
 | `AGENTS.md` | Short fable integration block (appended if file exists) |
 
+### Install link modes
+
+`fable install` accepts `--link <path|global|npx>`:
+
+- `path` (default) — shims call this clone's `bin/fable.js` by absolute path.
+- `global` — shims call a globally installed `fable` (`npm i -g fable-5-anything`).
+- `npx` — shims call `npx -y fable-5-anything` (no clone to keep around).
+
+Each install writes `.fable/fable.lock.json` recording the `fableVersion` and the
+chosen link mode, so a project's fable wiring is traceable and reproducible.
+
 > **Safe re-run:** Repeating `fable install` preserves any handoff or README files you
 > have modified. Updated templates are written as `.new` files alongside the originals.
 

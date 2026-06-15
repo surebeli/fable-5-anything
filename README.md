@@ -6,6 +6,23 @@ or product assumptions.
 
 ## Quickstart: Embed in your project (5 minutes)
 
+Zero-clone install (no repo path to remember):
+
+```bash
+# one-off, via npx (GitHub source until published to npm)
+npx -y github:surebeli/fable-5-anything install --project . --link npx --yes
+
+# or bootstrap scripts
+scripts/install.ps1 -Project .      # Windows
+sh scripts/install.sh .             # POSIX
+```
+
+The `--link` mode controls how the generated `.fable/bin` shims call fable:
+`path` (default, points at this clone), `global` (calls a globally installed
+`fable`), or `npx` (re-resolves `fable-5-anything` each call — best for the
+zero-clone flow). Each install records `fableVersion` and the link mode in
+`.fable/fable.lock.json`.
+
 See [docs/embed-in-your-project.md](docs/embed-in-your-project.md).
 
 ```bash
@@ -55,6 +72,7 @@ npm test
 | `fable smoke [--execute]` | PONG smoke check (dry-run by default) |
 | `fable run <handoff> [--dry-run]` | Execute opencode run |
 | `fable runtime [<name>]` | Show how fable injects into a runtime (status, injection mode, overlay vs system replacement). No args lists all. |
+| `fable --version` | Print the fable version (single-sourced from package.json). |
 
 All commands support `--project <dir>` for project-scoped use and `--config <path>` for explicit config.
 
