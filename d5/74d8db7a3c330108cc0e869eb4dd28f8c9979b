@@ -1,0 +1,23 @@
+adapters/generic.md
+  s_865fae9e798144::t_37d9279f29d3d9 1-42
+test/runtime.test.js
+  s_865fae9e798144::t_c4dc4700ad34f1 1-28
+adapters/copilot.md
+  s_865fae9e798144::t_6cca425fd59490 1-49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "d574d8db7a3c330108cc0e869eb4dd28f8c9979b",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
