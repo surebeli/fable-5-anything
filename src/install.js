@@ -145,6 +145,14 @@ export function install({ projectDir, runtime, model, link = 'path' }) {
   return { project, config };
 }
 
+// Build a charter block (with FABLE markers) containing the FULL portable core
+// inline — used by governance-only `--inline` mode to embed the constitution
+// straight into AGENTS.md / CLAUDE.md (zero .fable/, zero opencode.json).
+export function buildInlineCharterBlock() {
+  const core = readFileSync(join(PKG_ROOT, 'prompts', 'portable-agent-core.md'), 'utf-8');
+  return '<!-- FABLE-START -->\n## Fable Governance (portable core)\n\n' + core.trimEnd() + '\n\nThe host agent\'s own system prompt and tool rules remain authoritative; fable overlays project governance and never asks you to ignore host instructions.\n<!-- FABLE-END -->\n';
+}
+
 // Make the FULL fable portable core govern every opencode session: copy the
 // portable core into the project's .fable/ and wire it (plus AGENTS.md) into
 // opencode.json `instructions`, which opencode auto-loads each run. Preserves

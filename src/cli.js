@@ -5,7 +5,7 @@ import { defaultConfig, readConfigFile, writeConfig, PKG_ROOT } from './config.j
 import { readHandoff, validate } from './handoff.js';
 import { assemble, smokePrompt } from './prompt.js';
 import { buildCommand, runOpenCode } from './opencode.js';
-import { install, wireOpencodeGovernance } from './install.js';
+import { install, wireOpencodeGovernance, buildInlineCharterBlock } from './install.js';
 import { doctorChecks } from './doctor.js';
 import { syncCharter } from './charter.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
@@ -101,6 +101,12 @@ Usage:
   fable grok setup --project <dir> [--apply] [--via path|github]
     Seed the charter (AGENTS.md + CLAUDE.md) and print the grok mcp add command
     (reusing the fable MCP server). With --apply, run grok mcp add to register it.
+
+  fable governance --project <dir> [--inline]
+    Governance-only mode: install just the constitution into agent context — no
+    executor / handoffs / shims. Default wires the portable core via charter +
+    opencode.json instructions; --inline embeds the full core into AGENTS.md +
+    CLAUDE.md (zero .fable/).
 
   fable opencode setup --project <dir>
     Make the full fable portable core govern every opencode session: seed the
@@ -395,6 +401,23 @@ function cmdGrok(opts, positional) {
   registerMcp('grok', opts);
 }
 
+function cmdGovernance(opts) {
+  const project = resolve(opts.project || '.');
+  const inline = opts.inline === true || opts.inline === 'true';
+  if (inline) {
+    const block = buildInlineCharterBlock();
+    for (const w of syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'], force: true, block })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+    console.log('\nGovernance-only (inline): the full portable core is embedded in AGENTS.md + CLAUDE.md.');
+    console.log('No .fable/, no opencode.json, no executor — every host that auto-loads these charter files now follows the full constitution.');
+  } else {
+    for (const w of syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+    const r = wireOpencodeGovernance({ projectDir: project });
+    console.log('  (core)    .fable/portable-agent-core.md');
+    console.log('  (config)  opencode.json instructions: ' + r.instructions.join(', '));
+    console.log('\nGovernance-only: portable core via charter + opencode.json instructions (no executor/handoffs/shims). Use --inline for a zero-.fable footprint.');
+  }
+}
+
 function cmdOpencode(opts, positional) {
   if (positional[0] !== 'setup') { console.error('Usage: fable opencode setup --project <dir>'); process.exit(1); }
   const project = resolve(opts.project || '.');
@@ -457,6 +480,9 @@ export function main(argv) {
       break;
     case 'grok':
       cmdGrok(opts, positional);
+      break;
+    case 'governance':
+      cmdGovernance(opts);
       break;
     case 'opencode':
       cmdOpencode(opts, positional);

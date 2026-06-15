@@ -11,7 +11,7 @@ function headerFor(rel) {
   return `# ${base}\n`;
 }
 
-export function syncCharter({ project, files, force = false }) {
+export function syncCharter({ project, files, force = false, block = FABLE_BLOCK }) {
   const written = [];
   for (const rel of files) {
     const p = join(project, rel);
@@ -21,7 +21,8 @@ export function syncCharter({ project, files, force = false }) {
       const existing = readFileSync(p, 'utf-8');
       if (existing.includes('<!-- FABLE-START -->')) {
         if (force) {
-          const refreshed = existing.replace(/<!-- FABLE-START -->[\s\S]*?<!-- FABLE-END -->\n?/, FABLE_BLOCK);
+          // function replacement avoids `$`-sequence interpretation in `block`
+          const refreshed = existing.replace(/<!-- FABLE-START -->[\s\S]*?<!-- FABLE-END -->\n?/, () => block);
           writeFileSync(p, refreshed);
           written.push({ file: rel, action: 'refreshed' });
         } else {
@@ -29,10 +30,10 @@ export function syncCharter({ project, files, force = false }) {
         }
         continue;
       }
-      writeFileSync(p, existing + (existing.endsWith('\n') ? '' : '\n') + '\n' + FABLE_BLOCK);
+      writeFileSync(p, existing + (existing.endsWith('\n') ? '' : '\n') + '\n' + block);
       written.push({ file: rel, action: 'appended' });
     } else {
-      writeFileSync(p, headerFor(rel) + '\n' + FABLE_BLOCK);
+      writeFileSync(p, headerFor(rel) + '\n' + block);
       written.push({ file: rel, action: 'created' });
     }
   }

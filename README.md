@@ -4,6 +4,17 @@ Portable prompt governance for adapting useful Claude Fable 5 style behaviors to
 non-Claude agent runtimes without copying Claude-specific identity, tools, paths,
 or product assumptions.
 
+## Install — two modes (pick one)
+
+After cloning (no npm publish needed), choose:
+
+- **Governance-only** — every agent prompt follows the fable constitution, minimal footprint:
+  `node bin/fable.js governance --project <proj> --inline` (zero `.fable/`), or omit `--inline` for the core-file + `opencode.json instructions` variant.
+- **Full (governance + dispatch)** — adds the `fable run` / `build-prompt` / `smoke` executor + handoff contract:
+  `node bin/fable.js install --project <proj> --runtime opencode --model tokenbox/deepseek-v4-pro --link path --yes`, then `node bin/fable.js opencode setup --project <proj>`.
+
+See [docs/install-modes.md](docs/install-modes.md) for the full comparison.
+
 ## Quickstart: Embed in your project (5 minutes)
 
 Zero-clone install (no repo path to remember):
