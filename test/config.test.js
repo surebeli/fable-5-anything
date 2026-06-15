@@ -51,4 +51,21 @@ describe('config', () => {
     const pkgJson = join(PKG_ROOT, 'package.json');
     assert.ok(existsSync(pkgJson));
   });
+
+  it('defaultConfig maps runtime to its adapter (kimi -> adapters/kimi.md)', () => {
+    const cfg = defaultConfig('kimi', 'kimi-latest');
+    assert.strictEqual(cfg.adapter, 'adapters/kimi.md');
+  });
+
+  it('defaultConfig carries injectionMode and hostSystemPolicy from capabilities', () => {
+    const cfg = defaultConfig('opencode', 'tokenbox/deepseek-v4-pro');
+    assert.strictEqual(cfg.injectionMode, 'prompt-prelude');
+    assert.strictEqual(cfg.hostSystemPolicy, 'overlay');
+  });
+
+  it('defaultConfig falls back to the opencode adapter for unknown runtime', () => {
+    const cfg = defaultConfig('bogus', 'x');
+    assert.strictEqual(cfg.adapter, 'adapters/opencode.md');
+    assert.strictEqual(cfg.hostSystemPolicy, 'overlay');
+  });
 });

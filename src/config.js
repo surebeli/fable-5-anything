@@ -1,6 +1,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { getRuntime } from './runtime.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const PKG_ROOT = resolve(join(__dirname, '..'));
@@ -8,10 +9,13 @@ export const PKG_ROOT = resolve(join(__dirname, '..'));
 const DEFAULT_ADAPTER = 'adapters/opencode.md';
 
 export function defaultConfig(runtime = 'opencode', model = 'tokenbox/deepseek-v4-pro') {
+  const rt = getRuntime(runtime);
   return {
     runtime,
     model,
-    adapter: DEFAULT_ADAPTER,
+    adapter: (rt && rt.adapter) || DEFAULT_ADAPTER,
+    injectionMode: rt ? rt.injectionMode : 'prompt-prelude',
+    hostSystemPolicy: rt ? rt.hostSystemPolicy : 'overlay',
     fableVersion: '0.1.0'
   };
 }
