@@ -1,0 +1,24 @@
+test/charter.test.js
+  s_865fae9e798144::t_a706dbf737a28c 37-55
+src/cli.js
+  s_865fae9e798144::t_295687e5f82658 82
+  s_865fae9e798144::t_7ffcb954a061ba 319
+src/charter.js
+  s_865fae9e798144::t_e1f78ef895a15c 6-14,22-31,35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "0164d888bd8839de5342189de7b477cd07c10905",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
