@@ -1,0 +1,28 @@
+adapters/runtime-capabilities.json
+  s_865fae9e798144::t_7a90174ffecf6b 21-22,25,27
+README.md
+  s_865fae9e798144::t_89132ad2f773e0 104-105
+test/runtime.test.js
+  s_865fae9e798144::t_d969ab03b0a166 78-84
+docs/handoffs/FABLE-M6-CODEX-result.md
+  s_865fae9e798144::t_b5aacf67ea2131 1-40
+docs/runtime-overlay-model.md
+  s_865fae9e798144::t_e66770a3225bb7 87-94
+  s_865fae9e798144::t_76c7a2f16c4634 79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "0c3224d57be03da3bc5a87efef1ac57ee94c0f22",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
