@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import { readFileSync, existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { loadCapabilities, getRuntime, listRuntimes, adapterForRuntime, REQUIRED_KEYS } from '../src/runtime.js';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
 const ROOT = resolve(__dirname, '..');
@@ -27,10 +28,7 @@ describe('new adapters', () => {
   });
 });
 
-import { loadCapabilities, getRuntime, listRuntimes, adapterForRuntime } from '../src/runtime.js';
-
 const EXPECTED_RUNTIMES = ['claude', 'opencode', 'codex', 'kimi', 'grok', 'copilot', 'agy'];
-const REQUIRED_KEYS = ['status', 'injectionMode', 'hostSystemPolicy', 'adapter', 'commandSupport', 'notes'];
 
 describe('runtime capabilities metadata', () => {
   it('listRuntimes covers the full agreed vendor set', () => {
