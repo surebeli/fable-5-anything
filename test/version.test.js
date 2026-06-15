@@ -50,3 +50,27 @@ describe('fable --version command', () => {
     assert.ok(r.stdout.includes(VERSION));
   });
 });
+
+import { existsSync } from 'node:fs';
+
+describe('bootstrap scripts', () => {
+  it('scripts/install.ps1 exists and runs npx github install with --link', () => {
+    const p = resolve(ROOT, 'scripts', 'install.ps1');
+    assert.ok(existsSync(p));
+    const t = readFileSync(p, 'utf-8');
+    assert.ok(t.includes('npx'), 'should use npx');
+    assert.ok(t.includes('github:surebeli/fable-5-anything'), 'should reference the github package');
+    assert.ok(t.includes('install'), 'should call fable install');
+    assert.ok(t.includes('--link'), 'should set a link mode');
+  });
+
+  it('scripts/install.sh exists and runs npx github install with --link', () => {
+    const p = resolve(ROOT, 'scripts', 'install.sh');
+    assert.ok(existsSync(p));
+    const t = readFileSync(p, 'utf-8');
+    assert.ok(t.includes('#!/usr/bin/env sh') || t.includes('#!/bin/sh'));
+    assert.ok(t.includes('npx'));
+    assert.ok(t.includes('github:surebeli/fable-5-anything'));
+    assert.ok(t.includes('--link'));
+  });
+});
