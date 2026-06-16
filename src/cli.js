@@ -53,7 +53,7 @@ function showHelp() {
   console.log(`fable — portable prompt governance CLI
 
 Two install modes (see docs/install-modes.md):
-  - governance-only:  fable governance --project <dir> [--inline]
+  - governance-only:  fable governance --project <dir>   (host-agnostic)
   - full (+dispatch): fable install --project <dir> ... then fable <host> setup
   (AI assistants: ask the user which mode before installing.)
 
@@ -107,11 +107,13 @@ Usage:
     Seed the charter (AGENTS.md + CLAUDE.md) and print the grok mcp add command
     (reusing the fable MCP server). With --apply, run grok mcp add to register it.
 
-  fable governance --project <dir> [--inline]
-    Governance-only mode: install just the constitution into agent context — no
-    executor / handoffs / shims. Default wires the portable core via charter +
-    opencode.json instructions; --inline embeds the full core into AGENTS.md +
-    CLAUDE.md (zero .fable/).
+  fable governance --project <dir>
+    Governance-only mode (HOST-AGNOSTIC): install just the constitution into agent
+    context — no executor / handoffs / shims, no host-specific wiring. Embeds the
+    full portable core into AGENTS.md + CLAUDE.md, which every markdown-charter host
+    auto-loads (opencode, Codex, Claude Code, Grok, Copilot). Zero .fable/.
+    (Kimi loads skills -> fable kimi setup. Slim opencode charter + opencode.json
+    instructions -> fable opencode setup. Host-specific params belong to full mode.)
 
   fable opencode setup --project <dir>
     Make the full fable portable core govern every opencode session: seed the
@@ -408,19 +410,16 @@ function cmdGrok(opts, positional) {
 
 function cmdGovernance(opts) {
   const project = resolve(opts.project || '.');
-  const inline = opts.inline === true || opts.inline === 'true';
-  if (inline) {
-    const block = buildInlineCharterBlock();
-    for (const w of syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'], force: true, block })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
-    console.log('\nGovernance-only (inline): the full portable core is embedded in AGENTS.md + CLAUDE.md.');
-    console.log('No .fable/, no opencode.json, no executor — every host that auto-loads these charter files now follows the full constitution.');
-  } else {
-    for (const w of syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'], block: FABLE_BLOCK_OPENCODE, force: true })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
-    const r = wireOpencodeGovernance({ projectDir: project });
-    console.log('  (core)    .fable/portable-agent-core.md');
-    console.log('  (config)  opencode.json instructions: ' + r.instructions.join(', '));
-    console.log('\nGovernance-only: portable core via charter + opencode.json instructions (no executor/handoffs/shims). Use --inline for a zero-.fable footprint.');
-  }
+  // Mode A is HOST-AGNOSTIC: embed the full portable core into the universal
+  // charter files (AGENTS.md + CLAUDE.md) that every markdown-charter host
+  // auto-loads (opencode, Codex, Claude Code, Grok, Copilot). No host param and
+  // no host-specific wiring (opencode.json, MCP, skills-dir) — that is Mode B /
+  // `fable <host> setup`.
+  const block = buildInlineCharterBlock();
+  for (const w of syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'], force: true, block })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+  console.log('\nGovernance-only (host-agnostic): the full portable core is embedded in AGENTS.md + CLAUDE.md.');
+  console.log('Every host that auto-loads these charter files (opencode, Codex, Claude Code, Grok, Copilot) now follows the full constitution — no .fable/, no host-specific config.');
+  console.log('Kimi loads skills, not charter markdown → use `fable kimi setup`. opencode users who prefer a slim charter + opencode.json instructions can use `fable opencode setup`.');
 }
 
 function cmdOpencode(opts, positional) {
