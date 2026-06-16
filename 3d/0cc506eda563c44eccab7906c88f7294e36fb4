@@ -1,0 +1,29 @@
+src/charter.js
+  s_865fae9e798144::t_dfe06e3492f507 4-6,9-12
+src/cli.js
+  s_865fae9e798144::t_e5fd2e99f3a63d 10
+  s_865fae9e798144::t_d28490edfeecc0 418,432
+test/governance.test.js
+  s_865fae9e798144::t_487e8232882b56 22
+test/skill.test.js
+  s_865fae9e798144::t_c92d3fb5a80e03 89
+test/charter.test.js
+  s_865fae9e798144::t_acf345c83bbd32 6
+  s_865fae9e798144::t_e7682b82900911 65-71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "3d0cc506eda563c44eccab7906c88f7294e36fb4",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
