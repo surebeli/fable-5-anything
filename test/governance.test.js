@@ -19,6 +19,7 @@ describe('fable governance (governance-only mode)', () => {
     assert.strictEqual(r.status, 0, r.stderr);
     assert.ok(existsSync(join(dir, 'AGENTS.md')) && existsSync(join(dir, 'CLAUDE.md')));
     assert.ok(existsSync(join(dir, '.fable', 'portable-agent-core.md')), 'core copied');
+    assert.ok(readFileSync(join(dir, 'AGENTS.md'), 'utf-8').includes('.fable/portable-agent-core.md'), 'charter block names the core file in this mode');
     const oc = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf-8'));
     assert.ok(oc.instructions.includes('.fable/portable-agent-core.md'), 'opencode.json wired');
     // governance-only must NOT create the dispatch/executor (B-layer) artifacts

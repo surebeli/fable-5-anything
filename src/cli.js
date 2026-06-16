@@ -7,7 +7,7 @@ import { assemble, smokePrompt } from './prompt.js';
 import { buildCommand, runOpenCode } from './opencode.js';
 import { install, wireOpencodeGovernance, buildInlineCharterBlock } from './install.js';
 import { doctorChecks } from './doctor.js';
-import { syncCharter } from './charter.js';
+import { syncCharter, FABLE_BLOCK_OPENCODE } from './charter.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
 import { writeKimiSkill } from './skill.js';
 import { startMcpServer } from './mcp.js';
@@ -415,7 +415,7 @@ function cmdGovernance(opts) {
     console.log('\nGovernance-only (inline): the full portable core is embedded in AGENTS.md + CLAUDE.md.');
     console.log('No .fable/, no opencode.json, no executor — every host that auto-loads these charter files now follows the full constitution.');
   } else {
-    for (const w of syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+    for (const w of syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'], block: FABLE_BLOCK_OPENCODE, force: true })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
     const r = wireOpencodeGovernance({ projectDir: project });
     console.log('  (core)    .fable/portable-agent-core.md');
     console.log('  (config)  opencode.json instructions: ' + r.instructions.join(', '));
@@ -429,7 +429,7 @@ function cmdOpencode(opts, positional) {
   const caps = loadCapabilities();
   const set = new Set(['AGENTS.md', 'CLAUDE.md']);
   for (const f of (caps.opencode ? caps.opencode.charterFiles : [])) set.add(f);
-  for (const w of syncCharter({ project, files: [...set] })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
+  for (const w of syncCharter({ project, files: [...set], block: FABLE_BLOCK_OPENCODE, force: true })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
   const r = wireOpencodeGovernance({ projectDir: project });
   console.log('  (core)    .fable/portable-agent-core.md');
   console.log('  (config)  opencode.json instructions: ' + r.instructions.join(', '));

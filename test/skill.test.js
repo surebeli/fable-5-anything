@@ -86,6 +86,7 @@ describe('fable opencode setup command', () => {
     assert.ok(core.includes('Priority Order'), 'portable core copied into .fable/');
     const oc = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf-8'));
     assert.ok(oc.instructions.includes('AGENTS.md') && oc.instructions.includes('.fable/portable-agent-core.md'), 'opencode.json wired with instructions');
+    assert.ok(readFileSync(join(dir, 'AGENTS.md'), 'utf-8').includes('.fable/portable-agent-core.md'), 'charter block names the core file');
   });
 
   it('preserves existing opencode.json keys and is idempotent', () => {

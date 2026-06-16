@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { mkdirSync, rmSync, existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { syncCharter, FABLE_BLOCK } from '../src/charter.js';
+import { syncCharter, FABLE_BLOCK, FABLE_BLOCK_OPENCODE } from '../src/charter.js';
 
 const __dirname = resolve(fileURLToPath(import.meta.url), '..');
 const TMP = resolve(__dirname, '..', `.tmp-test-charter-${process.pid}`);
@@ -62,6 +62,13 @@ describe('FABLE_BLOCK is mode-neutral (calibrated for governance-only too)', () 
     assert.ok(/authoritative/i.test(FABLE_BLOCK), 'keeps host-authoritative/overlay');
     assert.ok(!/fable run/.test(FABLE_BLOCK), 'must NOT instruct `fable run` (Mode-2 only) in the universal charter block');
     assert.ok(!/\.fable\/handoffs/.test(FABLE_BLOCK), 'must NOT reference the handoffs dir in the universal block');
+    assert.ok(!FABLE_BLOCK.includes('.fable/portable-agent-core.md'), 'universal block must NOT name the core file (it does not exist in all modes)');
+  });
+
+  it('FABLE_BLOCK_OPENCODE names the core file + opencode.json instructions (used where the file exists)', () => {
+    assert.ok(FABLE_BLOCK_OPENCODE.includes('.fable/portable-agent-core.md'), 'names the core file');
+    assert.ok(/opencode\.json/.test(FABLE_BLOCK_OPENCODE) && /instructions/.test(FABLE_BLOCK_OPENCODE), 'explains the instructions wiring');
+    assert.ok(!/fable run/.test(FABLE_BLOCK_OPENCODE), 'still no Mode-2 dispatch command');
   });
 });
 
