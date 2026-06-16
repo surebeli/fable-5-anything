@@ -69,10 +69,12 @@ always-on governance on top.
 
 ## Committing into a shared repo
 
-For both modes, commit the **governance** files (the `AGENTS.md` / `CLAUDE.md`
-charter, plus any `.fable/portable-agent-core.md` + `opencode.json` from a
-host-specific setup). Do **not** commit machine-specific bits (`.fable/bin/`,
-`.fable/fable.lock.json`) or any raw source prompt — add them to `.gitignore`.
+Commit the **governance** files: the `AGENTS.md` / `CLAUDE.md` charter (both
+modes). If you used the host-specific `fable opencode setup`, also commit the
+`.fable/portable-agent-core.md` + `opencode.json` it creates — **Mode 1
+governance-only produces neither**, so there is nothing extra to commit there. Do
+**not** commit machine-specific bits (`.fable/bin/`, `.fable/fable.lock.json`) or
+any raw source prompt — add them to `.gitignore`.
 
 ## Updating
 

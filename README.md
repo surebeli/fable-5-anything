@@ -6,25 +6,54 @@ or product assumptions.
 
 ## Install — two modes (pick one)
 
-After cloning (no npm publish needed), choose:
+After cloning (no npm publish needed), pick by what you need:
 
-- **Governance-only (host-agnostic)** — every agent prompt follows the fable constitution, minimal footprint, **no host argument**:
-  `node bin/fable.js governance --project <proj>` inlines the full core into `AGENTS.md` + `CLAUDE.md` (zero `.fable/`, no host-specific wiring), so opencode/Codex/Grok/Claude Code/Copilot are all governed from one command. (Kimi loads skills → `fable kimi setup`; a slim opencode charter + `opencode.json instructions` → `fable opencode setup`.)
-- **Full (governance + dispatch)** — adds the `fable run` / `build-prompt` / `smoke` executor + handoff contract:
-  `node bin/fable.js install --project <proj> --runtime opencode --model tokenbox/deepseek-v4-pro --link path --yes`, then `node bin/fable.js opencode setup --project <proj>`.
+| What you want | Mode | Command |
+|---|---|---|
+| Every agent to just **obey the fable constitution** (most users) | **Mode 1 — Governance-only** | `node bin/fable.js governance --project <proj>` |
+| That **plus** fable to **assemble & dispatch handoffs** (`run` / `build-prompt` / `smoke` / `doctor`) | **Mode 2 — Full** | `node bin/fable.js install …` then `fable <host> setup` |
 
-See [docs/install-modes.md](docs/install-modes.md) for the full comparison.
+- **Mode 1 — Governance-only (host-agnostic).** You only want the constitution in
+  agent context. One command, **no host argument**:
+  `node bin/fable.js governance --project <proj>` inlines the full portable core
+  into `AGENTS.md` + `CLAUDE.md`, so opencode/Codex/Grok/Claude Code/Copilot are
+  all governed at once. Zero `.fable/`, no host-specific wiring. (Kimi loads
+  skills → `fable kimi setup`; a slim opencode charter → `fable opencode setup`.)
+- **Mode 2 — Full (governance + dispatch).** You also want fable to assemble and
+  dispatch handoffs. Adds the `fable run` / `build-prompt` / `smoke` / `doctor`
+  executor + handoff contract + local shims:
+  `node bin/fable.js install --project <proj> --runtime opencode --model tokenbox/deepseek-v4-pro --link path --yes`,
+  then `node bin/fable.js opencode setup --project <proj>`.
+
+See [docs/install-modes.md](docs/install-modes.md) for the full comparison and footprint table.
 
 > **Using an AI assistant to set this up?** It should ask you which mode first — the
 > repo's `AGENTS.md` / `CLAUDE.md` instruct installing agents to confirm
-> governance-only vs full before running anything. If it didn't ask, point it at
-> `docs/install-modes.md`.
+> Mode 1 (governance-only) vs Mode 2 (full) before running anything. If it didn't
+> ask, point it at `docs/install-modes.md`.
+
+## Quickstart: Mode 1 (governance-only) — one command (1 minute)
+
+```bash
+git clone https://github.com/surebeli/fable-5-anything
+cd fable-5-anything
+node bin/fable.js governance --project <your-project>
+```
+
+That's the whole install. The full portable core is now inlined into your
+project's `AGENTS.md` + `CLAUDE.md`, so every host that auto-loads them (opencode,
+Codex, Claude Code, Grok, Copilot) follows the constitution. Nothing to run,
+nothing machine-specific to commit. (Kimi loads skills → `fable kimi setup`; a
+slim opencode charter → `fable opencode setup`.)
+
+> **Chose Mode 1?** You're done. The **Quickstart: Mode 2**, local-shim, and
+> **Commands** sections below are Mode 2 (dispatch) only — governance-only needs
+> none of them.
 
 ## Quickstart: Mode 2 (full) — embed in your project (5 minutes)
 
 > This quickstart sets up the **full** dispatch workflow. For **Mode 1
-> (governance-only)**, use `fable governance` (see the two-mode section above and
-> [docs/install-modes.md](docs/install-modes.md)).
+> (governance-only)**, see the one-command quickstart just above.
 
 Zero-clone install (no repo path to remember):
 
@@ -85,8 +114,14 @@ npm test
 
 ## Commands
 
+`fable governance` is the whole of **Mode 1**. Every other command below — plus
+the local shims — is **Mode 2** (dispatch); the host `setup` commands
+(`opencode setup`, `codex setup`, `kimi setup`, `copilot setup`, `grok setup`) add
+in-session governance for a specific host.
+
 | Command | Description |
 |---|---|
+| `fable governance --project <dir>` | **Mode 1.** Inline the full portable core into AGENTS.md + CLAUDE.md (host-agnostic; no .fable/, no host wiring). |
 | `fable install --project <dir>` | Bootstrap a project with .fable/ config, handoffs, shims, README, .gitignore, and AGENTS.md. Safe re-run preserves user files. |
 | `fable doctor --project <dir>` | Check 9 items: config, adapter, core, handoff, opencode dry-run, opencode PATH, AGENTS.md, gitignore, shims. No model calls. |
 | `fable init --cwd <dir>` | Create `.fable/config.json` only |

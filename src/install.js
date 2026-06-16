@@ -146,8 +146,9 @@ export function install({ projectDir, runtime, model, link = 'path' }) {
 }
 
 // Build a charter block (with FABLE markers) containing the FULL portable core
-// inline — used by governance-only `--inline` mode to embed the constitution
-// straight into AGENTS.md / CLAUDE.md (zero .fable/, zero opencode.json).
+// inline — used by the host-agnostic `fable governance` command, which always
+// inlines the constitution straight into AGENTS.md / CLAUDE.md (zero .fable/,
+// zero opencode.json). There is no `--inline` flag; inlining is the only behavior.
 export function buildInlineCharterBlock() {
   const core = readFileSync(join(PKG_ROOT, 'prompts', 'portable-agent-core.md'), 'utf-8');
   return '<!-- FABLE-START -->\n## Fable Governance (portable core)\n\n' + core.trimEnd() + '\n\nThe host agent\'s own system prompt and tool rules remain authoritative; fable overlays project governance and never asks you to ignore host instructions.\n<!-- FABLE-END -->\n';
