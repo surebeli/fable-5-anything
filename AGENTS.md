@@ -6,17 +6,28 @@ Claude Fable 5 style prompts.
 ## Installing fable into a user's project — ASK FIRST
 
 If a user asks you to install or set up fable into their project, do NOT assume a
-mode. First **ask which mode** they want:
+mode. First **ask which mode** they want — don't pick one for them:
 
-1. **Governance-only** — every agent prompt follows the fable constitution; no
-   executor / handoffs / shims. `node bin/fable.js governance --project <proj> [--inline]`.
-2. **Full (governance + dispatch)** — adds the `fable run` / `build-prompt` / `smoke`
-   executor + handoff contract. `node bin/fable.js install --project <proj> --runtime
-   opencode --model <model> --link path --yes`, then `node bin/fable.js <host> setup
-   --project <proj>`.
+1. **Mode 1 — Governance-only (host-agnostic).** Just puts the fable constitution
+   into agent context; no executor, no handoffs, no shims, and **no host-specific
+   wiring**. One command, no host argument:
+   `node bin/fable.js governance --project <proj>`
+   It inlines the full portable core into the project's `AGENTS.md` + `CLAUDE.md`,
+   so every host that auto-loads those (opencode, Codex, Claude Code, Grok,
+   Copilot) is governed — zero `.fable/`, no `opencode.json`, no `.github/`.
+   Exceptions: Kimi loads *skills*, not charter markdown → `fable kimi setup`;
+   opencode users who want a slim charter + `opencode.json` `instructions` →
+   `fable opencode setup`.
+2. **Mode 2 — Full (governance + dispatch).** Adds the executor
+   (`fable run` / `build-prompt` / `smoke` / `doctor`), the handoff contract, and
+   local shims — host-specific by nature (runtime/model/adapter):
+   `node bin/fable.js install --project <proj> --runtime opencode --model <model> --link path --yes`,
+   then the host setup, e.g. `node bin/fable.js opencode setup --project <proj>`
+   (or `codex setup --apply` / `kimi setup` / `copilot setup --apply` /
+   `grok setup --apply`).
 
-Confirm the mode (and runtime/host) with the user before running anything. Full
-comparison: docs/install-modes.md.
+Confirm the mode (and, for Mode 2, the runtime/host) before running anything. Full
+comparison and footprint table: `docs/install-modes.md`.
 
 ## Scope
 
