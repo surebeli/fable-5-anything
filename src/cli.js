@@ -52,6 +52,11 @@ function resolveHandoffPath(handoffPath, opts) {
 function showHelp() {
   console.log(`fable — portable prompt governance CLI
 
+Two install modes (see docs/install-modes.md):
+  - governance-only:  fable governance --project <dir> [--inline]
+  - full (+dispatch): fable install --project <dir> ... then fable <host> setup
+  (AI assistants: ask the user which mode before installing.)
+
 Usage:
   fable init --cwd <dir> --runtime <name> --model <name> [--yes]
     Initialize .fable/config.json in a project directory.

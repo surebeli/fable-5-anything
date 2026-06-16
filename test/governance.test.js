@@ -49,3 +49,28 @@ describe('fable governance (governance-only mode)', () => {
     assert.strictEqual((t.match(/<!-- FABLE-START -->/g) || []).length, 1, 'no duplicate block');
   });
 });
+
+describe('two-mode install discoverability (LLM-assisted installs surface the choice)', () => {
+  it('AGENTS.md instructs an installing agent to ASK which mode (governance vs full)', () => {
+    const t = readFileSync(join(ROOT, 'AGENTS.md'), 'utf-8');
+    assert.ok(/ask/i.test(t), 'AGENTS.md should tell installers to ask');
+    assert.ok(/governance/i.test(t) && /install/i.test(t), 'mentions both modes');
+    assert.ok(/install-modes\.md/.test(t), 'points to docs/install-modes.md');
+  });
+
+  it('CLAUDE.md exists with the same ask-first mode directive', () => {
+    assert.ok(existsSync(join(ROOT, 'CLAUDE.md')), 'fable repo should have CLAUDE.md for Claude Code installers');
+    const t = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf-8');
+    assert.ok(/ask/i.test(t) && /governance/i.test(t) && /install/i.test(t), 'CLAUDE.md should carry the ask-first two-mode directive');
+  });
+
+  it('README documents the two modes', () => {
+    const t = readFileSync(join(ROOT, 'README.md'), 'utf-8');
+    assert.ok(/two modes/i.test(t) && /governance/i.test(t), 'README has the two-mode section');
+  });
+
+  it('fable --help surfaces both governance and install', () => {
+    const r = spawnSync('node', [BIN, '--help'], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
+    assert.ok(/governance/.test(r.stdout) && /install/.test(r.stdout), 'help lists both modes');
+  });
+});

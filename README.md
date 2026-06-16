@@ -15,7 +15,16 @@ After cloning (no npm publish needed), choose:
 
 See [docs/install-modes.md](docs/install-modes.md) for the full comparison.
 
-## Quickstart: Embed in your project (5 minutes)
+> **Using an AI assistant to set this up?** It should ask you which mode first — the
+> repo's `AGENTS.md` / `CLAUDE.md` instruct installing agents to confirm
+> governance-only vs full before running anything. If it didn't ask, point it at
+> `docs/install-modes.md`.
+
+## Quickstart: Mode 2 (full) — embed in your project (5 minutes)
+
+> This quickstart sets up the **full** dispatch workflow. For **Mode 1
+> (governance-only)**, use `fable governance` (see the two-mode section above and
+> [docs/install-modes.md](docs/install-modes.md)).
 
 Zero-clone install (no repo path to remember):
 
