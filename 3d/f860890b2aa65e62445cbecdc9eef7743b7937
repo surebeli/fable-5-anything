@@ -1,0 +1,30 @@
+test/governance.test.js
+  s_865fae9e798144::t_95f9547249b3ab 15-16,23,25-36,39,41-42
+README.md
+  s_865fae9e798144::t_6231503bffc0ba 11-12
+docs/install-modes.md
+  s_865fae9e798144::t_272d970419f03f 16-20,22,26-39
+  s_865fae9e798144::t_04d08b51530050 72-74
+  s_865fae9e798144::t_a9c90ee41e64ee 64-65
+src/cli.js
+  s_865fae9e798144::t_31e6dd90ea3bed 56
+  s_865fae9e798144::t_7e7dd45b3bbd86 115-116
+  s_865fae9e798144::t_402f5b670aa0c3 413-422
+  s_865fae9e798144::t_8ce6ec92acf1d5 110-114
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "3df860890b2aa65e62445cbecdc9eef7743b7937",
+  "prompts": {},
+  "sessions": {
+    "s_865fae9e798144": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8b5e077e-0397-4ca1-a6f4-4012ad21c275",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
