@@ -55,6 +55,16 @@ describe('charter', () => {
   });
 });
 
+describe('FABLE_BLOCK is mode-neutral (calibrated for governance-only too)', () => {
+  it('keeps the governance essence but does NOT hardcode the Mode-2 fable run dispatch', () => {
+    assert.ok(FABLE_BLOCK.includes('## Fable Integration'), 'keeps the section heading');
+    assert.ok(/handoff contract/i.test(FABLE_BLOCK), 'keeps the handoff-contract principle');
+    assert.ok(/authoritative/i.test(FABLE_BLOCK), 'keeps host-authoritative/overlay');
+    assert.ok(!/fable run/.test(FABLE_BLOCK), 'must NOT instruct `fable run` (Mode-2 only) in the universal charter block');
+    assert.ok(!/\.fable\/handoffs/.test(FABLE_BLOCK), 'must NOT reference the handoffs dir in the universal block');
+  });
+});
+
 import { spawnSync } from 'node:child_process';
 const ROOT = resolve(__dirname, '..');
 const BIN = resolve(ROOT, 'bin', 'fable.js');
