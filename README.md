@@ -8,8 +8,8 @@ or product assumptions.
 
 After cloning (no npm publish needed), choose:
 
-- **Governance-only** — every agent prompt follows the fable constitution, minimal footprint:
-  `node bin/fable.js governance --project <proj> --inline` (zero `.fable/`), or omit `--inline` for the core-file + `opencode.json instructions` variant.
+- **Governance-only (host-agnostic)** — every agent prompt follows the fable constitution, minimal footprint, **no host argument**:
+  `node bin/fable.js governance --project <proj>` inlines the full core into `AGENTS.md` + `CLAUDE.md` (zero `.fable/`, no host-specific wiring), so opencode/Codex/Grok/Claude Code/Copilot are all governed from one command. (Kimi loads skills → `fable kimi setup`; a slim opencode charter + `opencode.json instructions` → `fable opencode setup`.)
 - **Full (governance + dispatch)** — adds the `fable run` / `build-prompt` / `smoke` executor + handoff contract:
   `node bin/fable.js install --project <proj> --runtime opencode --model tokenbox/deepseek-v4-pro --link path --yes`, then `node bin/fable.js opencode setup --project <proj>`.
 

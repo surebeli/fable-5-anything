@@ -12,40 +12,34 @@ const TMP = resolve(ROOT, `.tmp-test-governance-${process.pid}`);
 after(() => { if (existsSync(TMP)) rmSync(TMP, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }); });
 function fable(args) { return spawnSync('node', [BIN, ...args], { encoding: 'utf-8', timeout: 30000, cwd: ROOT }); }
 
-describe('fable governance (governance-only mode)', () => {
-  it('default: charter + core + opencode.json instructions, and NO executor artifacts', () => {
+describe('fable governance (governance-only mode — host-agnostic)', () => {
+  it('host-agnostic: full core inlined into AGENTS.md + CLAUDE.md; no host-specific wiring and NO executor artifacts', () => {
     const dir = join(TMP, 'g1'); mkdirSync(dir, { recursive: true });
     const r = fable(['governance', '--project', dir]);
-    assert.strictEqual(r.status, 0, r.stderr);
-    assert.ok(existsSync(join(dir, 'AGENTS.md')) && existsSync(join(dir, 'CLAUDE.md')));
-    assert.ok(existsSync(join(dir, '.fable', 'portable-agent-core.md')), 'core copied');
-    assert.ok(readFileSync(join(dir, 'AGENTS.md'), 'utf-8').includes('.fable/portable-agent-core.md'), 'charter block names the core file in this mode');
-    const oc = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf-8'));
-    assert.ok(oc.instructions.includes('.fable/portable-agent-core.md'), 'opencode.json wired');
-    // governance-only must NOT create the dispatch/executor (B-layer) artifacts
-    assert.ok(!existsSync(join(dir, '.fable', 'config.json')), 'no .fable/config.json');
-    assert.ok(!existsSync(join(dir, '.fable', 'bin')), 'no shims');
-    assert.ok(!existsSync(join(dir, '.fable', 'handoffs')), 'no handoffs');
-    assert.ok(!existsSync(join(dir, '.fable', 'fable.lock.json')), 'no lockfile');
-  });
-
-  it('--inline: full core inlined into AGENTS.md + CLAUDE.md; zero .fable/ and no opencode.json', () => {
-    const dir = join(TMP, 'g2'); mkdirSync(dir, { recursive: true });
-    const r = fable(['governance', '--project', dir, '--inline']);
     assert.strictEqual(r.status, 0, r.stderr);
     for (const f of ['AGENTS.md', 'CLAUDE.md']) {
       const t = readFileSync(join(dir, f), 'utf-8');
       assert.ok(t.includes('<!-- FABLE-START -->'), `${f} has fable block`);
-      assert.ok(t.includes('Priority Order'), `${f} should inline the full portable core`);
+      assert.ok(t.includes('Priority Order'), `${f} should inline the full portable core (host-agnostic)`);
     }
-    assert.ok(!existsSync(join(dir, '.fable')), 'inline mode creates no .fable/');
-    assert.ok(!existsSync(join(dir, 'opencode.json')), 'inline mode needs no opencode.json');
+    // Decoupled from any host: no .fable/, no opencode.json, no skill, no .github
+    assert.ok(!existsSync(join(dir, '.fable')), 'no .fable/ (decoupled from host)');
+    assert.ok(!existsSync(join(dir, 'opencode.json')), 'no opencode.json (host-specific wiring belongs to opencode setup)');
+    assert.ok(!existsSync(join(dir, '.github')), 'no copilot-specific files');
   });
 
-  it('--inline is idempotent (single fable block, refreshed not duplicated)', () => {
+  it('default block names NO single-host mechanism (no opencode.json / .fable core-file reference in the charter)', () => {
+    const dir = join(TMP, 'g1b'); mkdirSync(dir, { recursive: true });
+    fable(['governance', '--project', dir]);
+    const t = readFileSync(join(dir, 'AGENTS.md'), 'utf-8');
+    assert.ok(!/opencode\.json/.test(t), 'host-agnostic governance must not name opencode.json in the charter');
+    assert.ok(!/\.fable\/portable-agent-core\.md/.test(t), 'core is inlined, not referenced via a host-specific file');
+  });
+
+  it('is idempotent (single fable block, refreshed not duplicated)', () => {
     const dir = join(TMP, 'g3'); mkdirSync(dir, { recursive: true });
-    fable(['governance', '--project', dir, '--inline']);
-    fable(['governance', '--project', dir, '--inline']);
+    fable(['governance', '--project', dir]);
+    fable(['governance', '--project', dir]);
     const t = readFileSync(join(dir, 'AGENTS.md'), 'utf-8');
     assert.strictEqual((t.match(/<!-- FABLE-START -->/g) || []).length, 1, 'no duplicate block');
   });

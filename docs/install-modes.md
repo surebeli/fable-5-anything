@@ -13,24 +13,30 @@ cd fable-5-anything
 You only want **every agent prompt to follow the fable constitution**. No
 dispatcher, no handoff CLI, no shims.
 
-```bash
-# zero-.fable footprint: inline the full core into AGENTS.md + CLAUDE.md
-node bin/fable.js governance --project <your-project> --inline
+**This mode is host-agnostic** — the constitution is the same portable core no
+matter which agent the host runs. So it takes *no* host argument and writes *no*
+host-specific config. (Per-host parameters — runtime, model, adapter,
+`opencode.json`, MCP, skills-dir — only matter in Mode 2, where fable actually
+*dispatches* to a host.)
 
-# OR referenced: core in .fable/ + opencode.json instructions (leaner charter files)
+```bash
 node bin/fable.js governance --project <your-project>
 ```
 
-- `--inline` embeds the full portable core into `AGENTS.md` + `CLAUDE.md`. Every
-  host that auto-loads those (opencode, Codex, Grok, Claude Code, Copilot) is then
-  governed. **Creates no `.fable/`, no `opencode.json`.**
-- default copies the core to `.fable/portable-agent-core.md` and wires
-  `opencode.json` `instructions` (best for opencode; keeps charter files short).
-- For **Kimi**, governance ships as a skill — use `fable kimi setup --project .`
-  (writes `.fable/skills/fable/SKILL.md`).
+- Embeds the full portable core into `AGENTS.md` + `CLAUDE.md`. Every host that
+  auto-loads those charter files (opencode, Codex, Grok, Claude Code, Copilot) is
+  then fully governed — from one command, no host wiring. **Creates no `.fable/`,
+  no `opencode.json`, no `.github/`.**
+- **Kimi** is the one exception: it loads *skills*, not charter markdown, so its
+  governance ships as a skill — `fable kimi setup --project .` (writes
+  `.fable/skills/fable/SKILL.md`).
+- opencode users who prefer a *slim* charter (a one-line reference + the core in
+  `.fable/portable-agent-core.md`, loaded via `opencode.json` `instructions`) can
+  use the host-specific `fable opencode setup` instead — but that is an
+  opencode-only optimization, not the host-agnostic default.
 
-Footprint: just the charter markdown (and, in default mode, one core file +
-opencode.json). Nothing to run; nothing machine-specific to commit.
+Footprint: just the charter markdown. Nothing to run; nothing machine-specific to
+commit.
 
 ## Mode 2 — Full (governance + dispatch/executor)
 
@@ -55,15 +61,17 @@ always-on governance on top.
 | Artifact | Mode 1 (governance-only) | Mode 2 (full) |
 |---|---|---|
 | AGENTS.md / CLAUDE.md charter | ✅ | ✅ |
-| portable core in context | ✅ (inline, or `.fable/` + opencode.json) | ✅ |
+| portable core in context | ✅ (inlined into the charter; host-agnostic) | ✅ |
+| host-specific wiring (`opencode.json`, MCP, skill, `.github/`) | ❌ (decoupled) | ✅ (per host `setup`) |
 | `.fable/config.json`, `handoffs/`, `runs/` | ❌ | ✅ |
 | `.fable/bin/` shims, `fable.lock.json` (machine-specific) | ❌ | ✅ (gitignore these) |
 | `fable run` / `build-prompt` / `smoke` / `doctor` | ❌ | ✅ |
 
 ## Committing into a shared repo
 
-For both modes, commit the **governance** files (charter + any `.fable/portable-agent-core.md`
-+ `opencode.json`). Do **not** commit machine-specific bits (`.fable/bin/`,
+For both modes, commit the **governance** files (the `AGENTS.md` / `CLAUDE.md`
+charter, plus any `.fable/portable-agent-core.md` + `opencode.json` from a
+host-specific setup). Do **not** commit machine-specific bits (`.fable/bin/`,
 `.fable/fable.lock.json`) or any raw source prompt — add them to `.gitignore`.
 
 ## Updating
