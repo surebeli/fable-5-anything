@@ -44,6 +44,19 @@ dispatch now lives in [hopper-plugin](https://github.com/surebeli/hopper-plugin)
 | `fable mcp-server` | Start the fable MCP server (read-only `fable_runtime`). |
 | `fable --version` | Print the version. |
 
+## Use as a Claude Code plugin (optional)
+
+fable also ships a Claude Code plugin manifest (`.claude-plugin/`), so you can
+install it as a marketplace and drive governance from slash commands:
+
+- Add the marketplace: `surebeli/fable-5-anything` (once pushed to GitHub), or a
+  local path to a clone (`./path/to/fable-5-anything`).
+- Then use `/fable:governance` (inline the constitution into this repo),
+  `/fable:setup <codex|kimi|copilot|grok|opencode>` (wire a specific host), or
+  `/fable:runtime` (read-only introspection).
+
+The plugin only wraps the governance CLI — it adds no dispatch.
+
 ## Strategy
 
 Use a shared behavior core plus thin runtime adapters.

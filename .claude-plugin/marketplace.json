@@ -1,0 +1,34 @@
+{
+  "name": "agent-fable",
+  "displayName": "Fable",
+  "version": "0.3.0",
+  "description": "Portable prompt governance for non-Claude agent runtimes — a model-neutral behavioral constitution overlaid onto opencode, Codex, Kimi, Grok, Copilot, and other hosts.",
+  "category": "Coding",
+  "tags": ["governance", "prompt-governance", "agent-orchestration", "vendor-neutral"],
+  "keywords": ["governance", "prompt", "constitution", "agent", "vendor-neutral", "opencode", "codex", "kimi"],
+  "homepage": "https://github.com/surebeli/fable-5-anything",
+  "repository": "https://github.com/surebeli/fable-5-anything",
+  "license": "MIT",
+  "owner": {
+    "name": "surebeli (litianyi)",
+    "email": "surebeli@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "fable",
+      "displayName": "Fable",
+      "source": "./",
+      "description": "Inline fable's portable governance constitution into a project's charter, or wire it into a specific host (Kimi skill, opencode.json, read-only MCP). Governance only — dispatch lives in hopper-plugin.",
+      "version": "0.3.0",
+      "category": "Coding",
+      "tags": ["governance", "prompt-governance", "vendor-neutral"],
+      "author": {
+        "name": "surebeli (litianyi)"
+      },
+      "homepage": "https://github.com/surebeli/fable-5-anything",
+      "repository": "https://github.com/surebeli/fable-5-anything",
+      "license": "MIT",
+      "keywords": ["governance", "prompt", "constitution", "agent", "vendor-neutral"]
+    }
+  ]
+}
