@@ -1,0 +1,19 @@
+adapters/runtime-capabilities.json
+  s_80339b276fd8d3::t_6704a30c2962e2 16,18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "69642c9df7eb41cbe6392efd6bc7e53a77186f02",
+  "prompts": {},
+  "sessions": {
+    "s_80339b276fd8d3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ed4a2-a500-7ba3-862c-a3256af2f6d4",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
