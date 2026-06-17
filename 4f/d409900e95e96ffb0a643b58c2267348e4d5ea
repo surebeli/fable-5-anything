@@ -1,0 +1,19 @@
+docs/superpowers/plans/2026-06-17-fable-remove-mode-b.md
+  s_6b560dd845bbbb::t_58bacdd33a2bda 1-761
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "4fd409900e95e96ffb0a643b58c2267348e4d5ea",
+  "prompts": {},
+  "sessions": {
+    "s_6b560dd845bbbb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "06d808fa-3e8c-4a65-b10b-1be05690e7ab",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
