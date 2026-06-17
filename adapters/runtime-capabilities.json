@@ -13,9 +13,9 @@
     "injectionMode": "prompt-prelude",
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/opencode.md",
-    "commandSupport": ["build-prompt", "smoke", "run", "doctor", "opencode-setup"],
+    "commandSupport": ["opencode-setup"],
     "charterFiles": ["AGENTS.md"],
-    "notes": "Executor: assembled prompt passed to `opencode run`. Plus in-session governance via `fable opencode setup` (charter + portable core wired into opencode.json `instructions`, auto-loaded every session; verified vs opencode 1.17.7). Host opencode system prompt remains authoritative; fable overlays governance."
+    "notes": "In-session governance via `fable opencode setup` (charter + portable core wired into opencode.json `instructions`, auto-loaded every session; verified vs opencode 1.17.7). Host opencode system prompt remains authoritative; fable overlays governance."
   },
   "codex": {
     "status": "implemented",
