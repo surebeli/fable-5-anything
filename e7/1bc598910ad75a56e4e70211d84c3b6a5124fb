@@ -1,0 +1,19 @@
+README.md
+  s_6b560dd845bbbb::t_90bd821bd66514 17-19,21,26-43
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "e71bc598910ad75a56e4e70211d84c3b6a5124fb",
+  "prompts": {},
+  "sessions": {
+    "s_6b560dd845bbbb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "06d808fa-3e8c-4a65-b10b-1be05690e7ab",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
