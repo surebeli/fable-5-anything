@@ -1,0 +1,21 @@
+test/config.test.js
+  s_80339b276fd8d3::t_d85f7e8a0bdcc1 1,3-5,9
+src/config.js
+  s_80339b276fd8d3::t_84c36d50a67d4e 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "da968bf31d0bde9e22164698d2f585bd7a7cbdae",
+  "prompts": {},
+  "sessions": {
+    "s_80339b276fd8d3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ed4a2-a500-7ba3-862c-a3256af2f6d4",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
