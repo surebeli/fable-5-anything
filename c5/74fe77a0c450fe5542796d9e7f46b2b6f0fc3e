@@ -1,0 +1,29 @@
+.claude-plugin/plugin.json
+  s_6b560dd845bbbb::t_603e9589062bb5 1-12
+commands/runtime.md
+  s_6b560dd845bbbb::t_aee8de717ce670 1-21
+commands/setup.md
+  s_6b560dd845bbbb::t_b21bda44e1f57b 1-30
+commands/governance.md
+  s_6b560dd845bbbb::t_2b46be9481f3ef 1-26
+.claude-plugin/marketplace.json
+  s_6b560dd845bbbb::t_cad7a9f6bf92a6 1-34
+README.md
+  s_6b560dd845bbbb::t_94f231ba105aa4 47-59
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "c574fe77a0c450fe5542796d9e7f46b2b6f0fc3e",
+  "prompts": {},
+  "sessions": {
+    "s_6b560dd845bbbb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "06d808fa-3e8c-4a65-b10b-1be05690e7ab",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
