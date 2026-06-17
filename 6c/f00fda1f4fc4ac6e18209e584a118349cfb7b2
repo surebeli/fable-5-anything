@@ -1,0 +1,21 @@
+test/version.test.js
+  s_dbb9b13df30551::t_29c610d135fa69 24
+package.json
+  s_dbb9b13df30551::t_f6f06614c3ea41 3-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "6cf00fda1f4fc4ac6e18209e584a118349cfb7b2",
+  "prompts": {},
+  "sessions": {
+    "s_dbb9b13df30551": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ed4b2-abf8-7ae0-89bc-d63d5c95618d",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
