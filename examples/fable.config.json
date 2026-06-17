@@ -1,6 +1,0 @@
-{
-  "runtime": "opencode",
-  "model": "tokenbox/deepseek-v4-pro",
-  "adapter": "adapters/opencode.md",
-  "fableVersion": "0.1.0"
-}

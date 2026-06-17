@@ -1,7 +1,7 @@
 {
   "name": "fable-5-anything",
-  "version": "0.2.0",
-  "description": "Portable prompt governance CLI for non-Claude agent runtimes",
+  "version": "0.3.0",
+  "description": "Portable prompt governance for non-Claude agent runtimes (governance-only; dispatch lives in hopper-plugin)",
   "type": "module",
   "bin": {
     "fable": "./bin/fable.js"
@@ -11,7 +11,6 @@
     "src/",
     "adapters/",
     "prompts/",
-    "dispatch/",
     "README.md"
   ],
   "engines": {
