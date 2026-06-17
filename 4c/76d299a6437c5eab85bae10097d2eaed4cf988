@@ -1,0 +1,23 @@
+src/charter.js
+  s_80339b276fd8d3::t_e8fb886d030ec0 1-7,55-90
+src/cli.js
+  s_80339b276fd8d3::t_22a3923622da9d 9
+test/charter.test.js
+  s_80339b276fd8d3::t_2d79a5b6d2cb21 106-125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "4c76d299a6437c5eab85bae10097d2eaed4cf988",
+  "prompts": {},
+  "sessions": {
+    "s_80339b276fd8d3": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ed4a2-a500-7ba3-862c-a3256af2f6d4",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
