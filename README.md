@@ -26,6 +26,13 @@ Grok, Copilot) follows the constitution. Kimi loads skills → `fable kimi setup
 
 ## Commands
 
+Every command is **governance-delivery** — it installs or wires fable's
+constitution into a host (inlined into `AGENTS.md`/`CLAUDE.md`, written as a Kimi
+skill, wired into `opencode.json`, or exposed read-only via MCP). None of them
+dispatch, run, or execute tasks: the former dispatch/executor commands (`init`,
+`install`, `build-prompt`, `smoke`, `run`, `doctor`) were removed, and background
+dispatch now lives in [hopper-plugin](https://github.com/surebeli/hopper-plugin).
+
 | Command | Description |
 |---|---|
 | `fable governance --project <dir>` | Inline the full portable core into AGENTS.md + CLAUDE.md (host-agnostic). |
