@@ -1,0 +1,49 @@
+docs/embed-in-your-project.md
+  s_dbb9b13df30551::t_2606a06f4aed51 3,8,10,12,15,18,21,24-26,28,30-31,33-40,42,44-46,48,50-53
+CLAUDE.md
+  s_dbb9b13df30551::t_ae7e23900526d9 5-19,23-26
+docs/codex-integration.md
+  s_dbb9b13df30551::t_a307871f5b4238 3-6,8,14,17-19,21,23-24,34-35,41,53-54,56
+docs/deploy-from-source.md
+  s_dbb9b13df30551::t_2606a06f4aed51 1,3,5,10,13-14,16,19,22,29,31,36-37,39,41,43-45
+docs/quickstart-deepseek.md
+  s_dbb9b13df30551::t_2606a06f4aed51 1,3-4,9,18,21,24-26,28,30,33,36-37,39,41-42
+scripts/install.sh
+  s_dbb9b13df30551::t_5b292fcf287b0e 2-3,6
+scripts/install.ps1
+  s_dbb9b13df30551::t_5b292fcf287b0e 2-3,5,7
+AGENTS.md
+  s_dbb9b13df30551::t_55fd6fcee7c58f 6-20
+README.md
+  s_dbb9b13df30551::t_a6048a956274b8 3-6,8-13,15,23-25,31-38,48-49,62-73,88-89
+docs/install-modes.md
+  s_dbb9b13df30551::t_8a50fe595d5b93 1,3-4,12-15,17-19,21,23-26
+test/version.test.js
+  s_dbb9b13df30551::t_a66405adf687b6 57,63-65,68,75-77
+test/governance.test.js
+  s_dbb9b13df30551::t_a939a8f8373d9f 48-49,51-54,57,60-62,65,67-69,72,74-77
+docs/runtime-overlay-model.md
+  s_dbb9b13df30551::t_2606a06f4aed51 32,49,55-64,72-75,78-79
+docs/opencode-integration.md
+  s_dbb9b13df30551::t_a307871f5b4238 1,3-5,7,10,13-15,17,20-22,28-29
+docs/copilot-integration.md
+  s_dbb9b13df30551::t_a307871f5b4238 3-6,8,17-20,22,24-25,42,48-50,52
+docs/kimi-integration.md
+  s_dbb9b13df30551::t_a307871f5b4238 4,6,8,13,19-21,36-37,39
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.7",
+  "base_commit_sha": "1f27dcd72fc357fca7b86ffda2c998c62a3aea53",
+  "prompts": {},
+  "sessions": {
+    "s_dbb9b13df30551": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019ed4b2-abf8-7ae0-89bc-d63d5c95618d",
+        "model": "gpt-5.5"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
