@@ -103,3 +103,25 @@ describe('fable codex setup command', () => {
     assert.ok(r.stdout.includes('mcp-server'));
   });
 });
+
+import { buildInlineCharterBlock, wireOpencodeGovernance } from '../src/charter.js';
+
+describe('moved governance functions', () => {
+  it('buildInlineCharterBlock inlines the full portable core between FABLE markers', () => {
+    const block = buildInlineCharterBlock();
+    assert.ok(block.startsWith('<!-- FABLE-START -->'));
+    assert.ok(block.includes('## Fable Governance (portable core)'));
+    assert.ok(/Identity Boundary/.test(block), 'should inline the actual core text');
+    assert.ok(block.trimEnd().endsWith('<!-- FABLE-END -->'));
+  });
+
+  it('wireOpencodeGovernance copies the core and wires opencode.json instructions', () => {
+    const dir = join(TMP, 'oc-wire'); mkdirSync(dir, { recursive: true });
+    const r = wireOpencodeGovernance({ projectDir: dir });
+    assert.ok(existsSync(join(dir, '.fable', 'portable-agent-core.md')), 'core copied');
+    const oc = JSON.parse(readFileSync(join(dir, 'opencode.json'), 'utf-8'));
+    assert.ok(oc.instructions.includes('AGENTS.md'));
+    assert.ok(oc.instructions.includes('.fable/portable-agent-core.md'));
+    assert.deepStrictEqual(r.instructions, oc.instructions);
+  });
+});

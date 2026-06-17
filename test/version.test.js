@@ -21,7 +21,7 @@ describe('version', () => {
 
   it('package.json has distribution metadata for npx/publish', () => {
     const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf-8'));
-    assert.strictEqual(pkg.version, '0.2.0');
+    assert.strictEqual(pkg.version, '0.3.0');
     assert.ok(Array.isArray(pkg.files) && pkg.files.includes('src/'), 'files must whitelist src/');
     assert.ok(pkg.files.includes('adapters/') && pkg.files.includes('prompts/'), 'files must include adapters/ and prompts/');
     assert.ok(pkg.engines && pkg.engines.node, 'engines.node required');
@@ -54,23 +54,26 @@ describe('fable --version command', () => {
 import { existsSync } from 'node:fs';
 
 describe('bootstrap scripts', () => {
-  it('scripts/install.ps1 exists and runs npx github install with --link', () => {
+  it('scripts/install.ps1 exists and runs npx github governance install', () => {
     const p = resolve(ROOT, 'scripts', 'install.ps1');
     assert.ok(existsSync(p));
     const t = readFileSync(p, 'utf-8');
     assert.ok(t.includes('npx'), 'should use npx');
     assert.ok(t.includes('github:surebeli/fable-5-anything'), 'should reference the github package');
-    assert.ok(t.includes('install'), 'should call fable install');
-    assert.ok(t.includes('--link'), 'should set a link mode');
+    assert.ok(t.includes('governance'), 'should call fable governance');
+    assert.ok(t.includes('--project "$Project"'), 'should pass the target project');
+    assert.ok(!t.includes(' install '), 'should not call removed fable install');
   });
 
-  it('scripts/install.sh exists and runs npx github install with --link', () => {
+  it('scripts/install.sh exists and runs npx github governance install', () => {
     const p = resolve(ROOT, 'scripts', 'install.sh');
     assert.ok(existsSync(p));
     const t = readFileSync(p, 'utf-8');
     assert.ok(t.includes('#!/usr/bin/env sh') || t.includes('#!/bin/sh'));
     assert.ok(t.includes('npx'));
     assert.ok(t.includes('github:surebeli/fable-5-anything'));
-    assert.ok(t.includes('--link'));
+    assert.ok(t.includes('governance'));
+    assert.ok(t.includes('--project "$PROJECT"'));
+    assert.ok(!t.includes(' install '), 'should not call removed fable install');
   });
 });

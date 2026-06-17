@@ -1,5 +1,10 @@
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Self-contained PKG_ROOT (mirrors skill.js / runtime.js) so charter.js does not
+// depend on the dispatch modules being removed in this change.
+const PKG_ROOT = resolve(join(dirname(fileURLToPath(import.meta.url)), '..'));
 
 // Universal, mode-neutral block. Used where the portable core may NOT live in a
 // local file (fable install, codex/copilot/grok MCP setup, kimi skill) — so it
@@ -46,4 +51,41 @@ export function syncCharter({ project, files, force = false, block = FABLE_BLOCK
     }
   }
   return written;
+}
+
+// Build a charter block (with FABLE markers) containing the FULL portable core
+// inline — used by the host-agnostic `fable governance` command (Mode A), which
+// inlines the constitution straight into AGENTS.md / CLAUDE.md.
+export function buildInlineCharterBlock() {
+  const core = readFileSync(join(PKG_ROOT, 'prompts', 'portable-agent-core.md'), 'utf-8');
+  return '<!-- FABLE-START -->\n## Fable Governance (portable core)\n\n' + core.trimEnd() + '\n\nThe host agent\'s own system prompt and tool rules remain authoritative; fable overlays project governance and never asks you to ignore host instructions.\n<!-- FABLE-END -->\n';
+}
+
+// Make the FULL fable portable core govern every opencode session: copy the
+// portable core into the project's .fable/ and wire it (plus AGENTS.md) into
+// opencode.json `instructions`. Preserves existing opencode.json keys; idempotent.
+export function wireOpencodeGovernance({ projectDir }) {
+  const project = resolve(projectDir);
+  const fableDir = join(project, '.fable');
+  if (!existsSync(fableDir)) mkdirSync(fableDir, { recursive: true });
+
+  const coreDest = join(fableDir, 'portable-agent-core.md');
+  copyFileSync(join(PKG_ROOT, 'prompts', 'portable-agent-core.md'), coreDest);
+
+  const ocPath = join(project, 'opencode.json');
+  let oc = { '$schema': 'https://opencode.ai/config.json' };
+  if (existsSync(ocPath)) {
+    try {
+      oc = JSON.parse(readFileSync(ocPath, 'utf-8'));
+    } catch (e) {
+      throw new Error(`opencode.json is not valid JSON (refusing to overwrite): ${e.message}`);
+    }
+  }
+  const want = ['AGENTS.md', '.fable/portable-agent-core.md'];
+  const instructions = Array.isArray(oc.instructions) ? [...oc.instructions] : [];
+  for (const w of want) if (!instructions.includes(w)) instructions.push(w);
+  oc.instructions = instructions;
+  writeFileSync(ocPath, JSON.stringify(oc, null, 2) + '\n');
+
+  return { core: coreDest, opencodeJson: ocPath, instructions };
 }
