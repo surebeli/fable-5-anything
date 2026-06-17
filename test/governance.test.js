@@ -45,27 +45,35 @@ describe('fable governance (governance-only mode — host-agnostic)', () => {
   });
 });
 
-describe('two-mode install discoverability (LLM-assisted installs surface the choice)', () => {
-  it('AGENTS.md instructs an installing agent to ASK which mode (governance vs full)', () => {
+describe('governance-only install discoverability', () => {
+  it('AGENTS.md documents governance-only install and hopper dispatch handoff', () => {
     const t = readFileSync(join(ROOT, 'AGENTS.md'), 'utf-8');
-    assert.ok(/ask/i.test(t), 'AGENTS.md should tell installers to ask');
-    assert.ok(/governance/i.test(t) && /install/i.test(t), 'mentions both modes');
-    assert.ok(/install-modes\.md/.test(t), 'points to docs/install-modes.md');
+    assert.ok(/governance-only/i.test(t), 'AGENTS.md should state fable is governance-only');
+    assert.ok(/governance --project <proj>/.test(t), 'AGENTS.md should show the governance command');
+    assert.ok(/hopper-plugin/i.test(t), 'AGENTS.md should point dispatch users to hopper-plugin');
+    assert.ok(!/ASK FIRST/i.test(t), 'AGENTS.md should not describe a mode-selection flow');
   });
 
-  it('CLAUDE.md exists with the same ask-first mode directive', () => {
+  it('CLAUDE.md carries the same governance-only directive', () => {
     assert.ok(existsSync(join(ROOT, 'CLAUDE.md')), 'fable repo should have CLAUDE.md for Claude Code installers');
     const t = readFileSync(join(ROOT, 'CLAUDE.md'), 'utf-8');
-    assert.ok(/ask/i.test(t) && /governance/i.test(t) && /install/i.test(t), 'CLAUDE.md should carry the ask-first two-mode directive');
+    assert.ok(/governance-only/i.test(t), 'CLAUDE.md should state fable is governance-only');
+    assert.ok(/governance --project <proj>/.test(t), 'CLAUDE.md should show the governance command');
+    assert.ok(/hopper-plugin/i.test(t), 'CLAUDE.md should point dispatch users to hopper-plugin');
   });
 
-  it('README documents the two modes', () => {
+  it('README documents governance-only install and no current fable install command', () => {
     const t = readFileSync(join(ROOT, 'README.md'), 'utf-8');
-    assert.ok(/two modes/i.test(t) && /governance/i.test(t), 'README has the two-mode section');
+    assert.ok(/Install \(one command\)/.test(t) && /governance --project <your-project>/.test(t), 'README has one-command governance install');
+    assert.ok(/Dispatch moved to hopper-plugin/.test(t), 'README points dispatch to hopper-plugin');
+    assert.ok(!/`fable install/.test(t), 'README should not advertise fable install');
   });
 
-  it('fable --help surfaces both governance and install', () => {
+  it('fable --help surfaces governance setup and not install', () => {
     const r = spawnSync('node', [BIN, '--help'], { encoding: 'utf-8', timeout: 30000, cwd: ROOT });
-    assert.ok(/governance/.test(r.stdout) && /install/.test(r.stdout), 'help lists both modes');
+    assert.strictEqual(r.status, 0, r.stderr);
+    assert.ok(/governance/.test(r.stdout), 'help lists governance');
+    assert.ok(/opencode setup/.test(r.stdout) && /mcp-server/.test(r.stdout), 'help lists governance setup commands');
+    assert.ok(!/fable install/.test(r.stdout), 'help should not list fable install');
   });
 });

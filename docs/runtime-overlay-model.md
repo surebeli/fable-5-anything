@@ -29,7 +29,7 @@ Vendor/platform hard rules
 > Agent CLI built-in system prompt and tool protocol
 > Project instructions / skills / plugins / agent config
 > fable portable core + runtime adapter
-> Current handoff / user task
+> Current user task
 ```
 
 (See also the Priority Order in `prompts/portable-agent-core.md`.)
@@ -41,36 +41,27 @@ a higher-priority one, fable states the conflict and obeys the higher priority.
 fable never claims a provider identity (Claude, Codex, Kimi, Copilot, opencode,
 Grok) unless the host itself establishes it.
 
-## Why fable avoids "ignore previous instructions"
-
-fable cooperates with the host instead of fighting it. It does not tell the model
-to ignore host or system instructions, because (1) it is layered below those
-rules and cannot safely override them, and (2) prompt-injection-style overrides
-are exactly the behavior host safety layers are built to resist. fable governs
-only portable behavior: read the project first, obey the handoff contract, use
-TDD/acceptance gates, make minimal scoped changes, preserve user work, verify
-before completion, write result/review artifacts, and avoid long inline dispatch
-context when a handoff file exists.
-
 ## How portable core maps into each runtime
 
 The portable core (`prompts/portable-agent-core.md`) is runtime-neutral. Each
 runtime adapter under `adapters/` adds only the mechanics for that host. The
 machine-readable map is `adapters/runtime-capabilities.json`; inspect it from the
-CLI with `fable runtime <name>` or `fable runtime --list`.
+CLI with the `runtime` command.
 
 ## Charter file set
 
 The fable charter is the runtime-neutral constitution written into a project's
 instruction files. The base set is `AGENTS.md` + `CLAUDE.md`, plus any
-host-specific extras declared in a runtime's `charterFiles`. `fable charter sync`
-and `fable install` write the constitution into these files using the idempotent
-`<!-- FABLE-START -->` / `<!-- FABLE-END -->` markers, preserving user content
-outside the markers. For codex, the charter (AGENTS.md + CLAUDE.md) plus the
-read-only MCP tools (`fable_runtime`, `fable_build_prompt`, `fable_doctor`) form
-the overlay path; see `docs/codex-integration.md`. The fable MCP server is
-host-agnostic — Codex and Copilot register and share the very same server
-(`fable mcp-server`) unchanged; see `docs/copilot-integration.md`.
+host-specific extras declared in a runtime's `charterFiles`.
+
+`fable governance` inlines the full core into the base charter. `fable charter
+sync` and the host setup commands seed the relevant charter files using the
+idempotent `<!-- FABLE-START -->` / `<!-- FABLE-END -->` markers, preserving user
+content outside the markers.
+
+For Codex, Copilot, and Grok, the charter plus the read-only MCP tool
+(`fable_runtime`) form the overlay path. Kimi uses a skill plus the charter.
+opencode can use a slim charter plus `opencode.json` `instructions`.
 
 ## Per-runtime support
 
@@ -78,24 +69,11 @@ host-agnostic — Codex and Copilot register and share the very same server
 |---|---|---|---|---|
 | claude | reference-only | system-prompt-file | system-replace-when-user-owned | (none) |
 | opencode | implemented | prompt-prelude | overlay | adapters/opencode.md |
-| codex | implemented | agents-md-and-mcp | overlay | adapters/codex.md (charterFiles: AGENTS.md; charter + MCP, verified vs codex 0.131.0) |
-| kimi | implemented | skill | overlay | adapters/kimi.md (charterFiles: AGENTS.md; fable skill via --skills-dir + charter, verified vs kimi 0.14.2) |
-| grok | implemented | mcp-and-charter | overlay | adapters/grok.md (charterFiles: AGENTS.md; reuses the host-agnostic fable MCP server + charter, verified vs grok 0.2.51) |
-| copilot | implemented | mcp-and-charter | overlay | adapters/copilot.md (charterFiles: .github/copilot-instructions.md, AGENTS.md; reuses the host-agnostic fable MCP server, verified vs copilot 1.0.54) |
+| codex | implemented | agents-md-and-mcp | overlay | adapters/codex.md |
+| kimi | implemented | skill | overlay | adapters/kimi.md |
+| grok | implemented | mcp-and-charter | overlay | adapters/grok.md |
+| copilot | implemented | mcp-and-charter | overlay | adapters/copilot.md |
 | agy (generic opaque host) | opaque | custom-instructions-or-wrapper | overlay | adapters/generic.md |
 
-## Executable today vs planned
-
-- **Executable today:** opencode (`fable build-prompt`/`smoke`/`run`/`doctor`),
-  **codex** (charter + `fable mcp-server` via `codex mcp add`, verified vs
-  codex-cli 0.131.0), **kimi** (fable skill via `--skills-dir`, verified vs
-  kimi-code 0.14.2), and **copilot** (host-agnostic fable MCP server via
-  `copilot mcp add` + charter, verified vs Copilot CLI 1.0.54), and **grok**
-  (host-agnostic fable MCP server via `grok mcp add` + charter, verified vs
-  grok 0.2.51).
-- **Planned / design-only:** none — all adapted runtimes are verified against
-  their real CLIs.
-- **Opaque:** agy and similar hosts default to overlay-only; never assume system
-  replacement until a specific host is proven user-owned and safe.
-
-This document is intended to be reusable as PR/launch article source material.
+All adapted runtimes are governance overlays. Background dispatch to vendor CLIs
+has moved to [hopper-plugin](https://github.com/surebeli/hopper-plugin).

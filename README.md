@@ -1,38 +1,18 @@
 # fable-5-anything
 
-Portable prompt governance for adapting useful Claude Fable 5 style behaviors to
-non-Claude agent runtimes without copying Claude-specific identity, tools, paths,
-or product assumptions.
+Portable prompt **governance** for adapting useful Claude Fable 5 style behaviors
+to non-Claude agent runtimes — without copying Claude-specific identity, tools,
+paths, or product assumptions. fable installs a model-neutral behavioral
+constitution into the charters and skills your hosts already load.
 
-## Install — two modes (pick one)
+> **Dispatch moved to hopper-plugin.** fable used to also assemble and dispatch
+> handoffs (the former "Mode 2"). That capability now lives in
+> [hopper-plugin](https://github.com/surebeli/hopper-plugin), a vendor-neutral
+> background dispatcher. Governance reaches hopper-dispatched vendors either via
+> the `AGENTS.md`/`CLAUDE.md` charter fable installs, or via hopper's opt-in
+> `GOVERNANCE.md` overlay (which references fable's portable core).
 
-After cloning (no npm publish needed), pick by what you need:
-
-| What you want | Mode | Command |
-|---|---|---|
-| Every agent to just **obey the fable constitution** (most users) | **Mode 1 — Governance-only** | `node bin/fable.js governance --project <proj>` |
-| That **plus** fable to **assemble & dispatch handoffs** (`run` / `build-prompt` / `smoke` / `doctor`) | **Mode 2 — Full** | `node bin/fable.js install …` then `fable <host> setup` |
-
-- **Mode 1 — Governance-only (host-agnostic).** You only want the constitution in
-  agent context. One command, **no host argument**:
-  `node bin/fable.js governance --project <proj>` inlines the full portable core
-  into `AGENTS.md` + `CLAUDE.md`, so opencode/Codex/Grok/Claude Code/Copilot are
-  all governed at once. Zero `.fable/`, no host-specific wiring. (Kimi loads
-  skills → `fable kimi setup`; a slim opencode charter → `fable opencode setup`.)
-- **Mode 2 — Full (governance + dispatch).** You also want fable to assemble and
-  dispatch handoffs. Adds the `fable run` / `build-prompt` / `smoke` / `doctor`
-  executor + handoff contract + local shims:
-  `node bin/fable.js install --project <proj> --runtime opencode --model tokenbox/deepseek-v4-pro --link path --yes`,
-  then `node bin/fable.js opencode setup --project <proj>`.
-
-See [docs/install-modes.md](docs/install-modes.md) for the full comparison and footprint table.
-
-> **Using an AI assistant to set this up?** It should ask you which mode first — the
-> repo's `AGENTS.md` / `CLAUDE.md` instruct installing agents to confirm
-> Mode 1 (governance-only) vs Mode 2 (full) before running anything. If it didn't
-> ask, point it at `docs/install-modes.md`.
-
-## Quickstart: Mode 1 (governance-only) — one command (1 minute)
+## Install (one command)
 
 ```bash
 git clone https://github.com/surebeli/fable-5-anything
@@ -40,100 +20,22 @@ cd fable-5-anything
 node bin/fable.js governance --project <your-project>
 ```
 
-That's the whole install. The full portable core is now inlined into your
-project's `AGENTS.md` + `CLAUDE.md`, so every host that auto-loads them (opencode,
-Codex, Claude Code, Grok, Copilot) follows the constitution. Nothing to run,
-nothing machine-specific to commit. (Kimi loads skills → `fable kimi setup`; a
-slim opencode charter → `fable opencode setup`.)
-
-> **Chose Mode 1?** You're done. The **Quickstart: Mode 2**, local-shim, and
-> **Commands** sections below are Mode 2 (dispatch) only — governance-only needs
-> none of them.
-
-## Quickstart: Mode 2 (full) — embed in your project (5 minutes)
-
-> This quickstart sets up the **full** dispatch workflow. For **Mode 1
-> (governance-only)**, see the one-command quickstart just above.
-
-Zero-clone install (no repo path to remember):
-
-```bash
-# one-off, via npx straight from GitHub source (no npm publish required)
-npx -y github:surebeli/fable-5-anything install --project . --link github --yes
-
-# or bootstrap scripts (default --link github)
-scripts/install.ps1 -Project .      # Windows
-sh scripts/install.sh .             # POSIX
-```
-
-The `--link` mode controls how the generated `.fable/bin` shims call fable:
-`path` (default — points at a local clone), `github` (re-runs from GitHub source
-via `npx -y github:surebeli/fable-5-anything`; no clone to keep around and no npm
-publish needed — best for the zero-clone flow), `global` (a globally installed
-`fable`), or `npx` (the npm registry name, requires a future `npm publish`). Each
-install records `fableVersion` and the link mode in `.fable/fable.lock.json`. See
-[docs/deploy-from-source.md](docs/deploy-from-source.md).
-
-See [docs/embed-in-your-project.md](docs/embed-in-your-project.md).
-
-```bash
-git clone https://github.com/surebeli/fable-5-anything
-cd fable-5-anything
-node bin/fable.js install --project <your-project> --runtime opencode --model tokenbox/deepseek-v4-pro --yes
-node bin/fable.js doctor --project <your-project>
-```
-
-After install, call fable from within your project using the local shim:
-
-```bash
-# Windows (PowerShell / cmd)
-.fable\bin\fable.cmd doctor
-.fable\bin\fable.cmd build-prompt .fable/handoffs/example.md
-.fable\bin\fable.cmd smoke --dry-run
-.fable\bin\fable.cmd run .fable/handoffs/example.md --dry-run
-
-# Or from the fable repo:
-node bin/fable.js build-prompt --project <your-project> --handoff <your-project>/.fable/handoffs/example.md
-node bin/fable.js smoke --project <your-project> --dry-run
-node bin/fable.js run .fable/handoffs/example.md --project <your-project> --dry-run
-```
-
-## Quickstart: DeepSeek + opencode (from within fable repo)
-
-See [docs/quickstart-deepseek.md](docs/quickstart-deepseek.md).
-
-```bash
-git clone https://github.com/surebeli/fable-5-anything
-cd fable-5-anything
-node bin/fable.js init --cwd . --runtime opencode --model tokenbox/deepseek-v4-pro --yes
-node bin/fable.js build-prompt --handoff examples/deepseek-handoff.md --config examples/fable.config.json
-node bin/fable.js smoke --config examples/fable.config.json
-node bin/fable.js run examples/deepseek-handoff.md --config examples/fable.config.json
-npm test
-```
+This inlines the full portable core into your project's `AGENTS.md` + `CLAUDE.md`,
+so every host that auto-loads those charter files (opencode, Codex, Claude Code,
+Grok, Copilot) follows the constitution. Kimi loads skills → `fable kimi setup`.
 
 ## Commands
 
-`fable governance` is the whole of **Mode 1**. Every other command below — plus
-the local shims — is **Mode 2** (dispatch); the host `setup` commands
-(`opencode setup`, `codex setup`, `kimi setup`, `copilot setup`, `grok setup`) add
-in-session governance for a specific host.
-
 | Command | Description |
 |---|---|
-| `fable governance --project <dir>` | **Mode 1.** Inline the full portable core into AGENTS.md + CLAUDE.md (host-agnostic; no .fable/, no host wiring). |
-| `fable install --project <dir>` | Bootstrap a project with .fable/ config, handoffs, shims, README, .gitignore, and AGENTS.md. Safe re-run preserves user files. |
-| `fable doctor --project <dir>` | Check 9 items: config, adapter, core, handoff, opencode dry-run, opencode PATH, AGENTS.md, gitignore, shims. No model calls. |
-| `fable init --cwd <dir>` | Create `.fable/config.json` only |
-| `fable build-prompt --handoff <path>` | Assemble dispatch prompt |
-| `fable smoke [--execute]` | PONG smoke check (dry-run by default) |
-| `fable run <handoff> [--dry-run]` | Execute opencode run |
-| `fable runtime [<name>]` | Show how fable injects into a runtime (status, injection mode, overlay vs system replacement). No args lists all. |
-| `fable --version` | Print the fable version (single-sourced from package.json). |
-
-All commands support `--project <dir>` for project-scoped use and `--config <path>` for explicit config.
-
-After install, use the local shim from within your project: `.fable/bin/fable.cmd <command>`.
+| `fable governance --project <dir>` | Inline the full portable core into AGENTS.md + CLAUDE.md (host-agnostic). |
+| `fable charter sync --project <dir>` | Seed/refresh the fable block in the charter files. |
+| `fable runtime [<name>]` | Show how fable overlays governance onto a runtime. |
+| `fable codex|copilot|grok setup` | Seed charter + register the read-only fable MCP server. |
+| `fable kimi setup` | Seed charter + write the fable Kimi skill. |
+| `fable opencode setup` | Slim charter + portable core wired into opencode.json instructions. |
+| `fable mcp-server` | Start the fable MCP server (read-only `fable_runtime`). |
+| `fable --version` | Print the version. |
 
 ## Strategy
 
@@ -143,8 +45,8 @@ Use a shared behavior core plus thin runtime adapters.
 - `adapters/*.md` adds runtime-specific execution facts.
 - `prompts/claude-fable-5-exclusions.md` lists Claude-specific material that must
   not be migrated into the portable core.
-- `dispatch/prompt-assembly.md` defines how dispatchers assemble a final prompt.
-- `tests/smoke-checklist.md` defines minimum validation before an adapter is used.
+- `tests/smoke-checklist.md` defines minimum governance validation before an
+  adapter is used.
 
 The core owns principles. Adapters own mechanics. If an adapter conflicts with
 the core, the core wins.
@@ -157,11 +59,18 @@ Codex, Copilot, and opaque hosts, fable **overlays** project governance on top o
 the host's authoritative system prompt — it never tells the model to ignore host
 rules.
 
-- opencode is implemented end-to-end (build-prompt, smoke, run, doctor); `fable opencode setup` also makes the full portable core govern every session via `opencode.json` `instructions`. See [docs/opencode-integration.md](docs/opencode-integration.md).
-- codex is implemented via charter (AGENTS.md) + an MCP server (`codex mcp add`); see [docs/codex-integration.md](docs/codex-integration.md).
-- kimi has a `fable kimi setup` that writes a real fable skill (`--skills-dir`) + charter; see [docs/kimi-integration.md](docs/kimi-integration.md).
-- copilot has a `fable copilot setup` that seeds the charter + reuses the host-agnostic fable MCP server (`copilot mcp add`); see [docs/copilot-integration.md](docs/copilot-integration.md).
-- grok has a `fable grok setup` that seeds the charter + reuses the host-agnostic fable MCP server (`grok mcp add`); verified vs grok 0.2.51.
+- opencode is implemented via `fable opencode setup`, which can use a slim
+  charter plus `opencode.json` `instructions` to load the portable core. See
+  [docs/opencode-integration.md](docs/opencode-integration.md).
+- codex is implemented via charter (AGENTS.md) + a read-only MCP server
+  (`fable_runtime`); see [docs/codex-integration.md](docs/codex-integration.md).
+- kimi has a `fable kimi setup` that writes a real fable skill (`--skills-dir`) +
+  charter; see [docs/kimi-integration.md](docs/kimi-integration.md).
+- copilot has a `fable copilot setup` that seeds the charter + reuses the
+  host-agnostic fable MCP server (`copilot mcp add`); see
+  [docs/copilot-integration.md](docs/copilot-integration.md).
+- grok has a `fable grok setup` that seeds the charter + reuses the
+  host-agnostic fable MCP server (`grok mcp add`); verified vs grok 0.2.51.
 - agy and other opaque hosts default to overlay-only.
 
 Inspect any runtime:
@@ -176,9 +85,8 @@ model and the authority stack.
 
 ### Codex
 
-fable governs Codex via a charter (AGENTS.md + CLAUDE.md) plus read-only MCP
-tools (`fable_runtime`, `fable_build_prompt`, `fable_doctor`). It overlays —
-never replaces — Codex's system prompt.
+fable governs Codex via a charter (AGENTS.md + CLAUDE.md) plus a read-only MCP
+tool (`fable_runtime`). It overlays — never replaces — Codex's system prompt.
 
 ```bash
 node bin/fable.js codex setup --project . --apply
@@ -223,10 +131,3 @@ Source review record:
 - `x-agents/planning/handoffs/FABLE-M1-CLI-review.md`
 - `x-agents/planning/handoffs/FABLE-M2-EMBED-result.md`
 - `x-agents/planning/handoffs/FABLE-M2-EMBED-review.md`
-
-### M3 (current)
-
-- Install protection: re-run preserves user-modified handoff/README; writes `.new` templates.
-- Local shims: `.fable/bin/fable.cmd`, `.fable/bin/fable.ps1`, `.fable/bin/fable`.
-- Doctor hardening: 9 checks including opencode PATH, AGENTS.md, gitignore, shim.
-- Demo: `scripts/demo-x-agents.ps1` and `docs/demo-x-agents.md`.

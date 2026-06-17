@@ -1,11 +1,12 @@
-# Quickstart: DeepSeek + opencode
+# Quickstart: DeepSeek + opencode Governance
 
-Get from zero to executing a handoff with fable in 5 minutes.
+Use fable to make opencode sessions that target a DeepSeek model follow the
+portable governance core.
 
 ## Prerequisites
 
 - Node.js 18+
-- opencode CLI installed and configured with a DeepSeek model
+- opencode CLI installed and configured with your DeepSeek model
 
 ## 1. Clone
 
@@ -14,61 +15,28 @@ git clone https://github.com/surebeli/fable-5-anything
 cd fable-5-anything
 ```
 
-## 2. Initialize your project
+## 2. Wire governance into your project
 
 ```bash
-node bin/fable.js init --cwd . --runtime opencode --model tokenbox/deepseek-v4-pro --yes
+node bin/fable.js opencode setup --project <your-project>
 ```
 
-This creates `.fable/config.json`:
-```json
-{
-  "runtime": "opencode",
-  "model": "tokenbox/deepseek-v4-pro",
-  "adapter": "adapters/opencode.md",
-  "fableVersion": "0.1.0"
-}
-```
+This seeds the charter, copies the portable core to
+`<your-project>/.fable/portable-agent-core.md`, and wires
+`<your-project>/opencode.json` `instructions`.
 
-## 3. Build a prompt
+## 3. Verify opencode loads the charter
+
+From your project:
 
 ```bash
-node bin/fable.js build-prompt \
-  --handoff examples/deepseek-handoff.md \
-  --config examples/fable.config.json
+opencode run "What governance rules must you follow in this repo? List them."
 ```
 
-## 4. Run a smoke check
+The response should reflect the fable portable core and the host's own opencode
+rules. Host rules remain authoritative.
 
-Dry-run (print the command without executing):
-```bash
-node bin/fable.js smoke --config examples/fable.config.json
-```
+## Dispatch
 
-Run for real:
-```bash
-node bin/fable.js smoke --config examples/fable.config.json --execute
-```
-
-## 5. Execute a handoff
-
-```bash
-node bin/fable.js run examples/deepseek-handoff.md --config examples/fable.config.json
-```
-
-Dry-run to inspect the command before executing:
-```bash
-node bin/fable.js run examples/deepseek-handoff.md --config examples/fable.config.json --dry-run
-```
-
-## 6. Run tests
-
-```bash
-npm test
-```
-
-## What's next
-
-- Write your own handoff files following the Goal / Background / Acceptance / Return contract.
-- Use `fable run <your-handoff.md>` to dispatch tasks to opencode with the portable core rules.
-- Check `.fable/runs/` for captured run output.
+fable no longer dispatches tasks itself. For background dispatch to vendor CLIs,
+use [hopper-plugin](https://github.com/surebeli/hopper-plugin).

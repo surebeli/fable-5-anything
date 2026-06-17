@@ -1,76 +1,45 @@
-# Deploy fable from source (no npm publish)
+# Deploy fable from source
 
-fable does not need to be published to npm to be used. There are two
-source-based deployment paths; pick by whether you want a local clone.
+fable can be used directly from source; it does not need to be published to npm.
 
-## Path A — Clone + `--link path` (recommended; fully offline)
-
-Most robust: a stable local clone, shims point at it by absolute path. No
-network, no registry, no publish.
+## Clone path
 
 ```bash
 git clone https://github.com/surebeli/fable-5-anything
 cd fable-5-anything
-node bin/fable.js install --project <your-project> --link path --yes
+node bin/fable.js governance --project <your-project>
 ```
 
-The generated `<your-project>/.fable/bin/fable.cmd` (and `.ps1` / POSIX `fable`)
-invoke `node "<clone>/bin/fable.js" … --project "<your-project>"`. Keep the clone
-in place; `git pull` to update. `.fable/fable.lock.json` records the version and
-`link: path`.
+Re-run the same command after pulling updates. The governance block is
+idempotent and preserves content outside the fable markers.
 
-Use it from inside your project:
+## Zero-clone via `npx github:`
 
 ```bash
-.fable\bin\fable.cmd doctor          # Windows
-./.fable/bin/fable doctor            # POSIX
+npx -y github:surebeli/fable-5-anything governance --project .
 ```
 
-## Path B — Zero-clone via `npx github:` + `--link github`
-
-No clone to keep around. Runs straight from the pushed GitHub source; npx fetches
-the repo (zero runtime deps) and runs the `fable` bin. No publish required.
+The bootstrap scripts are thin wrappers around that command:
 
 ```bash
-npx -y github:surebeli/fable-5-anything install --project . --link github --yes
-# or the bootstrap scripts (default --link github):
 scripts/install.ps1 -Project .       # Windows
 sh scripts/install.sh .              # POSIX
 ```
 
-The generated shims invoke `npx -y github:surebeli/fable-5-anything … --project
-"<your-project>"`, so each call re-resolves fable from GitHub. `link: github` is
-recorded in the lockfile. First call per machine pays npx's fetch; subsequent
-calls use npx's cache.
+## Host setup commands
 
-## Link modes summary
-
-| `--link` | Shim invokes | Needs |
-|---|---|---|
-| `path` (default) | `node "<clone>/bin/fable.js"` | a local clone |
-| `github` | `npx -y github:surebeli/fable-5-anything` | network (no publish) |
-| `global` | `fable` | a global install on PATH |
-| `npx` | `npx -y fable-5-anything` | a future `npm publish` |
-
-For source deployment, use **`path`** (clone) or **`github`** (zero-clone). `npx`
-is reserved for after an eventual registry publish; `global` requires putting
-`fable` on PATH yourself (e.g. `npm i -g .` from the clone, or `npm link`).
-
-## Host integrations work the same either way
-
-Once installed, the per-host setup commands are independent of the deploy path:
+Host setup commands work from either source path:
 
 - `fable codex setup --project . --apply` — charter + `codex mcp add fable`
 - `fable copilot setup --project . --apply` — charter + `copilot mcp add fable`
 - `fable grok setup --project . --apply` — charter + `grok mcp add fable`
-- `fable kimi setup --project .` — fable skill + charter (`--skills-dir` / `extra_skill_dirs`)
+- `fable kimi setup --project .` — fable skill + charter
+- `fable opencode setup --project .` — slim charter + `opencode.json` instructions
 
-The fable MCP server is launched via the same entry the shim resolves, so the
-host registrations track your chosen deploy path.
+The fable MCP server is read-only and exposes `fable_runtime`.
 
-## Not in scope here
+## Dispatch
 
-Publishing to the npm registry (`npm publish`, the `--link npx`/`global` ergonomic
-paths, version tags, and PR/launch material) is a separate release step. The
-package is already publish-ready (`package.json` has `bin`, `files`, `engines`,
-`repository`), but no publish is performed.
+Background dispatch to vendor CLIs has moved to
+[hopper-plugin](https://github.com/surebeli/hopper-plugin). fable provides the
+governance charter that hopper-dispatched vendors can load.
