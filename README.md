@@ -119,15 +119,11 @@ node bin/fable.js copilot setup --project . --apply
 
 See [docs/copilot-integration.md](docs/copilot-integration.md) for the full guide.
 
-## Repository Status
+## Status
 
-This repository is the implementation home for the non-Claude adaptation work
-that was first reviewed in `x-agents`.
-
-Source review record:
-
-- `x-agents/planning/handoffs/NONCLAUDE-PROMPT-ADAPTER-P3.md`
-- `x-agents/planning/handoffs/NONCLAUDE-PROMPT-ADAPTER-P3-review.md`
-- `x-agents/planning/handoffs/FABLE-M1-CLI-review.md`
-- `x-agents/planning/handoffs/FABLE-M2-EMBED-result.md`
-- `x-agents/planning/handoffs/FABLE-M2-EMBED-review.md`
+fable is **governance-only**. The dispatch/executor layer (the former "Mode 2")
+has been removed and now lives in
+[hopper-plugin](https://github.com/surebeli/hopper-plugin) — see the note at the
+top of this README. Governance reaches dispatched vendors via the `AGENTS.md` /
+`CLAUDE.md` charter fable installs, or via hopper's opt-in `GOVERNANCE.md`
+overlay (which references fable's portable core).
