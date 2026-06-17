@@ -14,15 +14,33 @@ constitution into the charters and skills your hosts already load.
 
 ## Install (one command)
 
+Zero-clone, straight from GitHub source (no clone, no npm publish needed). fable
+has no runtime dependencies, so `npx` just fetches and runs it:
+
+```bash
+npx -y github:surebeli/fable-5-anything governance --project <your-project>
+```
+
+This inlines the full portable core into your project's `AGENTS.md` + `CLAUDE.md`,
+so every host that auto-loads those charter files (opencode, Codex, Claude Code,
+Grok, Copilot) follows the constitution. Use `--project .` for the current
+directory.
+
+Any governance command works the same way, e.g.:
+
+```bash
+npx -y github:surebeli/fable-5-anything kimi setup --project .          # Kimi loads skills, not charter markdown
+npx -y github:surebeli/fable-5-anything codex setup --project . --apply # charter + read-only fable MCP server
+npx -y github:surebeli/fable-5-anything runtime --list                  # read-only introspection
+```
+
+### From a clone (for development)
+
 ```bash
 git clone https://github.com/surebeli/fable-5-anything
 cd fable-5-anything
 node bin/fable.js governance --project <your-project>
 ```
-
-This inlines the full portable core into your project's `AGENTS.md` + `CLAUDE.md`,
-so every host that auto-loads those charter files (opencode, Codex, Claude Code,
-Grok, Copilot) follows the constitution. Kimi loads skills → `fable kimi setup`.
 
 ## Commands
 
