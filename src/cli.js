@@ -5,9 +5,8 @@ import { defaultConfig, readConfigFile, writeConfig, PKG_ROOT } from './config.j
 import { readHandoff, validate } from './handoff.js';
 import { assemble, smokePrompt } from './prompt.js';
 import { buildCommand, runOpenCode } from './opencode.js';
-import { install, wireOpencodeGovernance, buildInlineCharterBlock } from './install.js';
 import { doctorChecks } from './doctor.js';
-import { syncCharter, FABLE_BLOCK_OPENCODE } from './charter.js';
+import { syncCharter, FABLE_BLOCK_OPENCODE, buildInlineCharterBlock, wireOpencodeGovernance } from './charter.js';
 import { loadCapabilities, getRuntime, listRuntimes } from './runtime.js';
 import { writeKimiSkill } from './skill.js';
 import { startMcpServer } from './mcp.js';
