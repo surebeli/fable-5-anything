@@ -1,0 +1,42 @@
+adapters/runtime-capabilities.json
+  s_6b560dd845bbbb::t_369b250b1eef62 31,36
+docs/kimi-integration.md
+  s_6b560dd845bbbb::t_c89b99b9369cf4 3-13
+CLAUDE.md
+  s_6b560dd845bbbb::t_6eb0c8c772ea19 13
+docs/install-modes.md
+  s_6b560dd845bbbb::t_3183d4064dbe28 13-14
+src/cli.js
+  s_6b560dd845bbbb::t_b3955c5cee8364 208
+test/runtime.test.js
+  s_6b560dd845bbbb::t_91bff769914cd4 85,88,90
+commands/governance.md
+  s_6b560dd845bbbb::t_f4b8a52136509e 20
+AGENTS.md
+  s_6b560dd845bbbb::t_046d1cec08e787 14
+adapters/kimi.md
+  s_6b560dd845bbbb::t_6de959f2813771 55-58
+  s_6b560dd845bbbb::t_8d2f79423d8e05 3-7
+commands/setup.md
+  s_6b560dd845bbbb::t_6f0d1a28d8e2e0 25
+README.md
+  s_6b560dd845bbbb::t_ab4eccfa3000a2 32
+  s_6b560dd845bbbb::t_58689ce074b11d 105-108
+  s_6b560dd845bbbb::t_4d9227c36423a0 139-143
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.8",
+  "base_commit_sha": "38c6480320912670e46d543773de4acd66ab4965",
+  "prompts": {},
+  "sessions": {
+    "s_6b560dd845bbbb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "06d808fa-3e8c-4a65-b10b-1be05690e7ab",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "litianyi <litianyi@corp.netease.com>"
+    }
+  }
+}
