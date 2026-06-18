@@ -1,6 +1,6 @@
 {
   "name": "fable",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Portable prompt governance for non-Claude agent runtimes. Inlines a model-neutral behavioral constitution into a host's charter (AGENTS.md/CLAUDE.md), a Kimi skill, opencode.json, or a read-only MCP tool. Governance only — background dispatch lives in hopper-plugin. See https://github.com/surebeli/fable-5-anything.",
   "author": {
     "name": "surebeli (litianyi)",

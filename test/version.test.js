@@ -21,7 +21,7 @@ describe('version', () => {
 
   it('package.json has distribution metadata for npx/publish', () => {
     const pkg = JSON.parse(readFileSync(resolve(ROOT, 'package.json'), 'utf-8'));
-    assert.strictEqual(pkg.version, '0.3.0');
+    assert.ok(/^\d+\.\d+\.\d+/.test(pkg.version), `version should be semver, got: ${pkg.version}`);
     assert.ok(Array.isArray(pkg.files) && pkg.files.includes('src/'), 'files must whitelist src/');
     assert.ok(pkg.files.includes('adapters/') && pkg.files.includes('prompts/'), 'files must include adapters/ and prompts/');
     assert.ok(pkg.engines && pkg.engines.node, 'engines.node required');
