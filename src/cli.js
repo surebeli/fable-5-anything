@@ -205,7 +205,7 @@ function cmdGovernance(opts) {
   for (const w of syncCharter({ project, files: ['AGENTS.md', 'CLAUDE.md'], force: true, block })) console.log(`  ${w.action.padEnd(9)} ${w.file}`);
   console.log('\nGovernance-only (host-agnostic): the full portable core is embedded in AGENTS.md + CLAUDE.md.');
   console.log('Every host that auto-loads these charter files (opencode, Codex, Claude Code, Grok, Copilot) now follows the full constitution — no .fable/, no host-specific config.');
-  console.log('Kimi loads skills, not charter markdown → use `fable kimi setup`. opencode users who prefer a slim charter + opencode.json instructions can use `fable opencode setup`.');
+  console.log('Kimi 0.17.1+ auto-loads AGENTS.md (so it is already governed); older Kimi reads only skills → `fable kimi setup`. opencode users who prefer a slim charter + opencode.json instructions can use `fable opencode setup`.');
 }
 
 function cmdOpencode(opts, positional) {

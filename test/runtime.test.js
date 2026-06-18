@@ -82,11 +82,12 @@ describe('runtime capabilities metadata', () => {
     assert.ok(r.commandSupport.includes('mcp-server'));
   });
 
-  it('kimi is implemented via the skill path (verified against real Kimi)', () => {
+  it('kimi is implemented via charter + skill (AGENTS.md auto-loaded on 0.17.1+; skill on all versions)', () => {
     const r = getRuntime('kimi');
     assert.strictEqual(r.status, 'implemented');
-    assert.strictEqual(r.injectionMode, 'skill');
+    assert.strictEqual(r.injectionMode, 'agents-md-and-skill');
     assert.ok(r.commandSupport.includes('kimi-setup'));
+    assert.ok(r.charterFiles.includes('AGENTS.md'));
   });
 
   it('copilot is implemented via the MCP + charter path (verified against real Copilot)', () => {

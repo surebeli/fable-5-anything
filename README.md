@@ -29,7 +29,7 @@ directory.
 Any governance command works the same way, e.g.:
 
 ```bash
-npx -y github:surebeli/fable-5-anything kimi setup --project .          # Kimi loads skills, not charter markdown
+npx -y github:surebeli/fable-5-anything kimi setup --project .          # older Kimi only (0.17.1+ already reads AGENTS.md); also bundles the Kimi adapter
 npx -y github:surebeli/fable-5-anything codex setup --project . --apply # charter + read-only fable MCP server
 npx -y github:surebeli/fable-5-anything runtime --list                  # read-only introspection
 ```
@@ -102,8 +102,10 @@ rules.
   [docs/opencode-integration.md](docs/opencode-integration.md).
 - codex is implemented via charter (AGENTS.md) + a read-only MCP server
   (`fable_runtime`); see [docs/codex-integration.md](docs/codex-integration.md).
-- kimi has a `fable kimi setup` that writes a real fable skill (`--skills-dir`) +
-  charter; see [docs/kimi-integration.md](docs/kimi-integration.md).
+- kimi: 0.17.1+ auto-loads `AGENTS.md`, so `fable governance` governs it directly;
+  older Kimi reads only skills, so `fable kimi setup` writes a real fable skill
+  (`--skills-dir`) + charter (it also bundles the Kimi adapter). See
+  [docs/kimi-integration.md](docs/kimi-integration.md).
 - copilot has a `fable copilot setup` that seeds the charter + reuses the
   host-agnostic fable MCP server (`copilot mcp add`); see
   [docs/copilot-integration.md](docs/copilot-integration.md).
@@ -134,9 +136,11 @@ See [docs/codex-integration.md](docs/codex-integration.md) for the full guide.
 
 ### Kimi
 
-fable governs Kimi via a real fable **skill** (`.fable/skills/fable/SKILL.md`)
-plus a charter (AGENTS.md + CLAUDE.md). It overlays — never replaces — Kimi's
-system prompt.
+Kimi 0.17.1+ auto-loads `AGENTS.md`, so `fable governance` governs it directly —
+no Kimi-specific step. For older Kimi (which reads only skills), or to also ship
+the Kimi runtime adapter, use `fable kimi setup`, which writes a fable **skill**
+(`.fable/skills/fable/SKILL.md`) plus the charter (AGENTS.md + CLAUDE.md). fable
+overlays — never replaces — Kimi's system prompt.
 
 ```bash
 node bin/fable.js kimi setup --project .

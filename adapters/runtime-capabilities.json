@@ -28,12 +28,12 @@
   },
   "kimi": {
     "status": "implemented",
-    "injectionMode": "skill",
+    "injectionMode": "agents-md-and-skill",
     "hostSystemPolicy": "overlay",
     "adapter": "adapters/kimi.md",
     "commandSupport": ["kimi-setup", "charter"],
     "charterFiles": ["AGENTS.md"],
-    "notes": "Verified against kimi-code 0.14.2: the fable skill (.fable/skills/fable/SKILL.md, loaded via --skills-dir or extra_skill_dirs) carries portable core + kimi adapter governance and is auto-merged each session. Host Kimi system prompt remains authoritative; fable overlays governance."
+    "notes": "Kimi 0.17.1+ auto-loads AGENTS.md, so the charter governs it directly via `fable governance`. Older Kimi (the 0.14.2 era) read only skills, so `fable kimi setup` writes .fable/skills/fable/SKILL.md (portable core + kimi adapter, loaded via --skills-dir or extra_skill_dirs, auto-merged each session) — still available, and the only path on those older versions. Host Kimi system prompt remains authoritative; fable overlays governance."
   },
   "grok": {
     "status": "implemented",

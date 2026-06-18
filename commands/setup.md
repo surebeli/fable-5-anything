@@ -22,7 +22,7 @@ governance delivery:
 - `codex` / `copilot` / `grok` → register the read-only `fable_runtime` MCP server
   (prints the `<host> mcp add fable` command; pass `--apply` ONLY if the user wants
   fable to run the registration for them, otherwise they run it manually).
-- `kimi` → write `.fable/skills/fable/SKILL.md` (Kimi loads skills, not charter markdown).
+- `kimi` → write `.fable/skills/fable/SKILL.md` (for Kimi <0.17.1, which reads only skills, or to bundle the Kimi adapter; Kimi 0.17.1+ already reads `AGENTS.md`).
 - `opencode` → copy the portable core into `.fable/` and wire `opencode.json` `instructions`.
 
 Surface the output (including any `<host> mcp add fable` command) to the user.

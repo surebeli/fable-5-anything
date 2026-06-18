@@ -17,7 +17,7 @@ node "$CLAUDE_PLUGIN_ROOT/bin/fable.js" governance --project .
 Surface the created/refreshed files to the user. This is governance-only: it does
 NOT dispatch, run, or execute tasks. Notes:
 
-- Kimi loads *skills*, not charter markdown → use `/fable:setup kimi`.
+- Kimi 0.17.1+ auto-loads `AGENTS.md`, so this already governs it; older Kimi reads only skills → `/fable:setup kimi`.
 - opencode users who want a slim charter + `opencode.json` wiring → `/fable:setup opencode`.
 - Background dispatch to vendor CLIs is not part of fable — that lives in hopper-plugin.
 

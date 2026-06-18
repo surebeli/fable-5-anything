@@ -10,7 +10,8 @@ node bin/fable.js governance --project <your-project>
 ```
 
 Every host that auto-loads `AGENTS.md` / `CLAUDE.md` (opencode, Codex, Claude
-Code, Grok, Copilot) is then governed. Kimi loads skills → `fable kimi setup`.
+Code, Grok, Copilot) is then governed. Kimi 0.17.1+ auto-loads `AGENTS.md` too
+(governed directly); older Kimi reads only skills → `fable kimi setup`.
 opencode users who prefer a slim charter + `opencode.json` instructions →
 `fable opencode setup`.
 

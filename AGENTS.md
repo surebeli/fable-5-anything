@@ -11,7 +11,7 @@ charter files:
 `node bin/fable.js governance --project <proj>`
 
 This embeds the full portable core into `AGENTS.md` + `CLAUDE.md` (host-agnostic).
-Exceptions: Kimi loads *skills* → `fable kimi setup`; opencode users who want a
+Exceptions: Kimi 0.17.1+ auto-loads `AGENTS.md` (governed by `governance`); older Kimi reads only skills → `fable kimi setup`; opencode users who want a
 slim charter + `opencode.json` instructions → `fable opencode setup`; codex /
 copilot / grok can also register the read-only fable MCP server → `fable <host>
 setup`.

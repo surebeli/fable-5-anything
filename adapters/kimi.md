@@ -1,9 +1,10 @@
 # Kimi Adapter
 
-Use this adapter for Kimi CLI or hopper Kimi dispatches. Status: implemented
-(fable skill via `--skills-dir` + charter, verified against kimi-code 0.14.2).
-fable layers governance as an overlay; the host Kimi system and tool rules stay
-authoritative.
+Use this adapter for Kimi CLI or hopper Kimi dispatches. Status: implemented.
+Kimi 0.17.1+ auto-loads `AGENTS.md`, so the charter governs it directly; the
+fable skill (via `--skills-dir`, verified against kimi-code 0.14.2) remains for
+older Kimi and bundles this adapter. fable layers governance as an overlay; the
+host Kimi system and tool rules stay authoritative.
 
 ## CLI Contract
 
@@ -51,8 +52,10 @@ not require interactive input.
 
 ## Kimi (M7)
 
-fable integrates with Kimi Code (verified against 0.14.2) via a real **skill**
-plus the charter. Kimi loads skills from a skills directory where each skill is
+fable integrates with Kimi Code two ways: Kimi 0.17.1+ auto-loads the **charter**
+(`AGENTS.md`), so `fable governance` governs it directly; older Kimi (the 0.14.2
+era) reads only skills, so the fable **skill** path below is required there and
+also bundles this adapter. Kimi loads skills from a skills directory where each skill is
 `<skills-dir>/<name>/SKILL.md` with YAML frontmatter (`name` / `description`)
 and a body.
 

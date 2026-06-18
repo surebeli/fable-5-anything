@@ -1,9 +1,16 @@
 # Kimi Integration
 
-fable governs Kimi Code through a real **skill** plus a charter. fable
-**overlays** Kimi: it layers project governance on top of Kimi's own system
-prompt, tool protocol, and safety policy. It never replaces Kimi's system
-prompt.
+fable governs Kimi Code by **overlaying** project governance on top of Kimi's own
+system prompt, tool protocol, and safety policy — it never replaces Kimi's system
+prompt. There are two delivery paths:
+
+- **Charter (Kimi 0.17.1+).** Recent Kimi auto-loads `AGENTS.md`, so
+  `fable governance --project .` (which inlines the portable core into `AGENTS.md`
+  + `CLAUDE.md`) governs Kimi directly — no Kimi-specific step needed.
+- **Skill (all versions; required on older Kimi).** Older Kimi (the 0.14.x era)
+  read only skills, not charter markdown. `fable kimi setup` writes a skill that
+  also bundles the Kimi runtime adapter; use it on older Kimi, or to ship the
+  adapter alongside the core.
 
 ## Skill (`.fable/skills/fable/SKILL.md`)
 
